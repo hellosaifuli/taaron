@@ -1,47 +1,26 @@
-import { CartProvider } from "components/cart/cart-context";
-import { Navbar } from "components/layout/navbar";
-import { WelcomeToast } from "components/welcome-toast";
-import { GeistSans } from "geist/font/sans";
-import { getCart } from "lib/shopify";
-import { ReactNode } from "react";
-import { Toaster } from "sonner";
-import "./globals.css";
-import { baseUrl } from "lib/utils";
-
-const { SITE_NAME } = process.env;
+import { GeistSans } from 'geist/font/sans'
+import { ReactNode } from 'react'
+import { Toaster } from 'sonner'
+import './globals.css'
 
 export const metadata = {
-  metadataBase: new URL(baseUrl),
   title: {
-    default: SITE_NAME!,
-    template: `%s | ${SITE_NAME}`,
+    default: 'Taaron — Everyday Elegance',
+    template: '%s | Taaron',
   },
-  robots: {
-    follow: true,
-    index: true,
-  },
-};
+  description: 'Premium leather goods. Artisanal craftsmanship, minimalist design, everyday elegance.',
+  robots: { follow: true, index: true },
+}
 
-export default async function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  // Don't await the fetch, pass the Promise to the context provider
-  const cart = getCart();
-
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={GeistSans.variable}>
-      <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
-        <CartProvider cartPromise={cart}>
-          <Navbar />
-          <main>
-            {children}
-            <Toaster closeButton />
-            <WelcomeToast />
-          </main>
-        </CartProvider>
+      <body className="bg-[#F4F0E6] text-[#1C1C1C] selection:bg-[#B8962E]/30">
+        <main>
+          {children}
+          <Toaster closeButton />
+        </main>
       </body>
     </html>
-  );
+  )
 }
