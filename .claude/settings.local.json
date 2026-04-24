@@ -2,7 +2,20 @@
   "permissions": {
     "allow": [
       "mcp__Claude_in_Chrome__tabs_context_mcp",
-      "WebFetch(domain:www.taaron.bd)"
+      "WebFetch(domain:www.taaron.bd)",
+      "Bash(npm install *)",
+      "Bash(sudo npm *)",
+      "Bash(npx vercel *)",
+      "Bash(cat .vercel/project.json)",
+      "Bash(ls turbo.json pnpm-workspace.yaml)",
+      "Bash(ls .vercel/)",
+      "Bash(pnpm install *)",
+      "Bash(python3 -m json.tool)",
+      "Bash(ls .env*)",
+      "Bash(cat .env.example)",
+      "Bash(cat .env.local.example)",
+      "Bash(python3 -c \"import json; p=json.load\\(open\\('package.json'\\)\\); print\\(p.get\\('engines',{}\\)\\); print\\(p.get\\('packageManager',''\\)\\)\")",
+      "Bash(npx pnpm *)"
     ]
   }
 }

@@ -4,9 +4,9 @@ import { redirect } from 'next/navigation'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
-  const { data: session } = await supabase.auth.getSession()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  if (!session?.user) {
+  if (!user) {
     redirect('/auth')
   }
 
@@ -31,7 +31,7 @@ export default async function DashboardPage() {
       )
     `
     )
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
   const statusColors: Record<string, string> = {
@@ -50,7 +50,7 @@ export default async function DashboardPage() {
             Taaron
           </Link>
           <nav className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">{session.user.email}</span>
+            <span className="text-sm text-gray-600">{user.email}</span>
             <button className="text-sm hover:underline">Logout</button>
           </nav>
         </div>
