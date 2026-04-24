@@ -139,14 +139,9 @@ export default async function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/80 via-[#1C1C1C]/20 to-transparent transition-opacity duration-300 group-hover:from-[#1C1C1C]/90" />
               <div className="absolute bottom-0 left-0 p-5">
-                <p className="font-serif text-lg font-medium text-white" style={{ fontFamily: 'var(--font-serif)' }}>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-[#B8962E]">Shop Now</p>
+                <p className="mt-1 font-serif text-xl font-medium text-white transition-all duration-300" style={{ fontFamily: 'var(--font-serif)' }}>
                   {cat.name}
-                </p>
-                <p className="mt-1 flex items-center gap-2 text-[10px] uppercase tracking-widest text-white/50 transition-all duration-300 group-hover:text-white/80">
-                  Shop Now
-                  <svg className="h-3 w-3 translate-x-0 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
                 </p>
               </div>
             </Link>
