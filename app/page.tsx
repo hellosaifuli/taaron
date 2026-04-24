@@ -10,6 +10,8 @@ interface Product {
   thumbnail_url: string | null
 }
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Taaron - Shine with Every Step',
   description: 'Luxurious leather wallets, bags, and belts. Modern elegance, everyday luxury.',
