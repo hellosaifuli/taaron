@@ -50,8 +50,9 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@taaron.bd'
 
-  if (!user) {
+  if (!user || user.email !== ADMIN_EMAIL) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
