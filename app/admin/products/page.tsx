@@ -1,253 +1,164 @@
-'use client'
-
-import { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
+import { createProduct, deleteProduct, toggleStatus } from './actions'
 
-export default function AdminProductsPage() {
-  const [products, setProducts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    cost: '',
-    sku: '',
-    image_url: '',
-    thumbnail_url: '',
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@taaron.bd'
 
-  useEffect(() => {
-    fetchProducts()
-  }, [])
+export const dynamic = 'force-dynamic'
+export const metadata = { title: 'Admin — Products' }
 
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch('/api/products')
-      const data = await response.json()
-      setProducts(data.products || [])
-    } catch (err) {
-      setError('Failed to load products')
-    } finally {
-      setLoading(false)
-    }
-  }
+export default async function AdminProductsPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || user.email !== ADMIN_EMAIL) redirect('/auth')
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setError('')
-
-    try {
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          price: parseFloat(formData.price),
-          cost: formData.cost ? parseFloat(formData.cost) : null,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.error || 'Failed to create product')
-      } else {
-        setFormData({
-          name: '',
-          description: '',
-          price: '',
-          cost: '',
-          sku: '',
-          image_url: '',
-          thumbnail_url: '',
-        })
-        fetchProducts()
-      }
-    } catch (err) {
-      setError('Network error')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  const { data: products } = await supabase
+    .from('products')
+    .select('id, name, price, sku, status, image_url, created_at')
+    .order('created_at', { ascending: false })
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="border-b border-gray-200 bg-white">
-        <div className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <Link href="/" className="text-xl font-bold">
-            Taaron Admin
-          </Link>
-          <nav className="flex items-center gap-4">
-            <Link href="/admin/orders" className="text-sm hover:underline">
-              Orders
+    <div className="min-h-screen bg-[#F4F0E6] pt-20">
+      <div className="mx-auto max-w-screen-xl px-6 py-12 lg:px-12">
+
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-[#B8962E]">Admin</p>
+            <h1 className="mt-1 font-serif text-3xl font-medium" style={{ fontFamily: 'var(--font-serif)' }}>
+              Products
+            </h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/" className="text-[11px] uppercase tracking-widest text-[#6B6561] hover:text-[#1C1C1C]">
+              ← Store
             </Link>
-            <Link href="/" className="text-sm hover:underline">
-              Store
-            </Link>
-          </nav>
-        </div>
-      </header>
-
-      <div className="px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <h1 className="text-3xl font-bold">Add Product</h1>
-
-          {error && (
-            <div className="mt-4 rounded border border-red-300 bg-red-50 p-3 text-red-700">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="mt-8 grid gap-6 lg:grid-cols-2">
-            <div>
-              <label className="block text-sm font-medium">Product Name *</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium">Price (৳) *</label>
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-                step="0.01"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium">Cost (৳)</label>
-              <input
-                type="number"
-                name="cost"
-                value={formData.cost}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-                step="0.01"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium">SKU</label>
-              <input
-                type="text"
-                name="sku"
-                value={formData.sku}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-              />
-            </div>
-
-            <div className="lg:col-span-2">
-              <label className="block text-sm font-medium">Description</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-                rows={4}
-              />
-            </div>
-
-            <div className="lg:col-span-2">
-              <label className="block text-sm font-medium">Image URL</label>
-              <input
-                type="url"
-                name="image_url"
-                value={formData.image_url}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-                placeholder="https://..."
-              />
-            </div>
-
-            <div className="lg:col-span-2">
-              <label className="block text-sm font-medium">Thumbnail URL</label>
-              <input
-                type="url"
-                name="thumbnail_url"
-                value={formData.thumbnail_url}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-                placeholder="https://..."
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="lg:col-span-2 border border-gray-300 bg-gray-900 px-4 py-3 font-medium text-white hover:bg-gray-800 disabled:opacity-50"
-            >
-              {isSubmitting ? 'Creating...' : 'Create Product'}
-            </button>
-          </form>
-
-          {/* Products List */}
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold">Products</h2>
-
-            {loading ? (
-              <p className="mt-4 text-gray-600">Loading...</p>
-            ) : products.length > 0 ? (
-              <div className="mt-4 overflow-x-auto">
-                <table className="w-full border-collapse border border-gray-200">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="border border-gray-200 px-4 py-2 text-left">Name</th>
-                      <th className="border border-gray-200 px-4 py-2 text-right">Price</th>
-                      <th className="border border-gray-200 px-4 py-2 text-center">
-                        Variants
-                      </th>
-                      <th className="border border-gray-200 px-4 py-2">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {products.map((product) => (
-                      <tr key={product.id} className="border border-gray-200 hover:bg-gray-50">
-                        <td className="border border-gray-200 px-4 py-2">{product.name}</td>
-                        <td className="border border-gray-200 px-4 py-2 text-right">
-                          ৳{product.price.toLocaleString()}
-                        </td>
-                        <td className="border border-gray-200 px-4 py-2 text-center">
-                          {product.product_variants?.length || 0}
-                        </td>
-                        <td className="border border-gray-200 px-4 py-2">
-                          <Link
-                            href={`/admin/products/${product.id}`}
-                            className="text-sm hover:underline"
-                          >
-                            Edit
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <p className="mt-4 text-gray-600">No products yet</p>
-            )}
           </div>
         </div>
+
+        <div className="mt-1 h-px w-16 bg-[#B8962E]" />
+
+        {/* Add Product Form */}
+        <section className="mt-12 border border-[#E0DAD0] bg-white p-8">
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-[#1C1C1C]">Add New Product</h2>
+          <form action={createProduct} className="mt-6 grid gap-5 sm:grid-cols-2">
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-[#9A9080]">Name *</label>
+              <input name="name" required className="mt-2 w-full border border-[#E0DAD0] bg-[#F4F0E6] px-3 py-2.5 text-sm outline-none focus:border-[#1C1C1C]" />
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-[#9A9080]">Price (৳) *</label>
+              <input name="price" type="number" step="0.01" required className="mt-2 w-full border border-[#E0DAD0] bg-[#F4F0E6] px-3 py-2.5 text-sm outline-none focus:border-[#1C1C1C]" />
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-[#9A9080]">Cost (৳)</label>
+              <input name="cost" type="number" step="0.01" className="mt-2 w-full border border-[#E0DAD0] bg-[#F4F0E6] px-3 py-2.5 text-sm outline-none focus:border-[#1C1C1C]" />
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-[#9A9080]">SKU</label>
+              <input name="sku" className="mt-2 w-full border border-[#E0DAD0] bg-[#F4F0E6] px-3 py-2.5 text-sm outline-none focus:border-[#1C1C1C]" />
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-[#9A9080]">Status</label>
+              <select name="status" className="mt-2 w-full border border-[#E0DAD0] bg-[#F4F0E6] px-3 py-2.5 text-sm outline-none focus:border-[#1C1C1C]">
+                <option value="active">Active</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-[#9A9080]">Main Image URL</label>
+              <input name="image_url" type="url" placeholder="https://..." className="mt-2 w-full border border-[#E0DAD0] bg-[#F4F0E6] px-3 py-2.5 text-sm outline-none focus:border-[#1C1C1C]" />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-[11px] uppercase tracking-widest text-[#9A9080]">Description</label>
+              <textarea name="description" rows={3} className="mt-2 w-full border border-[#E0DAD0] bg-[#F4F0E6] px-3 py-2.5 text-sm outline-none focus:border-[#1C1C1C]" />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-[11px] uppercase tracking-widest text-[#9A9080]">
+                Extra Image URLs <span className="normal-case text-[#9A9080]">(one per line)</span>
+              </label>
+              <textarea name="extra_images" rows={3} placeholder="https://image1.com&#10;https://image2.com" className="mt-2 w-full border border-[#E0DAD0] bg-[#F4F0E6] px-3 py-2.5 text-sm outline-none focus:border-[#1C1C1C]" />
+            </div>
+            <div className="sm:col-span-2">
+              <button type="submit" className="w-full bg-[#1C1C1C] px-6 py-3 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#B8962E]">
+                Create Product
+              </button>
+            </div>
+          </form>
+        </section>
+
+        {/* Products Table */}
+        <section className="mt-12">
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-[#1C1C1C]">
+            All Products <span className="font-normal text-[#9A9080]">({products?.length ?? 0})</span>
+          </h2>
+
+          <div className="mt-4 divide-y divide-[#E0DAD0] border border-[#E0DAD0] bg-white">
+            {!products?.length ? (
+              <p className="px-6 py-8 text-sm text-[#9A9080]">No products yet.</p>
+            ) : (
+              products.map((p) => (
+                <div key={p.id} className="flex items-center gap-4 px-6 py-4">
+                  {/* Thumbnail */}
+                  <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden bg-[#EDE8DD]">
+                    {p.image_url ? (
+                      <Image src={p.image_url} alt={p.name} fill className="object-cover" sizes="56px" />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-[10px] text-[#9A9080]">—</div>
+                    )}
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="truncate text-sm font-medium text-[#1C1C1C]">{p.name}</p>
+                    <p className="text-xs text-[#9A9080]">
+                      ৳{p.price.toLocaleString()}
+                      {p.sku && <span className="ml-3">SKU: {p.sku}</span>}
+                    </p>
+                  </div>
+
+                  {/* Status badge */}
+                  <span className={`hidden flex-shrink-0 px-2 py-0.5 text-[10px] uppercase tracking-wider sm:block ${p.status === 'active' ? 'bg-green-50 text-green-700' : 'bg-[#EDE8DD] text-[#9A9080]'}`}>
+                    {p.status}
+                  </span>
+
+                  {/* Actions */}
+                  <div className="flex flex-shrink-0 items-center gap-3">
+                    <Link
+                      href={`/admin/products/${p.id}`}
+                      className="text-[11px] uppercase tracking-widest text-[#6B6561] hover:text-[#1C1C1C]"
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      href={`/products/${p.id}`}
+                      target="_blank"
+                      className="text-[11px] uppercase tracking-widest text-[#6B6561] hover:text-[#1C1C1C]"
+                    >
+                      View
+                    </Link>
+                    <form action={async () => { 'use server'; await toggleStatus(p.id, p.status) }}>
+                      <button type="submit" className="text-[11px] uppercase tracking-widest text-[#B8962E] hover:text-[#1C1C1C]">
+                        {p.status === 'active' ? 'Unpublish' : 'Publish'}
+                      </button>
+                    </form>
+                    <form action={async () => { 'use server'; await deleteProduct(p.id) }}>
+                      <button
+                        type="submit"
+                        className="text-[11px] uppercase tracking-widest text-red-400 hover:text-red-600"
+                        onClick={undefined}
+                      >
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
       </div>
     </div>
   )
