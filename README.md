@@ -1,75 +1,236 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=COMPANY_NAME,SHOPIFY_REVALIDATION_SECRET,SHOPIFY_STORE_DOMAIN,SHOPIFY_STOREFRONT_ACCESS_TOKEN,SITE_NAME)
+# Taaron Store - Ecommerce Platform
 
-# Next.js Commerce
+Modern, minimal ecommerce platform built on Next.js 15 with Supabase backend. Designed for luxury leather goods market in Bangladesh with COD & bKash payments.
 
-A high-performance, server-rendered Next.js App Router ecommerce application.
+**Tagline:** "Shine with Every Step"
 
-This template uses React Server Components, Server Actions, `Suspense`, `useOptimistic`, and more.
+## Tech Stack
 
-<h3 id="v1-note"></h3>
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS
+- **Backend:** Supabase (PostgreSQL + Auth)
+- **Payments:** COD (Cash on Delivery), bKash mobile payment
+- **Hosting:** Vercel
+- **Domain:** taaron.bd
 
-> Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1).
+## Quick Start
 
-## Providers
+### 1. Supabase Setup
 
-Vercel will only be actively maintaining a Shopify version [as outlined in our vision and strategy for Next.js Commerce](https://github.com/vercel/commerce/pull/966).
+1. Visit [supabase.com](https://supabase.com)
+2. Create account and new project
+3. Copy project URL and anon key
+4. Create `.env.local` in root:
 
-Vercel is happy to partner and work with any commerce provider to help them get a similar template up and running and listed below. Alternative providers should be able to fork this repository and swap out the `lib/shopify` file with their own implementation while leaving the rest of the template mostly unchanged.
-
-- Shopify (this repository)
-- [BigCommerce](https://github.com/bigcommerce/nextjs-commerce) ([Demo](https://next-commerce-v2.vercel.app/))
-- [Ecwid by Lightspeed](https://github.com/Ecwid/ecwid-nextjs-commerce/) ([Demo](https://ecwid-nextjs-commerce.vercel.app/))
-- [Geins](https://github.com/geins-io/vercel-nextjs-commerce) ([Demo](https://geins-nextjs-commerce-starter.vercel.app/))
-- [Medusa](https://github.com/medusajs/vercel-commerce) ([Demo](https://medusa-nextjs-commerce.vercel.app/))
-- [Prodigy Commerce](https://github.com/prodigycommerce/nextjs-commerce) ([Demo](https://prodigy-nextjs-commerce.vercel.app/))
-- [Saleor](https://github.com/saleor/nextjs-commerce) ([Demo](https://saleor-commerce.vercel.app/))
-- [Shopware](https://github.com/shopwareLabs/vercel-commerce) ([Demo](https://shopware-vercel-commerce-react.vercel.app/))
-- [Swell](https://github.com/swellstores/verswell-commerce) ([Demo](https://verswell-commerce.vercel.app/))
-- [Umbraco](https://github.com/umbraco/Umbraco.VercelCommerce.Demo) ([Demo](https://vercel-commerce-demo.umbraco.com/))
-- [Wix](https://github.com/wix/headless-templates/tree/main/nextjs/commerce) ([Demo](https://wix-nextjs-commerce.vercel.app/))
-- [Fourthwall](https://github.com/FourthwallHQ/vercel-commerce) ([Demo](https://vercel-storefront.fourthwall.app/))
-
-> Note: Providers, if you are looking to use similar products for your demo, you can [download these assets](https://drive.google.com/file/d/1q_bKerjrwZgHwCw0ovfUMW6He9VtepO_/view?usp=sharing).
-
-## Integrations
-
-Integrations enable upgraded or additional functionality for Next.js Commerce
-
-- [Orama](https://github.com/oramasearch/nextjs-commerce) ([Demo](https://vercel-commerce.oramasearch.com/))
-
-  - Upgrades search to include typeahead with dynamic re-rendering, vector-based similarity search, and JS-based configuration.
-  - Search runs entirely in the browser for smaller catalogs or on a CDN for larger.
-
-- [React Bricks](https://github.com/ReactBricks/nextjs-commerce-rb) ([Demo](https://nextjs-commerce.reactbricks.com/))
-  - Edit pages, product details, and footer content visually using [React Bricks](https://www.reactbricks.com) visual headless CMS.
-
-## Running locally
-
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Commerce. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables) for this, but a `.env` file is all that is necessary.
-
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control your Shopify store.
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
-
-```bash
-pnpm install
-pnpm dev
+```
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 ```
 
-Your app should now be running on [localhost:3000](http://localhost:3000/).
+### 2. Create Database
 
-<details>
-  <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>
+1. Supabase Dashboard → SQL Editor
+2. Copy entire content from `lib/supabase/schema.sql`
+3. Run query → All tables + RLS created
 
-1. Run `vc link`.
-1. Select the `Vercel Solutions` scope.
-1. Connect to the existing `commerce-shopify` project.
-1. Run `vc env pull` to get environment variables.
-1. Run `pnpm dev` to ensure everything is working correctly.
-</details>
+### 3. Install & Run
 
-## Vercel, Next.js Commerce, and Shopify Integration Guide
+```bash
+npm install --legacy-peer-deps
+npm run dev
+```
 
-You can use this comprehensive [integration guide](https://vercel.com/docs/integrations/ecommerce/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+Visit `http://localhost:3000`
+
+## Project Structure
+
+```
+app/
+├── page.tsx                 # Home + product listing
+├── products/[id]/           # Product detail page
+├── checkout/                # Checkout flow
+├── order-confirmation/[id]/ # Order status
+├── auth/                    # Login/signup
+├── dashboard/               # Order history
+├── admin/products/          # Admin add products
+├── api/
+│   ├── auth/               # Login/signup endpoints
+│   ├── products/           # Product CRUD
+│   └── orders/             # Order creation
+
+components/
+├── header.tsx              # Navigation header
+├── add-to-cart.tsx         # Add to cart logic
+└── ...
+
+lib/supabase/
+├── client.ts               # Browser client
+├── server.ts               # Server client
+└── schema.sql              # Database schema
+```
+
+## Pages & Features
+
+### Customer Flow
+
+| Page | Path | Features |
+|------|------|----------|
+| Home | `/` | Product grid, categories, hero |
+| Product | `/products/[id]` | Images, variants, description |
+| Checkout | `/checkout` | Cart, address, payment method |
+| Order Confirm | `/order-confirmation/[id]` | Status timeline, details |
+| Dashboard | `/dashboard` | Order history |
+| Auth | `/auth` | Login/signup |
+
+### Admin Flow
+
+| Page | Path | Features |
+|------|------|----------|
+| Add Product | `/admin/products` | Create products with images |
+
+## API Routes
+
+```
+POST   /api/auth/sign-up          # Register
+POST   /api/auth/sign-in          # Login
+GET    /api/products              # List products (paginated)
+POST   /api/products              # Create product
+GET    /api/orders                # Get user orders
+POST   /api/orders                # Create order
+```
+
+## Database Schema
+
+**Tables:**
+- `user_profiles` - Customer info (name, email, address)
+- `products` - Products with price, description, images
+- `product_variants` - Size/color options with stock
+- `orders` - Orders with status (pending → delivered)
+- `order_items` - Line items in each order
+- `payments` - Payment tracking (COD/bKash)
+
+**RLS Policies:**
+- Users see only own orders, payments
+- Everyone sees active products
+- Admin create products (no RLS limit)
+
+## Design System
+
+### Colors
+- **Primary:** Gray 900 (#111827)
+- **Background:** White
+- **Borders:** Gray 200 (#e5e7eb)
+- **Text:** Gray 900 (dark), Gray 600 (secondary)
+
+### Typography
+- Font: System sans-serif (Tailwind default)
+- Headings: Font-light, tracking-wider
+- Body: Regular, text-sm to text-base
+
+### Layout
+- Full-width responsive
+- Max-width: 7xl container (1280px)
+- Grid: 2 cols mobile, 4 cols desktop
+- Spacing: Consistent 4px grid
+
+## Payment Methods
+
+### Cash on Delivery (COD)
+- No integration needed
+- Order status: pending (payment pending until delivery)
+- Customer pays on delivery
+
+### bKash
+- Placeholder structure in place
+- To enable:
+  1. Get merchant credentials
+  2. Add to `.env.local`
+  3. Implement webhook in `/api/payments/bkash`
+  4. Set `payment_status = 'completed'` on callback
+
+## Deployment to Vercel
+
+### Step 1: Push to GitHub
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
+
+### Step 2: Deploy
+1. Visit [vercel.com](https://vercel.com)
+2. Import GitHub repo
+3. Add environment variables
+4. Deploy
+
+### Step 3: Custom Domain (taaron.bd)
+1. Vercel Dashboard → Domains
+2. Add `taaron.bd`
+3. Update registrar nameservers to Vercel's
+4. Wait 24-48 hours for DNS propagation
+
+## Admin Operations
+
+### Add Product
+1. Visit `/admin/products`
+2. Fill form (name, price, description, SKU)
+3. Add image URL
+4. Create
+5. Product appears on home page
+
+### Add Product Variants
+1. Via Supabase UI or API
+2. Insert into `product_variants` table
+3. Link to product_id
+4. Add variant names, prices, stock
+
+### View Orders
+1. Visit Supabase Dashboard
+2. Go to `orders` table
+3. See all orders with status
+4. Update order status manually
+
+## Development Tips
+
+### Local Testing
+
+**Test signup/login:**
+```bash
+curl -X POST http://localhost:3000/api/auth/sign-up \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
+
+**Test product creation:**
+```bash
+curl -X POST http://localhost:3000/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Wallet","price":1500,"description":"Leather wallet"}'
+```
+
+### Environment Variables
+See `.env.example` for all required variables.
+
+## Next Steps
+
+- [ ] Create Supabase project
+- [ ] Run database schema
+- [ ] Add test products via `/admin/products`
+- [ ] Test signup/checkout flow
+- [ ] Upload product images
+- [ ] Test with real data
+- [ ] Set up bKash (optional)
+- [ ] Deploy to Vercel
+- [ ] Point taaron.bd to Vercel
+- [ ] Monitor orders & payments
+
+## Support
+
+For questions or issues:
+- Check Supabase docs: https://supabase.com/docs
+- Check Next.js docs: https://nextjs.org/docs
+- Visit taaron.bd
+
+---
+
+Built with ❤️ for Bangladesh market. "Shine with Every Step."
