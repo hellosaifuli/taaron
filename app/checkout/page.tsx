@@ -9,7 +9,7 @@ import { useState } from 'react'
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { items, clearCart } = useCart()
+  const { items, clearCart, removeItem: removeFromCart } = useCart()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'bkash'>('cod')
@@ -28,6 +28,10 @@ export default function CheckoutPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const removeItem = (index: number) => {
+    removeFromCart(index)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
