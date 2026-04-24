@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import Image from 'next/image'
+import BannerSlider from '@/components/banner-slider'
 
 export const dynamic = 'force-dynamic'
 
@@ -75,8 +76,15 @@ export default async function Home() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-6 py-4">
-          <Link href="/" className="text-sm font-semibold uppercase tracking-widest">
-            Taaron
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/taaron-logo.png"
+              alt="Taaron"
+              width={120}
+              height={36}
+              className="h-8 w-auto object-contain"
+              priority
+            />
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -123,20 +131,8 @@ export default async function Home() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="border-b border-neutral-200 bg-black px-6 py-24 text-center text-white">
-        <p className="text-xs uppercase tracking-[0.3em] text-neutral-400">New Collection</p>
-        <h1 className="mt-4 text-5xl font-light tracking-tight sm:text-6xl">Shine with Every Step</h1>
-        <p className="mx-auto mt-6 max-w-md text-sm text-neutral-400">
-          Modern elegance. Everyday luxury. Crafted for those who move with purpose.
-        </p>
-        <Link
-          href="/?category=all"
-          className="mt-8 inline-block bg-white px-8 py-3 text-xs font-semibold uppercase tracking-widest text-black transition-opacity hover:opacity-80"
-        >
-          Shop Now
-        </Link>
-      </section>
+      {/* Banner Slider */}
+      <BannerSlider />
 
       {/* Shop by Category */}
       <section className="mx-auto max-w-screen-2xl px-6 py-16">
