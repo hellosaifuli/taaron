@@ -12,7 +12,6 @@ const footerLinks = {
   ],
   Support: [
     { label: 'Contact Us', href: '/contact' },
-    { label: 'Track Order', href: '/dashboard' },
     { label: 'Returns & Exchanges', href: '/returns' },
     { label: 'FAQ', href: '/#faq' },
   ],

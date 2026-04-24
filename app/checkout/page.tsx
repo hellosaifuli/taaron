@@ -93,6 +93,36 @@ export default function CheckoutPage() {
           <div className="mt-3 h-px w-12 bg-[#1969B5]" />
         </div>
 
+        {/* ─── Our Promise / Built Different ─────────────────────────── */}
+        <div className="mb-16 py-12 border-b border-[#DDE3EB]">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">Our Promise</p>
+            <h2 className="mt-3 font-serif leading-tight text-[#1E2737]" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
+              Built Different.
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-8 sm:grid-cols-3">
+            <div>
+              <p className="font-serif text-[#1969B5]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>01</p>
+              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#1E2737]">Full-Grain Leather</h3>
+              <div className="mt-2 h-px w-6 bg-[#1969B5]" />
+              <p className="mt-3 text-sm leading-relaxed text-[#4B5C73]">Top-tier hides that develop a rich patina over time — your piece becomes more beautiful with every use.</p>
+            </div>
+            <div>
+              <p className="font-serif text-[#1969B5]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>02</p>
+              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#1E2737]">Artisanal Craft</h3>
+              <div className="mt-2 h-px w-6 bg-[#1969B5]" />
+              <p className="mt-3 text-sm leading-relaxed text-[#4B5C73]">Hand-stitched edges, burnished corners, and precision hardware. Each detail is intentional, built to last decades.</p>
+            </div>
+            <div>
+              <p className="font-serif text-[#1969B5]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>03</p>
+              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#1E2737]">Quiet Luxury</h3>
+              <div className="mt-2 h-px w-6 bg-[#1969B5]" />
+              <p className="mt-3 text-sm leading-relaxed text-[#4B5C73]">No logos, no noise. Just honest materials, clean lines, and the confidence of owning something truly well-made.</p>
+            </div>
+          </div>
+        </div>
+
         <div className="grid gap-10 lg:grid-cols-[1fr_400px] lg:gap-16 xl:grid-cols-[1fr_440px]">
 
           {/* ── Form ──────────────────────────────────────────────── */}
