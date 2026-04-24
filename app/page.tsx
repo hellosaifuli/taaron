@@ -62,53 +62,6 @@ export default async function Home() {
       {/* Hero */}
       <BannerSlider />
 
-      {/* Marquee strip */}
-      <div className="overflow-hidden border-y border-[#E0DAD0] bg-[#1C1C1C] py-3.5">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span key={i} className="mx-10 text-[10px] uppercase tracking-[0.35em] text-[#B8962E]">
-              Modern Elegance • Everyday Luxury • Durable Craftsmanship • Authentic Simplicity • Artisanal Quality
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Brand manifesto */}
-      <section className="grid lg:grid-cols-2">
-        <div className="flex flex-col justify-center px-10 py-20 lg:px-20 lg:py-28">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#B8962E]">Our Philosophy</p>
-          <h2 className="mt-5 font-serif text-4xl font-medium leading-tight lg:text-5xl" style={{ fontFamily: 'var(--font-serif)' }}>
-            Leather that tells<br />
-            <em>your</em> story.
-          </h2>
-          <p className="mt-6 max-w-md text-sm leading-loose text-[#6B6561]">
-            At Taaron, we believe that what you carry should reflect who you are. Inspired by the stars — symbols of guidance and timeless elegance — our goods are built to age beautifully, developing a unique character with every day you carry them.
-          </p>
-          <p className="mt-4 max-w-md text-sm leading-loose text-[#6B6561]">
-            We create premium leather goods for professionals and creatives who appreciate slow fashion, artisanal craftsmanship, and functional luxury — without the heavy price tag.
-          </p>
-          <Link
-            href="/?category=all"
-            className="mt-10 inline-flex w-fit items-center gap-3 border border-[#1C1C1C] px-8 py-3.5 text-[11px] uppercase tracking-widest text-[#1C1C1C] transition-all hover:bg-[#1C1C1C] hover:text-[#F4F0E6]"
-          >
-            Shop Collection
-            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
-        <div className="relative aspect-[4/5] lg:aspect-auto">
-          <Image
-            src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1000&q=85"
-            alt="Taaron leather craft"
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-          <div className="absolute inset-0 bg-[#1C1C1C]/10" />
-        </div>
-      </section>
-
       {/* Shop by Category */}
       <section className="px-6 py-20 lg:px-12 lg:py-28">
         <div className="mb-12 flex items-end justify-between">
@@ -249,28 +202,6 @@ export default async function Home() {
           </Link>
         </div>
       </section>
-
-      {/* Marquee bottom */}
-      <div className="overflow-hidden border-y border-[#E0DAD0] bg-[#F4F0E6] py-3">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span key={i} className="mx-10 text-[10px] uppercase tracking-[0.35em] text-[#6B6561]">
-              Free Shipping on Orders Over ৳3000 • Handcrafted in Bangladesh • 30-Day Returns • Lifetime Craftsmanship Guarantee
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="overflow-hidden border-y border-[#E0DAD0] bg-white py-3">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <span key={i} className="mx-8 text-xs uppercase tracking-widest text-[#6B6561]">
-              Modern Elegance • Everyday Luxury • Durable Craftsmanship • Authentic Simplicity
-            </span>
-          ))}
-        </div>
-      </div>
 
       <footer className="bg-[#e8e9e2]">
         <div className="relative px-8 pt-16 pb-8">
