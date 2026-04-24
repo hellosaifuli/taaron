@@ -15,7 +15,16 @@
       "Bash(cat .env.example)",
       "Bash(cat .env.local.example)",
       "Bash(python3 -c \"import json; p=json.load\\(open\\('package.json'\\)\\); print\\(p.get\\('engines',{}\\)\\); print\\(p.get\\('packageManager',''\\)\\)\")",
-      "Bash(npx pnpm *)"
+      "Bash(npx pnpm *)",
+      "Bash(curl -s 'https://yebulpohcbetupazdhlo.supabase.co/rest/v1/products?select=name,price,status&status=eq.active' -H 'apikey: sb_publishable_GLtfkYvJJMmpVjxmogsQ2g_OGv79icP' -H 'Authorization: Bearer sb_publishable_GLtfkYvJJMmpVjxmogsQ2g_OGv79icP')",
+      "Bash(curl -s 'https://yebulpohcbetupazdhlo.supabase.co/rest/v1/products?limit=1' -H 'apikey: sb_publishable_GLtfkYvJJMmpVjxmogsQ2g_OGv79icP' -H 'Authorization: Bearer sb_publishable_GLtfkYvJJMmpVjxmogsQ2g_OGv79icP')",
+      "Bash(curl *)",
+      "Bash(cat next.config.ts)",
+      "Bash(cat next.config.js)",
+      "Bash(cat next.config.mjs)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "WebFetch(domain:next-commerce-v2.vercel.app)"
     ]
   }
 }
