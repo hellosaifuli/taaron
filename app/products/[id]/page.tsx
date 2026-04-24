@@ -1,8 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import Image from 'next/image'
 import AddToCart from '@/components/add-to-cart'
-import LuxuryNav from '@/components/luxury-nav'
 import ProductGallery from '@/components/product-gallery'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
@@ -90,7 +88,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <Script id="product-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
       <div className="min-h-screen bg-[#F4F0E6] text-[#1C1C1C]">
-        <LuxuryNav />
 
         <div className="mx-auto max-w-screen-xl px-6 pt-28 pb-20 lg:px-12">
           {/* Breadcrumb */}
@@ -173,25 +170,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
 
-        {/* Footer */}
-        <footer className="bg-[#e8e9e2]">
-          <div className="relative px-8 pt-16 pb-8">
-            <p className="max-w-xs text-sm leading-relaxed text-[#1e2235]/70">
-              At Taaron, We create luxurious, durable leather wallets, bags, and belts so you carry confidence and style without the heavy price tag.
-            </p>
-            <div className="mt-8 flex items-center justify-center pb-8">
-              <Image src="/taaron-logo.png" alt="Taaron" width={1200} height={220} className="w-full max-w-5xl object-contain" />
-            </div>
-          </div>
-          <div className="flex items-center justify-between border-t border-[#1e2235]/10 px-8 py-4">
-            <p className="text-xs text-[#1e2235]/60">© 2026 Taaron (তারণ)</p>
-            <div className="flex items-center gap-4">
-              {['Facebook', 'Instagram', 'YouTube', 'TikTok'].map((s) => (
-                <a key={s} href="#" aria-label={`Taaron on ${s}`} className="text-xs text-[#1e2235]/50 transition-colors hover:text-[#1e2235]">{s}</a>
-              ))}
-            </div>
-          </div>
-        </footer>
       </div>
     </>
   )
