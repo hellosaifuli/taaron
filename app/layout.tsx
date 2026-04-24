@@ -1,9 +1,16 @@
-import { GeistSans } from 'geist/font/sans'
+import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
 import { Toaster } from 'sonner'
 import LuxuryNav from '@/components/luxury-nav'
 import SiteFooter from '@/components/site-footer'
+import { CartProvider } from '@/components/cart-provider'
 import './globals.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
 
 const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
@@ -50,12 +57,14 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={GeistSans.variable}>
-      <body className="bg-[#F4F0E6] text-[#1C1C1C] selection:bg-[#B8962E]/30">
-        <LuxuryNav />
-        <main>{children}</main>
-        <SiteFooter />
-        <Toaster closeButton />
+    <html lang="en" className={inter.variable}>
+      <body className="bg-[#FAFAFA] text-[#1E2737] selection:bg-[#1969B5]/20" style={{ fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
+        <CartProvider>
+          <LuxuryNav />
+          <main>{children}</main>
+          <SiteFooter />
+        </CartProvider>
+        <Toaster closeButton position="bottom-right" />
       </body>
     </html>
   )

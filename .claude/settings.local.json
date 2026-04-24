@@ -24,7 +24,12 @@
       "Bash(cat next.config.mjs)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "WebFetch(domain:next-commerce-v2.vercel.app)"
+      "WebFetch(domain:next-commerce-v2.vercel.app)",
+      "Bash(pnpm run *)",
+      "Bash(npm run *)",
+      "Bash(xargs sed *)",
+      "WebFetch(domain:claudetype.com)",
+      "Bash(vercel --version)"
     ]
   }
 }

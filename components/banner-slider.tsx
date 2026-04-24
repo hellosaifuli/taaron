@@ -11,7 +11,7 @@ const slides = [
     title: 'Crafted for\nthe Discerning',
     subtitle: 'Premium leather goods built to last a lifetime.',
     cta: 'Explore Collection',
-    href: '/?category=all',
+    href: '/category/all',
   },
   {
     image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=1800&q=90',
@@ -19,7 +19,7 @@ const slides = [
     title: 'Quiet Luxury,\nEvery Day',
     subtitle: 'Artisanal bags that elevate the everyday.',
     cta: 'Shop Ladies',
-    href: '/?category=ladies',
+    href: '/category/ladies',
   },
   {
     image: 'https://images.unsplash.com/photo-1627123424574-724758594785?w=1800&q=90',
@@ -27,7 +27,7 @@ const slides = [
     title: 'Details That\nDefine You',
     subtitle: 'Slim wallets and cardholders for the modern professional.',
     cta: 'Shop Essentials',
-    href: '/?category=wallets',
+    href: '/category/wallets',
   },
 ]
 
@@ -81,10 +81,21 @@ export default function BannerSlider() {
         <div
           className={`max-w-xl transition-all duration-700 ${transitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}
         >
+          {/* White logo above hero text */}
+          <div className="mb-8">
+            <Image
+              src="/taaron-logo-w.png"
+              alt="Taaron"
+              width={140}
+              height={44}
+              className="h-9 w-auto object-contain"
+              priority
+            />
+          </div>
           <p className="mb-4 text-[10px] uppercase tracking-[0.4em] text-white/60">
             {slide.tag}
           </p>
-          <h1 className="font-serif text-5xl font-medium leading-tight text-white sm:text-6xl lg:text-7xl" style={{ fontFamily: 'var(--font-serif)', whiteSpace: 'pre-line' }}>
+          <h1 className="font-serif text-5xl font-medium leading-tight text-white sm:text-6xl lg:text-7xl" style={{ fontFamily: 'var(--font-display)', whiteSpace: 'pre-line' }}>
             {slide.title}
           </h1>
           <p className="mt-5 text-sm leading-relaxed text-white/60 sm:text-base">
@@ -93,7 +104,7 @@ export default function BannerSlider() {
           <div className="mt-8 flex items-center gap-6">
             <Link
               href={slide.href}
-              className="group inline-flex items-center gap-3 border border-white/40 px-8 py-3.5 text-[11px] uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-[#1C1C1C]"
+              className="group inline-flex items-center gap-3 border border-white/40 px-8 py-3.5 text-[11px] uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-[#1E2737]"
             >
               {slide.cta}
               <svg className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

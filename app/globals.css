@@ -1,30 +1,76 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @plugin "@tailwindcss/container-queries";
 @plugin "@tailwindcss/typography";
 
+/* LPSaturnia W00-Bold — drop LPSaturnia-W00-Bold.woff2 into /public/fonts/ */
+@font-face {
+  font-family: 'LPSaturnia';
+  src: url('/fonts/LPSaturnia-W00-Bold.woff2') format('woff2'),
+       url('/fonts/LPSaturnia-W00-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --cream: #F4F0E6;
-  --cream-dark: #EDE8DD;
-  --border: #E0DAD0;
-  --charcoal: #1C1C1C;
-  --gold: #B8962E;
-  --muted: #6B6561;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'LPSaturnia', 'Playfair Display', Georgia, serif;
+
+  --color-dark: #1E2737;
+  --color-brand: #1969B5;
+  --color-muted: #4B5C73;
+  --color-subtle: #7A8EA6;
+  --color-border: #DDE3EB;
+  --color-bg: #FAFAFA;
+  --color-surface: #FFFFFF;
+}
+
+/* Backward-compat alias for existing serif usage */
+@utility font-serif {
+  font-family: var(--font-display);
 }
 
 @keyframes marquee {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(6%); opacity: 0.6; }
+  to   { transform: translateX(0);  opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-6%); opacity: 0.6; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
 }
 
 @utility animate-marquee {
   animation: marquee 35s linear infinite;
 }
-
-@utility font-serif {
-  font-family: var(--font-serif);
+@utility animate-slide-in-right {
+  animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@utility animate-slide-in-left {
+  animation: slideInLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@utility animate-fade-up {
+  animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@utility animate-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 @layer base {
@@ -33,20 +79,25 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--border);
+    border-color: var(--color-border);
   }
 
   html {
     scroll-behavior: smooth;
   }
 
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-dark);
+  }
+
   ::selection {
-    background: rgba(184, 150, 46, 0.2);
+    background: rgba(25, 105, 181, 0.15);
   }
 }
 
 a,
 input,
 button {
-  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#B8962E]/50 focus-visible:ring-offset-2;
+  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#1969B5]/40 focus-visible:ring-offset-2;
 }

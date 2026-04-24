@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import AddToCart from '@/components/add-to-cart'
 import ProductGallery from '@/components/product-gallery'
+import RelatedProducts from '@/components/related-products'
+import ProductAccordion from '@/components/product-accordion'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
 
@@ -36,6 +38,28 @@ export async function generateMetadata({ params }: ProductPageProps) {
   }
 }
 
+const trustItems = [
+  { icon: '✦', text: 'Free shipping on orders over ৳3,000' },
+  { icon: '✦', text: 'COD & bKash accepted' },
+  { icon: '✦', text: '100% genuine full-grain leather' },
+  { icon: '✦', text: '30-day hassle-free returns' },
+]
+
+const accordionSections = (description: string | null) => [
+  {
+    title: 'Description',
+    content: description || 'A premium leather product crafted with artisanal care and precision.',
+  },
+  {
+    title: 'Materials & Care',
+    content: 'Full-grain or top-grain leather. Apply leather conditioner every 3–6 months. Wipe clean with a dry cloth. Keep away from direct sunlight and moisture.',
+  },
+  {
+    title: 'Shipping & Returns',
+    content: 'Dhaka: 1–2 business days. Outside Dhaka: 3–5 business days. 30-day returns on unused items in original condition.',
+  },
+]
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params
   const supabase = await createClient()
@@ -59,7 +83,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   if (!product) notFound()
 
-  // Build ordered image list: main image first, then extra images
   const allImages = [
     ...(product.image_url ? [{ url: product.image_url, alt: product.name }] : []),
     ...(extraImages ?? []).map((img) => ({ url: img.url, alt: img.alt || product.name })),
@@ -83,68 +106,52 @@ export default async function ProductPage({ params }: ProductPageProps) {
     },
   }
 
+  const sections = accordionSections(product.description)
+
   return (
     <>
       <Script id="product-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
-      <div className="min-h-screen bg-[#F4F0E6] text-[#1C1C1C]">
+      <div className="min-h-screen bg-[#FAFAFA] text-[#1E2737]">
+        <div className="mx-auto max-w-screen-xl px-6 pt-28 pb-0 lg:px-12">
 
-        <div className="mx-auto max-w-screen-xl px-6 pt-28 pb-20 lg:px-12">
           {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="mb-10 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#9A9080]">
-            <Link href="/" className="transition-colors hover:text-[#1C1C1C]">Home</Link>
+          <nav aria-label="Breadcrumb" className="mb-10 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#7A8EA6]">
+            <Link href="/" className="transition-colors hover:text-[#1E2737]">Home</Link>
             <span>/</span>
-            <Link href="/?category=all" className="transition-colors hover:text-[#1C1C1C]">Shop</Link>
+            <Link href="/" className="transition-colors hover:text-[#1E2737]">Shop</Link>
             <span>/</span>
-            <span className="text-[#1C1C1C]">{product.name}</span>
+            <span className="text-[#1E2737]">{product.name}</span>
           </nav>
 
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-            {/* Gallery */}
-            <ProductGallery images={allImages} productName={product.name} />
+          {/* Main product grid */}
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 xl:gap-24">
+            {/* Gallery — sticky on desktop */}
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <ProductGallery images={allImages} productName={product.name} />
+            </div>
 
-            {/* Details */}
-            <div className="flex flex-col">
+            {/* Right panel */}
+            <div className="flex flex-col pb-16">
               {product.sku && (
-                <p className="text-[10px] uppercase tracking-[0.4em] text-[#B8962E]">SKU: {product.sku}</p>
+                <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">SKU: {product.sku}</p>
               )}
 
-              <h1 className="mt-3 font-serif text-4xl font-medium leading-tight lg:text-5xl" style={{ fontFamily: 'var(--font-serif)' }}>
+              <h1
+                className="mt-3 font-serif text-3xl font-medium leading-tight lg:text-4xl xl:text-5xl"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
                 {product.name}
               </h1>
 
-              <div className="mt-6 flex items-baseline gap-3">
-                <p className="font-serif text-3xl font-medium text-[#1C1C1C]" style={{ fontFamily: 'var(--font-serif)' }}>
+              <div className="mt-5 flex items-baseline gap-3">
+                <p className="font-serif text-2xl font-medium" style={{ fontFamily: 'var(--font-display)' }}>
                   ৳{product.price.toLocaleString()}
                 </p>
+                <span className="text-xs uppercase tracking-wider text-[#7A8EA6]">BDT</span>
               </div>
 
-              <div className="mt-2 h-px w-16 bg-[#B8962E]" />
-
-              {product.description && (
-                <p className="mt-8 text-sm leading-loose text-[#6B6561]">{product.description}</p>
-              )}
-
-              {/* Variants */}
-              {product.product_variants && product.product_variants.length > 0 && (
-                <div className="mt-8">
-                  <p className="text-[10px] uppercase tracking-[0.4em] text-[#9A9080]">Choose Variant</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {product.product_variants.map((v: any) => (
-                      <label
-                        key={v.id}
-                        className="group relative cursor-pointer"
-                      >
-                        <input type="radio" name="variant" value={v.id} className="peer sr-only" />
-                        <div className="border border-[#E0DAD0] px-4 py-2 text-xs tracking-wide transition-all peer-checked:border-[#1C1C1C] peer-checked:bg-[#1C1C1C] peer-checked:text-white hover:border-[#1C1C1C]">
-                          {v.name}
-                          {v.price_adjustment > 0 && <span className="ml-1 text-[#B8962E]">+৳{v.price_adjustment}</span>}
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <div className="mt-3 h-px w-12 bg-[#1969B5]" />
 
               {/* Add to cart */}
               <div className="mt-8">
@@ -152,24 +159,25 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Trust signals */}
-              <div className="mt-10 space-y-3 border-t border-[#E0DAD0] pt-8">
-                {[
-                  'Free shipping on orders over ৳3,000',
-                  'COD & bKash accepted',
-                  '100% genuine full-grain leather',
-                  '30-day hassle-free returns',
-                  'Handcrafted in Bangladesh',
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-sm text-[#6B6561]">
-                    <div className="h-px w-4 bg-[#B8962E]" />
-                    {item}
+              <div className="mt-8 grid grid-cols-2 gap-3">
+                {trustItems.map((item) => (
+                  <div key={item.text} className="flex items-start gap-2 text-xs text-[#4B5C73]">
+                    <span className="mt-0.5 text-[#1969B5] text-[8px]">{item.icon}</span>
+                    {item.text}
                   </div>
                 ))}
+              </div>
+
+              {/* Animated accordion sections */}
+              <div className="mt-10">
+                <ProductAccordion items={sections} />
               </div>
             </div>
           </div>
         </div>
 
+        {/* Related products */}
+        <RelatedProducts currentId={id} />
       </div>
     </>
   )
