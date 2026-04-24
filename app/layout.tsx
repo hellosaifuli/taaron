@@ -3,13 +3,74 @@ import { ReactNode } from 'react'
 import { Toaster } from 'sonner'
 import './globals.css'
 
+const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : 'http://localhost:3000'
+
 export const metadata = {
+  metadataBase: new URL(baseUrl),
   title: {
-    default: 'Taaron — Everyday Elegance',
+    default: 'Taaron — Premium Leather Goods | Everyday Elegance',
     template: '%s | Taaron',
   },
-  description: 'Premium leather goods. Artisanal craftsmanship, minimalist design, everyday elegance.',
-  robots: { follow: true, index: true },
+  description:
+    'Taaron crafts premium leather wallets, bags, and belts for everyday elegance. Artisanal craftsmanship, minimalist design, and modern luxury — without the heavy price tag. Shop in Bangladesh with COD & bKash.',
+  keywords: [
+    'leather goods Bangladesh',
+    'premium leather wallet',
+    'leather bag Bangladesh',
+    'leather belt',
+    'artisanal leather',
+    'taaron',
+    'তারণ',
+    'luxury leather Bangladesh',
+    'handmade leather wallet',
+    'leather cardholder',
+    'ladies leather bag',
+    'minimalist wallet',
+  ],
+  authors: [{ name: 'Taaron', url: baseUrl }],
+  creator: 'Taaron',
+  publisher: 'Taaron',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: baseUrl,
+    siteName: 'Taaron',
+    title: 'Taaron — Premium Leather Goods | Everyday Elegance',
+    description:
+      'Premium leather wallets, bags, and belts. Artisanal craftsmanship meets minimalist design. COD & bKash available in Bangladesh.',
+    images: [
+      {
+        url: `${baseUrl}/taaron-logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Taaron — Premium Leather Goods',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Taaron — Premium Leather Goods',
+    description:
+      'Artisanal leather wallets, bags, and belts. Modern luxury without the heavy price tag.',
+    images: [`${baseUrl}/taaron-logo.png`],
+    creator: '@taaron',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: baseUrl,
+  },
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

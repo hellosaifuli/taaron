@@ -1,13 +1,19 @@
-import { baseUrl } from "lib/utils";
+import { MetadataRoute } from 'next'
 
-export default function robots() {
+const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : 'http://localhost:3000'
+
+export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: "*",
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/dashboard', '/admin/'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
     host: baseUrl,
-  };
+  }
 }
