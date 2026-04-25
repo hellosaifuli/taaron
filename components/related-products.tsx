@@ -17,7 +17,7 @@ export default async function RelatedProducts({ currentId }: { currentId: string
   if (!products.length) return null
 
   return (
-    <section className="border-t border-[#E5DFD6] bg-[#F7F4EF]">
+    <section className="bg-[#F7F4EF]">
       {/* Section header */}
       <div className="mx-auto flex max-w-screen-xl items-end justify-between px-6 py-12 lg:px-12">
         <div>
