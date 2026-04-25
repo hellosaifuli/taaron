@@ -36,18 +36,25 @@ export default function BannerSlider() {
 
       {/* Headline */}
       <div className="flex-shrink-0 px-4 pb-4 pt-[88px] text-center sm:pb-6 sm:pt-[92px]">
+        <p className="mb-2 text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Crafted in Leather</p>
         <h1
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(1.4rem, 3vw, 3rem)',
-            lineHeight: '1.2',
-            letterSpacing: '-0.01em',
+            fontSize: 'clamp(1.6rem, 3.5vw, 3.4rem)',
+            lineHeight: '1.15',
+            letterSpacing: '-0.02em',
             color: '#111111',
             fontWeight: 400,
           }}
         >
-          Quiet Luxury, Every Day
+          Everyday Elegance,{' '}
+          <em style={{ fontStyle: 'italic', color: '#9B6F47' }}>Inspired by Stars</em>
         </h1>
+        <p
+          className="mx-auto mt-3 max-w-sm text-xs leading-relaxed text-[#5C5652]"
+        >
+          Luxurious leather goods built for modern life — confidence and style, without the heavy price tag.
+        </p>
       </div>
 
       {/* Arch panels — mobile: scroll-snap single; desktop: 3 equal */}
