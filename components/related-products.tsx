@@ -1,65 +1,50 @@
 import { createClient } from '@/lib/supabase/server'
-import Image from 'next/image'
 import Link from 'next/link'
+import ProductMasonry from '@/components/product-masonry'
+import type { Product } from '@/app/actions/products'
 
-interface RelatedProductsProps {
-  currentId: string
-}
-
-export default async function RelatedProducts({ currentId }: RelatedProductsProps) {
+export default async function RelatedProducts({ currentId }: { currentId: string }) {
   const supabase = await createClient()
-  const { data: products } = await supabase
+  const { data } = await supabase
     .from('products')
     .select('id, name, price, image_url, thumbnail_url')
     .eq('status', 'active')
     .neq('id', currentId)
-    .limit(4)
     .order('created_at', { ascending: false })
+    .limit(50)
 
-  if (!products?.length) return null
+  const products = (data as Product[] | null) ?? []
+  if (!products.length) return null
 
   return (
-    <section className="border-t border-[#EBEBEB] bg-[#FAFAFA] px-6 py-16 lg:px-12 lg:py-24">
-      <div className="mx-auto max-w-screen-xl">
-        <div className="mb-10 flex items-end justify-between">
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">Discover</p>
-            <h2 className="mt-2 font-serif text-2xl font-medium lg:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
-              You May Also Like
-            </h2>
-          </div>
-          <Link href="/" className="hidden text-[11px] uppercase tracking-widest text-[#4B5C73] underline-offset-4 hover:underline sm:block">
-            View All →
-          </Link>
+    <section className="border-t border-[#E5DFD6] bg-[#F7F4EF]">
+      {/* Section header */}
+      <div className="mx-auto flex max-w-screen-xl items-end justify-between px-6 py-12 lg:px-12">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.4em]" style={{ color: '#9B6F47' }}>Discover</p>
+          <h2
+            className="mt-2 text-[#111111]"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.75rem, 3vw, 2.75rem)',
+              lineHeight: '1',
+              letterSpacing: '-0.01em',
+              fontWeight: 400,
+            }}
+          >
+            You May Also Like
+          </h2>
         </div>
-
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5">
-          {products.map((product) => (
-            <Link key={product.id} href={`/products/${product.id}`} className="group block border border-[#F6F6F6] bg-white">
-              <div className="relative aspect-[3/4] overflow-hidden bg-[#F0F0F0]">
-                {product.image_url || product.thumbnail_url ? (
-                  <Image
-                    src={product.image_url || product.thumbnail_url || ''}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 50vw, 25vw"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-[#7A8EA6]">—</div>
-                )}
-                <div className="absolute inset-x-0 bottom-0 translate-y-full bg-[#1E2737]/90 py-3 text-center text-[10px] uppercase tracking-widest text-white transition-transform duration-300 group-hover:translate-y-0">
-                  View Product
-                </div>
-              </div>
-              <div className="p-3">
-                <h3 className="truncate text-sm font-medium text-[#1E2737]">{product.name}</h3>
-                <p className="mt-0.5 text-sm text-[#1969B5]">৳{product.price.toLocaleString()}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <Link
+          href="/category/all"
+          className="text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors hover:text-[#111111]"
+        >
+          View All →
+        </Link>
       </div>
+
+      {/* Masonry grid */}
+      <ProductMasonry initialProducts={products} />
     </section>
   )
 }

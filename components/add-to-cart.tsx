@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/components/cart-provider'
 import { toast } from 'sonner'
@@ -20,18 +20,28 @@ export default function AddToCart({ product }: AddToCartProps) {
   const { addItem } = useCart()
   const [quantity, setQuantity] = useState(1)
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null)
+  const [showStickyBar, setShowStickyBar] = useState(false)
+  const ctaRef = useRef<HTMLDivElement>(null)
 
   const variants = product.product_variants ?? []
   const needsVariant = variants.length > 0 && !selectedVariant
-
   const selectedVariantData = variants.find((v) => v.id === selectedVariant)
   const finalPrice = product.price + (selectedVariantData?.price_adjustment ?? 0)
 
+  // Show sticky CTA when regular buttons scroll out of view
+  useEffect(() => {
+    const el = ctaRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry?.isIntersecting),
+      { rootMargin: '0px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   const handleAdd = () => {
-    if (needsVariant) {
-      toast.error('Please select a variant first.')
-      return
-    }
+    if (needsVariant) { toast.error('Please select a variant first.'); return }
     addItem({
       product_id: product.id,
       variant_id: selectedVariant,
@@ -46,10 +56,7 @@ export default function AddToCart({ product }: AddToCartProps) {
   }
 
   const handleBuyNow = () => {
-    if (needsVariant) {
-      toast.error('Please select a variant first.')
-      return
-    }
+    if (needsVariant) { toast.error('Please select a variant first.'); return }
     addItem({
       product_id: product.id,
       variant_id: selectedVariant,
@@ -62,75 +69,89 @@ export default function AddToCart({ product }: AddToCartProps) {
   }
 
   return (
-    <div className="space-y-5">
-      {/* Variant selector */}
-      {variants.length > 0 && (
+    <>
+      <div className="space-y-5">
+        {/* Variant selector */}
+        {variants.length > 0 && (
+          <div>
+            <p className="mb-3 text-[11px] uppercase tracking-[0.15em] text-[#9E9690]">Select Variant</p>
+            <div className="flex flex-wrap gap-2">
+              {variants.map((v) => (
+                <button
+                  key={v.id}
+                  onClick={() => setSelectedVariant(v.id)}
+                  className={`border px-4 py-2.5 text-xs tracking-wide transition-all duration-150 ${
+                    selectedVariant === v.id
+                      ? 'border-[#111111] bg-[#111111] text-white'
+                      : 'border-[#E5DFD6] text-[#5C5652] hover:border-[#111111]'
+                  }`}
+                >
+                  {v.name}
+                  {v.price_adjustment > 0 && (
+                    <span className="ml-1 text-[#9B6F47]">+৳{v.price_adjustment}</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Quantity stepper */}
         <div>
-          <p className="mb-3 text-[11px] uppercase tracking-[0.15em] text-[#7A8EA6]">
-            Select Variant
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {variants.map((v) => (
-              <button
-                key={v.id}
-                onClick={() => setSelectedVariant(v.id)}
-                className={`border px-4 py-2 text-xs tracking-wide transition-all duration-150 ${
-                  selectedVariant === v.id
-                    ? 'border-[#1E2737] bg-[#1E2737] text-white'
-                    : 'border-[#DDE3EB] text-[#334155] hover:border-[#1E2737]'
-                }`}
-              >
-                {v.name}
-                {v.price_adjustment > 0 && (
-                  <span className="ml-1 text-[#1969B5]">+৳{v.price_adjustment}</span>
-                )}
-              </button>
-            ))}
+          <p className="mb-3 text-[11px] uppercase tracking-[0.15em] text-[#9E9690]">Quantity</p>
+          <div className="flex h-12 w-36 items-center border border-[#E5DFD6]">
+            <button
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              className="flex h-full w-12 items-center justify-center text-[#5C5652] transition-colors hover:bg-[#EDE9E3]"
+              aria-label="Decrease quantity"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
+              </svg>
+            </button>
+            <span className="flex-1 text-center text-sm font-medium tabular-nums">{quantity}</span>
+            <button
+              onClick={() => setQuantity((q) => q + 1)}
+              className="flex h-full w-12 items-center justify-center text-[#5C5652] transition-colors hover:bg-[#EDE9E3]"
+              aria-label="Increase quantity"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
           </div>
         </div>
-      )}
 
-      {/* Quantity stepper */}
-      <div>
-        <p className="mb-3 text-[11px] uppercase tracking-[0.15em] text-[#7A8EA6]">Quantity</p>
-        <div className="flex h-11 w-32 items-center border border-[#DDE3EB]">
+        {/* CTAs — observed to trigger sticky bar */}
+        <div ref={ctaRef} className="flex flex-col gap-3 pt-1 sm:flex-row">
           <button
-            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            className="flex h-full w-11 items-center justify-center text-[#4B5C73] transition-colors hover:bg-[#EEF2F7] hover:text-[#1E2737]"
-            aria-label="Decrease quantity"
+            onClick={handleAdd}
+            className="flex-1 bg-[#111111] px-6 py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47] active:bg-[#9B6F47]"
           >
-            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
-            </svg>
+            Add to Cart — ৳{(finalPrice * quantity).toLocaleString()}
           </button>
-          <span className="flex-1 text-center text-sm font-medium tabular-nums">{quantity}</span>
           <button
-            onClick={() => setQuantity((q) => q + 1)}
-            className="flex h-full w-11 items-center justify-center text-[#4B5C73] transition-colors hover:bg-[#EEF2F7] hover:text-[#1E2737]"
-            aria-label="Increase quantity"
+            onClick={handleBuyNow}
+            className="border border-[#111111] px-6 py-4 text-[11px] uppercase tracking-widest text-[#111111] transition-colors hover:bg-[#111111] hover:text-white"
           >
-            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
+            Buy Now
           </button>
         </div>
       </div>
 
-      {/* CTAs */}
-      <div className="flex gap-3 pt-1">
+      {/* Sticky mobile CTA — appears when regular buttons scroll out of view */}
+      <div
+        className={`fixed bottom-0 inset-x-0 z-40 border-t border-[#E5DFD6] bg-[#F7F4EF]/96 p-4 backdrop-blur-sm transition-transform duration-300 lg:hidden ${
+          showStickyBar ? 'translate-y-0' : 'translate-y-full'
+        }`}
+      >
         <button
           onClick={handleAdd}
-          className="flex-1 bg-[#1E2737] px-6 py-3.5 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#1969B5]"
+          className="w-full bg-[#111111] py-4 text-[11px] uppercase tracking-widest text-white active:bg-[#9B6F47]"
         >
           Add to Cart — ৳{(finalPrice * quantity).toLocaleString()}
         </button>
-        <button
-          onClick={handleBuyNow}
-          className="border border-[#1E2737] px-6 py-3.5 text-[11px] uppercase tracking-widest text-[#1E2737] transition-colors hover:bg-[#1E2737] hover:text-white"
-        >
-          Buy Now
-        </button>
       </div>
-    </div>
+    </>
   )
 }

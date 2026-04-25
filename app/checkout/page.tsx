@@ -67,12 +67,12 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#FAFAFA] px-4 text-center">
-        <div className="h-px w-12 bg-[#1969B5]" />
-        <p className="text-sm text-[#4B5C73]">Your cart is empty.</p>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#F7F4EF] px-4 text-center">
+        <div className="h-px w-12 bg-[#9B6F47]" />
+        <p className="text-sm text-[#5C5652]">Your cart is empty.</p>
         <Link
           href="/"
-          className="bg-[#1E2737] px-8 py-3 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#1969B5]"
+          className="bg-[#111111] px-8 py-3 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47]"
         >
           Continue Shopping
         </Link>
@@ -81,52 +81,52 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] pt-24 pb-20">
+    <div className="min-h-screen bg-[#F7F4EF] pt-24 pb-20">
       <div className="mx-auto max-w-screen-xl px-6 lg:px-12">
 
         {/* Header */}
         <div className="mb-12">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">Taaron</p>
+          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Taaron</p>
           <h1 className="mt-2 font-serif text-3xl font-medium lg:text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
             Checkout
           </h1>
-          <div className="mt-3 h-px w-12 bg-[#1969B5]" />
+          <div className="mt-3 h-px w-12 bg-[#9B6F47]" />
         </div>
 
         {/* ─── Our Promise / Built Different ─────────────────────────── */}
-        <div className="mb-16 py-12 border-b border-[#DDE3EB]">
+        <div className="mb-16 py-12 border-b border-[#E5DFD6]">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">Our Promise</p>
-            <h2 className="mt-3 font-serif leading-tight text-[#1E2737]" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Our Promise</p>
+            <h2 className="mt-3 font-serif leading-tight text-[#111111]" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
               Built Different.
             </h2>
           </div>
           <div className="mt-10 grid gap-8 sm:grid-cols-3">
             <div>
-              <p className="font-serif text-[#1969B5]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>01</p>
-              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#1E2737]">Full-Grain Leather</h3>
-              <div className="mt-2 h-px w-6 bg-[#1969B5]" />
-              <p className="mt-3 text-sm leading-relaxed text-[#4B5C73]">Top-tier hides that develop a rich patina over time — your piece becomes more beautiful with every use.</p>
+              <p className="font-serif text-[#9B6F47]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>01</p>
+              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#111111]">Full-Grain Leather</h3>
+              <div className="mt-2 h-px w-6 bg-[#9B6F47]" />
+              <p className="mt-3 text-sm leading-relaxed text-[#5C5652]">Top-tier hides that develop a rich patina over time — your piece becomes more beautiful with every use.</p>
             </div>
             <div>
-              <p className="font-serif text-[#1969B5]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>02</p>
-              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#1E2737]">Artisanal Craft</h3>
-              <div className="mt-2 h-px w-6 bg-[#1969B5]" />
-              <p className="mt-3 text-sm leading-relaxed text-[#4B5C73]">Hand-stitched edges, burnished corners, and precision hardware. Each detail is intentional, built to last decades.</p>
+              <p className="font-serif text-[#9B6F47]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>02</p>
+              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#111111]">Artisanal Craft</h3>
+              <div className="mt-2 h-px w-6 bg-[#9B6F47]" />
+              <p className="mt-3 text-sm leading-relaxed text-[#5C5652]">Hand-stitched edges, burnished corners, and precision hardware. Each detail is intentional, built to last decades.</p>
             </div>
             <div>
-              <p className="font-serif text-[#1969B5]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>03</p>
-              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#1E2737]">Quiet Luxury</h3>
-              <div className="mt-2 h-px w-6 bg-[#1969B5]" />
-              <p className="mt-3 text-sm leading-relaxed text-[#4B5C73]">No logos, no noise. Just honest materials, clean lines, and the confidence of owning something truly well-made.</p>
+              <p className="font-serif text-[#9B6F47]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>03</p>
+              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#111111]">Quiet Luxury</h3>
+              <div className="mt-2 h-px w-6 bg-[#9B6F47]" />
+              <p className="mt-3 text-sm leading-relaxed text-[#5C5652]">No logos, no noise. Just honest materials, clean lines, and the confidence of owning something truly well-made.</p>
             </div>
           </div>
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[1fr_400px] lg:gap-16 xl:grid-cols-[1fr_440px]">
 
-          {/* ── Form ──────────────────────────────────────────────── */}
-          <form onSubmit={handleSubmit} className="space-y-10">
+          {/* ── Form — order-2 on mobile so summary shows first ── */}
+          <form onSubmit={handleSubmit} className="order-2 space-y-10 lg:order-1">
 
             {error && (
               <div className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -136,12 +136,12 @@ export default function CheckoutPage() {
 
             {/* Shipping */}
             <section>
-              <h2 className="mb-6 text-[11px] font-semibold uppercase tracking-widest text-[#1E2737]">
+              <h2 className="mb-6 text-[11px] font-semibold uppercase tracking-widest text-[#111111]">
                 Shipping Information
               </h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#7A8EA6]">Full Name *</label>
+                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#9E9690]">Full Name *</label>
                   <input
                     type="text"
                     name="customer_name"
@@ -149,22 +149,22 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     required
                     placeholder="Enter your full name"
-                    className="w-full border border-[#DDE3EB] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#1E2737]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#7A8EA6]">Email</label>
+                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#9E9690]">Email</label>
                   <input
                     type="email"
                     name="customer_email"
                     value={formData.customer_email}
                     onChange={handleChange}
                     placeholder="email@example.com"
-                    className="w-full border border-[#DDE3EB] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#1E2737]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#7A8EA6]">Phone *</label>
+                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#9E9690]">Phone *</label>
                   <input
                     type="tel"
                     name="customer_phone"
@@ -172,11 +172,11 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     required
                     placeholder="+880 1XXXXXXXXX"
-                    className="w-full border border-[#DDE3EB] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#1E2737]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#7A8EA6]">Address *</label>
+                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#9E9690]">Address *</label>
                   <textarea
                     name="shipping_address"
                     value={formData.shipping_address}
@@ -184,11 +184,11 @@ export default function CheckoutPage() {
                     required
                     rows={3}
                     placeholder="House, Road, Area"
-                    className="w-full border border-[#DDE3EB] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#1E2737]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#7A8EA6]">City *</label>
+                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#9E9690]">City *</label>
                   <input
                     type="text"
                     name="shipping_city"
@@ -196,18 +196,18 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     required
                     placeholder="Dhaka"
-                    className="w-full border border-[#DDE3EB] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#1E2737]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#7A8EA6]">Postal Code</label>
+                  <label className="mb-1.5 block text-[11px] uppercase tracking-wider text-[#9E9690]">Postal Code</label>
                   <input
                     type="text"
                     name="shipping_postal_code"
                     value={formData.shipping_postal_code}
                     onChange={handleChange}
                     placeholder="1200"
-                    className="w-full border border-[#DDE3EB] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#1E2737]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
                   />
                 </div>
               </div>
@@ -215,34 +215,34 @@ export default function CheckoutPage() {
 
             {/* Payment */}
             <section>
-              <h2 className="mb-6 text-[11px] font-semibold uppercase tracking-widest text-[#1E2737]">
+              <h2 className="mb-6 text-[11px] font-semibold uppercase tracking-widest text-[#111111]">
                 Payment Method
               </h2>
               <div className="space-y-3">
-                <label className={`flex cursor-pointer items-center gap-4 border px-5 py-4 transition-colors ${paymentMethod === 'cod' ? 'border-[#1E2737] bg-white' : 'border-[#DDE3EB] hover:border-[#7A8EA6]'}`}>
+                <label className={`flex cursor-pointer items-center gap-4 border px-5 py-4 transition-colors ${paymentMethod === 'cod' ? 'border-[#1E2737] bg-white' : 'border-[#E5DFD6] hover:border-[#7A8EA6]'}`}>
                   <input
                     type="radio"
                     value="cod"
                     checked={paymentMethod === 'cod'}
                     onChange={(e) => setPaymentMethod(e.target.value as 'cod' | 'bkash')}
-                    className="h-4 w-4 accent-[#1E2737]"
+                    className="h-4 w-4 accent-[#111111]"
                   />
                   <div>
-                    <p className="text-sm font-medium text-[#1E2737]">Cash on Delivery (COD)</p>
-                    <p className="text-xs text-[#7A8EA6]">Pay when your order arrives</p>
+                    <p className="text-sm font-medium text-[#111111]">Cash on Delivery (COD)</p>
+                    <p className="text-xs text-[#9E9690]">Pay when your order arrives</p>
                   </div>
                 </label>
-                <label className={`flex cursor-pointer items-center gap-4 border px-5 py-4 transition-colors ${paymentMethod === 'bkash' ? 'border-[#1E2737] bg-white' : 'border-[#DDE3EB] hover:border-[#7A8EA6]'}`}>
+                <label className={`flex cursor-pointer items-center gap-4 border px-5 py-4 transition-colors ${paymentMethod === 'bkash' ? 'border-[#1E2737] bg-white' : 'border-[#E5DFD6] hover:border-[#7A8EA6]'}`}>
                   <input
                     type="radio"
                     value="bkash"
                     checked={paymentMethod === 'bkash'}
                     onChange={(e) => setPaymentMethod(e.target.value as 'cod' | 'bkash')}
-                    className="h-4 w-4 accent-[#1E2737]"
+                    className="h-4 w-4 accent-[#111111]"
                   />
                   <div>
-                    <p className="text-sm font-medium text-[#1E2737]">bKash Mobile Payment</p>
-                    <p className="text-xs text-[#7A8EA6]">Pay securely with bKash</p>
+                    <p className="text-sm font-medium text-[#111111]">bKash Mobile Payment</p>
+                    <p className="text-xs text-[#9E9690]">Pay securely with bKash</p>
                   </div>
                 </label>
               </div>
@@ -251,15 +251,15 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#1E2737] py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#1969B5] disabled:opacity-60"
+              className="w-full bg-[#111111] py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47] disabled:opacity-60"
             >
               {loading ? 'Placing Order…' : `Place Order — ৳${total.toLocaleString()}`}
             </button>
           </form>
 
-          {/* ── Order Summary ──────────────────────────────────────── */}
-          <aside className="h-fit border border-[#DDE3EB] bg-white p-6 lg:sticky lg:top-24">
-            <h2 className="mb-6 text-[11px] font-semibold uppercase tracking-widest text-[#1E2737]">
+          {/* ── Order Summary — order-1 on mobile so it shows first ── */}
+          <aside className="order-1 h-fit border border-[#E5DFD6] bg-white p-6 lg:order-2 lg:sticky lg:top-24">
+            <h2 className="mb-6 text-[11px] font-semibold uppercase tracking-widest text-[#111111]">
               Order Summary
             </h2>
 
@@ -267,18 +267,18 @@ export default function CheckoutPage() {
               {items.map((item, idx) => (
                 <div key={idx} className="flex items-start gap-3">
                   {item.image_url ? (
-                    <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden bg-[#EEF2F7]">
+                    <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden bg-[#EDE9E3]">
                       <Image src={item.image_url} alt={item.name} fill className="object-cover" sizes="64px" />
                     </div>
                   ) : (
-                    <div className="h-16 w-16 flex-shrink-0 bg-[#EEF2F7]" />
+                    <div className="h-16 w-16 flex-shrink-0 bg-[#EDE9E3]" />
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="truncate text-sm font-medium text-[#1E2737]">{item.name}</p>
-                    <p className="text-xs text-[#7A8EA6]">Qty: {item.quantity}</p>
+                    <p className="truncate text-sm font-medium text-[#111111]">{item.name}</p>
+                    <p className="text-xs text-[#9E9690]">Qty: {item.quantity}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-[#1E2737] tabular-nums">
+                    <p className="text-sm font-medium text-[#111111] tabular-nums">
                       ৳{(item.price * item.quantity).toLocaleString()}
                     </p>
                     <button
@@ -294,12 +294,12 @@ export default function CheckoutPage() {
               ))}
             </div>
 
-            <div className="mt-6 space-y-3 border-t border-[#DDE3EB] pt-6 text-sm">
-              <div className="flex justify-between text-[#4B5C73]">
+            <div className="mt-6 space-y-3 border-t border-[#E5DFD6] pt-6 text-sm">
+              <div className="flex justify-between text-[#5C5652]">
                 <span>Subtotal</span>
                 <span className="tabular-nums">৳{subtotal.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-[#4B5C73]">
+              <div className="flex justify-between text-[#5C5652]">
                 <span>Shipping</span>
                 <span className="tabular-nums">
                   {shipping === 0 ? (
@@ -314,17 +314,17 @@ export default function CheckoutPage() {
                   Free shipping applied (orders over ৳3,000)
                 </p>
               )}
-              <div className="flex justify-between border-t border-[#DDE3EB] pt-4 text-base font-semibold text-[#1E2737]">
+              <div className="flex justify-between border-t border-[#E5DFD6] pt-4 text-base font-semibold text-[#111111]">
                 <span>Total</span>
                 <span className="tabular-nums">৳{total.toLocaleString()}</span>
               </div>
             </div>
 
-            <div className="mt-6 space-y-2 border-t border-[#DDE3EB] pt-6">
-              <p className="text-[10px] uppercase tracking-wider text-[#7A8EA6]">Guaranteed</p>
+            <div className="mt-6 space-y-2 border-t border-[#E5DFD6] pt-6">
+              <p className="text-[10px] uppercase tracking-wider text-[#9E9690]">Guaranteed</p>
               {['Secure checkout', 'COD & bKash accepted', '30-day returns'].map((t) => (
-                <div key={t} className="flex items-center gap-2 text-xs text-[#4B5C73]">
-                  <div className="h-px w-3 bg-[#1969B5]" />
+                <div key={t} className="flex items-center gap-2 text-xs text-[#5C5652]">
+                  <div className="h-px w-3 bg-[#9B6F47]" />
                   {t}
                 </div>
               ))}

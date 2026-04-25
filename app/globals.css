@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 @plugin "@tailwindcss/container-queries";
 @plugin "@tailwindcss/typography";
@@ -15,19 +15,91 @@
 }
 
 :root {
+  /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'LPSaturnia', 'Playfair Display', Georgia, serif;
+  --font-display: 'Playfair Display', 'LPSaturnia', Georgia, serif;
 
-  --color-dark: #1E2737;
-  --color-brand: #1969B5;
-  --color-muted: #4B5C73;
-  --color-subtle: #7A8EA6;
-  --color-border: #DDE3EB;
-  --color-bg: #FAFAFA;
+  /* Palette — editorial leather */
+  --color-primary: #9B6F47;
+  --color-secondary: #F7F4EF;
+  --color-bg: #F7F4EF;
   --color-surface: #FFFFFF;
+  --color-text-on-primary: #FFFFFF;
+  --color-text: #111111;
+  --color-muted: #5C5652;
+  --color-subtle: #9E9690;
+  --color-border: #E5DFD6;
+  --color-card-bg: #EDE9E3;
+  --color-dark: #111111;
+  --color-accent: #9B6F47;
+
+  /* Radii */
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --base-gap: 4.8px;
 }
 
-/* Backward-compat alias for existing serif usage */
+/* Glass surface (kept for backward compat) */
+.glass-shell {
+  display: block;
+  padding: 1px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.02) 100%);
+}
+.glass-surface {
+  border-radius: calc(var(--radius-lg) - 2px);
+  background: rgba(255,255,255,0.72);
+  padding: 24px;
+  box-shadow: rgba(255, 255, 255, 0.6) 0px 2px 4px inset, rgba(0,0,0,0.04) 0px 8px 20px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.6);
+  color: var(--color-text);
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 13px 28px;
+  background: var(--color-text);
+  color: #FFFFFF;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  transition: background 0.25s;
+}
+.btn-primary:hover {
+  background: var(--color-primary);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  transition: border-color 0.25s;
+}
+.btn-secondary:hover {
+  border-color: var(--color-text);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  line-height: 0.9;
+  font-weight: 400;
+  color: var(--color-text);
+  font-size: clamp(3rem, 7vw, 7rem);
+  letter-spacing: -0.02em;
+}
+
+/* Backward-compat alias */
 @utility font-serif {
   font-family: var(--font-display);
 }
@@ -88,16 +160,17 @@
 
   body {
     font-family: var(--font-sans);
-    color: var(--color-dark);
+    color: var(--color-text);
+    background: var(--color-bg);
   }
 
   ::selection {
-    background: rgba(25, 105, 181, 0.15);
+    background: rgba(155, 111, 71, 0.15);
   }
 }
 
 a,
 input,
 button {
-  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#1969B5]/40 focus-visible:ring-offset-2;
+  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#9B6F47]/40 focus-visible:ring-offset-2;
 }

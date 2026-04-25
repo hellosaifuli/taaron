@@ -58,7 +58,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="bg-[#FAFAFA] text-[#1E2737] selection:bg-[#1969B5]/20" style={{ fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
+      <body className="bg-[#F7F4EF] text-[#111111] selection:bg-[#9B6F47]/15" style={{ fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
         <CartProvider>
           <LuxuryNav />
           <main>{children}</main>

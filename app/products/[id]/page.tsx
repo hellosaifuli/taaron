@@ -112,16 +112,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       <Script id="product-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
-      <div className="min-h-screen bg-[#FAFAFA] text-[#1E2737]">
-        <div className="mx-auto max-w-screen-xl px-6 pt-28 pb-0 lg:px-12">
+      <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
+        <div className="mx-auto max-w-screen-xl px-4 pt-20 pb-24 lg:px-12 lg:pt-28 lg:pb-0">
 
           {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="mb-10 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#7A8EA6]">
-            <Link href="/" className="transition-colors hover:text-[#1E2737]">Home</Link>
+          <nav aria-label="Breadcrumb" className="mb-10 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#9E9690]">
+            <Link href="/" className="transition-colors hover:text-[#111111]">Home</Link>
             <span>/</span>
-            <Link href="/" className="transition-colors hover:text-[#1E2737]">Shop</Link>
+            <Link href="/" className="transition-colors hover:text-[#111111]">Shop</Link>
             <span>/</span>
-            <span className="text-[#1E2737]">{product.name}</span>
+            <span className="text-[#111111]">{product.name}</span>
           </nav>
 
           {/* Main product grid */}
@@ -134,7 +134,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Right panel */}
             <div className="flex flex-col pb-16">
               {product.sku && (
-                <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">SKU: {product.sku}</p>
+                <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">SKU: {product.sku}</p>
               )}
 
               <h1
@@ -148,10 +148,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <p className="font-serif text-2xl font-medium" style={{ fontFamily: 'var(--font-display)' }}>
                   ৳{product.price.toLocaleString()}
                 </p>
-                <span className="text-xs uppercase tracking-wider text-[#7A8EA6]">BDT</span>
+                <span className="text-xs uppercase tracking-wider text-[#9E9690]">BDT</span>
               </div>
 
-              <div className="mt-3 h-px w-12 bg-[#1969B5]" />
+              <div className="mt-3 h-px w-12 bg-[#9B6F47]" />
 
               {/* Add to cart */}
               <div className="mt-8">
@@ -161,8 +161,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {/* Trust signals */}
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {trustItems.map((item) => (
-                  <div key={item.text} className="flex items-start gap-2 text-xs text-[#4B5C73]">
-                    <span className="mt-0.5 text-[#1969B5] text-[8px]">{item.icon}</span>
+                  <div key={item.text} className="flex items-start gap-2 text-xs text-[#5C5652]">
+                    <span className="mt-0.5 text-[#9B6F47] text-[8px]">{item.icon}</span>
                     {item.text}
                   </div>
                 ))}

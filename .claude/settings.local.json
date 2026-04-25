@@ -29,7 +29,8 @@
       "Bash(npm run *)",
       "Bash(xargs sed *)",
       "WebFetch(domain:claudetype.com)",
-      "Bash(vercel --version)"
+      "Bash(vercel --version)",
+      "Bash(npx tsc *)"
     ]
   }
 }

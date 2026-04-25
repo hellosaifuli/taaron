@@ -9,24 +9,16 @@ export default function AuthPage() {
   const [mode, setMode] = useState<'login' | 'signup'>('login')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    full_name: '',
-  })
+  const [formData, setFormData] = useState({ email: '', password: '', full_name: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
-
     try {
       const endpoint = mode === 'login' ? '/api/auth/sign-in' : '/api/auth/sign-up'
       const response = await fetch(endpoint, {
@@ -34,122 +26,129 @@ export default function AuthPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-
       const data = await response.json()
-
       if (!response.ok) {
         setError(data.error || 'Authentication failed')
       } else {
         router.push('/dashboard')
       }
-    } catch (err) {
+    } catch {
       setError('Network error. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
+  const inputClass =
+    'w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition-colors placeholder:text-[#C4BDB5] focus:border-[#111111]'
+  const labelClass = 'mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-[#9E9690]'
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="px-4 py-4 sm:px-6 lg:px-8">
-          <Link href="/" className="text-xl font-bold">
-            Taaron
-          </Link>
-        </div>
-      </header>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F4EF] px-4 pt-20">
+      <div className="w-full max-w-sm">
 
-      {/* Auth Form */}
-      <div className="flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-md">
-          <h1 className="text-2xl font-bold">
-            {mode === 'login' ? 'Login' : 'Create Account'}
+        {/* Eyebrow + heading */}
+        <div className="mb-10 text-center">
+          <p className="text-[10px] uppercase tracking-[0.4em]" style={{ color: '#9B6F47' }}>Taaron</p>
+          <h1
+            className="mt-3 text-[#111111]"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+              lineHeight: '1.1',
+              letterSpacing: '-0.01em',
+              fontWeight: 400,
+            }}
+          >
+            {mode === 'login' ? 'Welcome Back' : 'Create Account'}
           </h1>
+        </div>
 
-          {error && (
-            <div className="mt-4 rounded border border-red-300 bg-red-50 p-3 text-sm text-red-700">
-              {error}
+        {error && (
+          <div className="mb-6 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {mode === 'signup' && (
+            <div>
+              <label className={labelClass}>Full Name</label>
+              <input
+                type="text"
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
+                className={inputClass}
+                placeholder="Your full name"
+                required={mode === 'signup'}
+              />
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-            {mode === 'signup' && (
-              <div>
-                <label className="block text-sm font-medium">Full Name</label>
-                <input
-                  type="text"
-                  name="full_name"
-                  value={formData.full_name}
-                  onChange={handleChange}
-                  className="mt-1 w-full border border-gray-300 px-3 py-2"
-                  required={mode === 'signup'}
-                />
-              </div>
-            )}
-
-            <div>
-              <label className="block text-sm font-medium">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 px-3 py-2"
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full border border-gray-300 bg-white px-4 py-2 font-medium hover:bg-gray-50 disabled:opacity-50"
-            >
-              {loading ? 'Loading...' : mode === 'login' ? 'Login' : 'Sign Up'}
-            </button>
-          </form>
-
-          <div className="mt-6 border-t border-gray-200 pt-6 text-center text-sm">
-            {mode === 'login' ? (
-              <>
-                Don't have account?{' '}
-                <button
-                  onClick={() => {
-                    setMode('signup')
-                    setError('')
-                  }}
-                  className="font-medium hover:underline"
-                >
-                  Sign up
-                </button>
-              </>
-            ) : (
-              <>
-                Already have account?{' '}
-                <button
-                  onClick={() => {
-                    setMode('login')
-                    setError('')
-                  }}
-                  className="font-medium hover:underline"
-                >
-                  Login
-                </button>
-              </>
-            )}
+          <div>
+            <label className={labelClass}>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={inputClass}
+              placeholder="email@example.com"
+              required
+            />
           </div>
+
+          <div>
+            <label className={labelClass}>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className={inputClass}
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-2 w-full bg-[#111111] py-3.5 text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-[#9B6F47] disabled:opacity-50"
+          >
+            {loading ? 'Please wait…' : mode === 'login' ? 'Sign In' : 'Create Account'}
+          </button>
+        </form>
+
+        <div className="mt-8 border-t border-[#E5DFD6] pt-6 text-center text-[12px] text-[#5C5652]">
+          {mode === 'login' ? (
+            <>
+              No account?{' '}
+              <button
+                onClick={() => { setMode('signup'); setError('') }}
+                className="font-medium text-[#9B6F47] hover:underline"
+              >
+                Sign up
+              </button>
+            </>
+          ) : (
+            <>
+              Already have one?{' '}
+              <button
+                onClick={() => { setMode('login'); setError('') }}
+                className="font-medium text-[#9B6F47] hover:underline"
+              >
+                Sign in
+              </button>
+            </>
+          )}
+        </div>
+
+        <div className="mt-4 text-center">
+          <Link href="/" className="text-[11px] uppercase tracking-widest text-[#9E9690] hover:text-[#111111] transition-colors">
+            ← Back to shop
+          </Link>
         </div>
       </div>
     </div>
