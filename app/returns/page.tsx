@@ -2,9 +2,28 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import FadeInSection from '@/components/fade-in-section'
 
+const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : 'http://localhost:3000'
+
 export const metadata: Metadata = {
   title: 'Returns & Exchanges — Taaron',
-  description: '30-day hassle-free returns and exchanges on all Taaron leather goods. Unused condition. Contact us to start.',
+  description: '30-day hassle-free returns and exchanges on all Taaron leather goods. Unused condition required. Full refund via bKash or bank transfer.',
+  alternates: { canonical: `${baseUrl}/returns` },
+  openGraph: {
+    title: 'Returns & Exchanges — Taaron',
+    description: '30-day hassle-free returns. Full refund via bKash or bank transfer within 3–5 business days after inspection.',
+    url: `${baseUrl}/returns`,
+    siteName: 'Taaron',
+    images: [{ url: `${baseUrl}/taaron-logo.png`, width: 1200, height: 630, alt: 'Taaron — Premium Leather Goods' }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Returns & Exchanges — Taaron',
+    description: '30-day hassle-free returns on all Taaron leather goods.',
+    images: [`${baseUrl}/taaron-logo.png`],
+  },
 }
 
 const steps = [

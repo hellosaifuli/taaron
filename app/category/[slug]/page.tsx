@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import ProductMasonry from '@/components/product-masonry'
 import type { Product } from '@/app/actions/products'
@@ -17,11 +18,33 @@ const categoryMeta: Record<string, { name: string; description: string }> = {
   ladies:     { name: 'Ladies Bags',     description: 'Elegant leather bags designed with a feminine sensibility. Timeless, not trendy.' },
 }
 
+const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : 'http://localhost:3000'
+
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params
   const meta = categoryMeta[slug]
   if (!meta) return {}
-  return { title: `${meta.name} — Taaron`, description: meta.description }
+  return {
+    title: `${meta.name} — Taaron`,
+    description: meta.description,
+    alternates: { canonical: `${baseUrl}/category/${slug}` },
+    openGraph: {
+      title: `${meta.name} — Taaron`,
+      description: meta.description,
+      url: `${baseUrl}/category/${slug}`,
+      siteName: 'Taaron',
+      images: [{ url: `${baseUrl}/taaron-logo.png`, width: 1200, height: 630, alt: `Taaron ${meta.name}` }],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${meta.name} — Taaron`,
+      description: meta.description,
+      images: [`${baseUrl}/taaron-logo.png`],
+    },
+  }
 }
 
 export const dynamic = 'force-dynamic'
@@ -50,8 +73,23 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const displayProducts = (products?.length ? products : (fallback ?? [])) as Product[]
 
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${meta.name} — Taaron`,
+    description: meta.description,
+    url: `${baseUrl}/category/${slug}`,
+    numberOfItems: displayProducts.length,
+    hasPart: displayProducts.slice(0, 10).map((p) => ({
+      '@type': 'Product',
+      name: p.name,
+      offers: { '@type': 'Offer', price: p.price, priceCurrency: 'BDT', availability: 'https://schema.org/InStock' },
+    })),
+  }
+
   return (
     <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
+      <Script id="collection-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
 
       {/* ── Banner — gradient, no image ──────────────────────── */}
       <div

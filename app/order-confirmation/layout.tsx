@@ -1,0 +1,11 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Order Confirmed — Taaron',
+  description: 'Your Taaron order has been placed successfully.',
+  robots: { index: false, follow: false },
+}
+
+export default function OrderConfirmationLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>
+}

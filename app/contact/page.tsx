@@ -1,14 +1,58 @@
 import { Metadata } from 'next'
+import Script from 'next/script'
 import FadeInSection from '@/components/fade-in-section'
+
+const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : 'http://localhost:3000'
 
 export const metadata: Metadata = {
   title: 'Contact Us — Taaron',
-  description: "Get in touch with Taaron. We're here to help with orders, product questions, and anything else.",
+  description: "Get in touch with Taaron. We're here to help with orders, product questions, and anything else. Respond within one business day.",
+  alternates: { canonical: `${baseUrl}/contact` },
+  openGraph: {
+    title: 'Contact Us — Taaron',
+    description: "Questions about an order or product? Reach us via WhatsApp, email, or the contact form. We respond within one business day.",
+    url: `${baseUrl}/contact`,
+    siteName: 'Taaron',
+    images: [{ url: `${baseUrl}/taaron-logo.png`, width: 1200, height: 630, alt: 'Taaron — Premium Leather Goods' }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact Us — Taaron',
+    description: "Get in touch with Taaron. We respond within one business day.",
+    images: [`${baseUrl}/taaron-logo.png`],
+  },
+}
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ClothingStore',
+  name: 'Taaron',
+  description: 'Premium leather wallets, bags, and belts crafted in Bangladesh.',
+  url: 'https://taaron.store',
+  telephone: '+8801920585212',
+  email: 'hello@taaron.com',
+  address: { '@type': 'PostalAddress', addressLocality: 'Dhaka', addressCountry: 'BD' },
+  openingHours: 'Mo-Fr 10:00-19:00',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+8801920585212',
+    contactType: 'customer service',
+    areaServed: 'BD',
+    availableLanguage: ['English', 'Bengali'],
+  },
+  sameAs: [
+    'https://www.facebook.com/taaron.store',
+    'https://www.instagram.com/taaron.store',
+  ],
 }
 
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
+      <Script id="local-business-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
 
       {/* Banner header */}
       <div
