@@ -149,34 +149,34 @@ export default function ContactPage() {
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Name</label>
+                  <label htmlFor="name" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Name</label>
                   <input
                     id="name" name="name" type="text" required placeholder="Your name"
-                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] placeholder-[#C5BEB7] outline-none transition-colors focus:border-[#9B6F47]"
+                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm text-[#111111] placeholder-[#B8AFA5] outline-none transition-colors focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Phone / WhatsApp</label>
+                  <label htmlFor="phone" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Phone / WhatsApp</label>
                   <input
                     id="phone" name="phone" type="tel" placeholder="01XXXXXXXXX"
-                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] placeholder-[#C5BEB7] outline-none transition-colors focus:border-[#9B6F47]"
+                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm text-[#111111] placeholder-[#B8AFA5] outline-none transition-colors focus:border-[#9B6F47]"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Email</label>
+                <label htmlFor="email" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Email</label>
                 <input
                   id="email" name="email" type="email" required placeholder="you@example.com"
-                  className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] placeholder-[#C5BEB7] outline-none transition-colors focus:border-[#9B6F47]"
+                  className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm text-[#111111] placeholder-[#B8AFA5] outline-none transition-colors focus:border-[#9B6F47]"
                 />
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Subject</label>
+                <label htmlFor="subject" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Subject</label>
                 <select
                   id="subject" name="subject"
-                  className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] outline-none transition-colors focus:border-[#9B6F47]"
+                  className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm text-[#111111] outline-none transition-colors focus:border-[#9B6F47]"
                 >
                   <option value="Order inquiry">Order inquiry</option>
                   <option value="Product question">Product question</option>
@@ -187,10 +187,10 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Message</label>
+                <label htmlFor="message" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Message</label>
                 <textarea
                   id="message" name="message" required rows={5} placeholder="How can we help?"
-                  className="mt-2 w-full resize-none border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] placeholder-[#C5BEB7] outline-none transition-colors focus:border-[#9B6F47]"
+                  className="mt-2 w-full resize-none border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm text-[#111111] placeholder-[#B8AFA5] outline-none transition-colors focus:border-[#9B6F47]"
                 />
               </div>
 
