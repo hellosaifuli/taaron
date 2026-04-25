@@ -57,17 +57,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <div
         className="relative flex flex-col justify-end overflow-hidden px-6 pb-8 pt-24 lg:px-16 lg:pb-10 lg:pt-28"
         style={{
-          background: 'linear-gradient(135deg, #1A1210 0%, #3B2415 55%, #9B6F47 100%)',
+          background: 'linear-gradient(135deg, #EDE9E3 0%, #D4C4B0 45%, #C4976A 100%)',
           minHeight: '35vh',
         }}
       >
         {/* Subtle texture layer */}
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #C4A070 0%, transparent 60%)' }} />
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #F7F4EF 0%, transparent 60%)' }} />
 
         <div className="relative">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-white/45">Taaron / Collection</p>
+          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Taaron / Collection</p>
           <h1
-            className="mt-2 text-white"
+            className="mt-2 text-[#111111]"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(2rem, 5vw, 4.5rem)',
@@ -78,7 +78,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           >
             {meta.name}
           </h1>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-white/60">{meta.description}</p>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-[#5C5652]">{meta.description}</p>
         </div>
       </div>
 
