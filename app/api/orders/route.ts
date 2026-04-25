@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Please sign in to place an order.', code: 'UNAUTHENTICATED' }, { status: 401 })
   }
 
   const {
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const shipping_cost = 50 // BDT
+  const shipping_cost = subtotal > 3000 ? 0 : 100
   const total = subtotal + shipping_cost
 
   // Generate order number

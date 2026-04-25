@@ -41,6 +41,10 @@ export default function CheckoutPage() {
         body: JSON.stringify({ items, payment_method: paymentMethod, ...formData }),
       })
       const data = await response.json()
+      if (response.status === 401) {
+        router.push('/auth?redirect=/checkout')
+        return
+      }
       if (!response.ok) {
         setError(data.error || 'Failed to create order')
       } else {
