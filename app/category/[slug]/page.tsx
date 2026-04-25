@@ -57,8 +57,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <div
         className="relative flex flex-col justify-end overflow-hidden px-6 pb-8 pt-24 lg:px-16 lg:pb-10 lg:pt-28"
         style={{
-          background: 'linear-gradient(135deg, #EDE9E3 0%, #D4C4B0 45%, #C4976A 100%)',
-          minHeight: '35vh',
+          background: 'linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)',
+          minHeight: '22vh',
         }}
       >
         {/* Subtle texture layer */}
