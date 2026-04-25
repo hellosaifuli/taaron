@@ -3,44 +3,58 @@ import FadeInSection from '@/components/fade-in-section'
 
 export const metadata: Metadata = {
   title: 'Contact Us — Taaron',
-  description: 'Get in touch with Taaron. We\'re here to help with orders, product questions, and anything else.',
+  description: "Get in touch with Taaron. We're here to help with orders, product questions, and anything else.",
 }
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-[#F7F4EF] text-[#111111] pt-24">
+    <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
 
-      {/* Header */}
-      <div className="mx-auto max-w-screen-xl px-6 py-16 lg:px-12 lg:py-20">
-        <FadeInSection>
+      {/* Banner header */}
+      <div
+        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-28 lg:px-16 lg:pb-12 lg:pt-32"
+        style={{
+          background: 'linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)',
+          minHeight: '28vh',
+        }}
+      >
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #F7F4EF 0%, transparent 60%)' }} />
+        <div className="relative max-w-screen-xl mx-auto w-full">
+          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Support</p>
           <h1
-            className="font-serif text-4xl font-bold lg:text-5xl xl:text-6xl"
-            style={{ fontFamily: 'var(--font-display)' }}
+            className="mt-2 text-[#111111]"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(2.4rem, 5vw, 4.5rem)',
+              lineHeight: '1.05',
+              letterSpacing: '-0.01em',
+              fontWeight: 400,
+            }}
           >
             Get in Touch
           </h1>
-          <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#5C5652]">
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-[#5C5652]">
             Questions about an order, a product, or anything else — we respond within one business day.
           </p>
-        </FadeInSection>
+        </div>
       </div>
 
       {/* Content grid */}
-      <div className="mx-auto max-w-screen-xl px-6 pb-24 lg:px-12">
-        <div className="grid gap-16 lg:grid-cols-[1fr_1.5fr]">
+      <div className="mx-auto max-w-screen-xl px-6 py-16 lg:px-16 lg:py-20">
+        <div className="grid gap-16 lg:grid-cols-[1fr_1.6fr]">
 
           {/* Info column */}
           <FadeInSection>
-            <div className="space-y-10">
+            <div className="divide-y divide-[#E5DFD6]">
 
               <a
                 href="https://wa.me/8801920585212"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
+                className="group block py-7 transition-colors first:pt-0"
               >
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">WhatsApp / Phone</p>
-                <p className="mt-2 text-lg font-medium text-[#111111] transition-colors group-hover:text-[#9B6F47]">
+                <p className="mt-2 text-xl font-medium text-[#111111] transition-colors group-hover:text-[#9B6F47]" style={{ fontFamily: 'var(--font-display)' }}>
                   +880 1920-585212
                 </p>
                 <p className="mt-1 text-xs text-[#9E9690]">Sun – Thu, 10am – 7pm BST</p>
@@ -48,47 +62,29 @@ export default function ContactPage() {
 
               <a
                 href="mailto:hello@taaron.com"
-                className="group block bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
+                className="group block py-7 transition-colors"
               >
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Email</p>
-                <p className="mt-2 text-lg font-medium text-[#111111] transition-colors group-hover:text-[#9B6F47]">
+                <p className="mt-2 text-xl font-medium text-[#111111] transition-colors group-hover:text-[#9B6F47]" style={{ fontFamily: 'var(--font-display)' }}>
                   hello@taaron.com
                 </p>
                 <p className="mt-1 text-xs text-[#9E9690]">Response within 1 business day</p>
               </a>
 
-              <div className="bg-white p-6">
+              <div className="py-7">
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Location</p>
-                <p className="mt-2 text-sm leading-relaxed text-[#111111]">
-                  Dhaka, Bangladesh
-                </p>
+                <p className="mt-2 text-sm leading-relaxed text-[#111111]">Dhaka, Bangladesh</p>
                 <p className="mt-1 text-xs text-[#9E9690]">COD & bKash available nationwide</p>
               </div>
 
-              <div className="bg-white p-6">
+              <div className="py-7">
                 <p className="mb-4 text-[10px] uppercase tracking-widest text-[#9E9690]">Follow Us</p>
-                <div className="flex gap-4">
-                  <a
-                    href="https://www.facebook.com/taaron.store"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                    className="text-[#9E9690] transition-colors hover:text-[#9B6F47]"
-                  >
-                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
+                <div className="flex gap-5">
+                  <a href="https://www.facebook.com/taaron.store" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-[#9E9690] transition-colors hover:text-[#9B6F47]">
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   </a>
-                  <a
-                    href="https://www.instagram.com/taaron.store"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    className="text-[#9E9690] transition-colors hover:text-[#9B6F47]"
-                  >
-                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
+                  <a href="https://www.instagram.com/taaron.store" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-[#9E9690] transition-colors hover:text-[#9B6F47]">
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                   </a>
                 </div>
               </div>
@@ -97,66 +93,46 @@ export default function ContactPage() {
           </FadeInSection>
 
           {/* Form */}
-          <FadeInSection delay={120}>
+          <FadeInSection delay={100}>
             <form
               action="https://formsubmit.co/hello@taaron.com"
               method="POST"
-              className="space-y-5"
+              className="space-y-6"
             >
               <input type="hidden" name="_subject" value="New contact from Taaron website" />
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_template" value="table" />
 
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">
-                    Name
-                  </label>
+                  <label htmlFor="name" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Name</label>
                   <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    placeholder="Your name"
-                    className="mt-2 w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm text-[#111111] placeholder-[#9E9690] outline-none transition-colors focus:border-[#9B6F47]"
+                    id="name" name="name" type="text" required placeholder="Your name"
+                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] placeholder-[#C5BEB7] outline-none transition-colors focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">
-                    Phone / WhatsApp
-                  </label>
+                  <label htmlFor="phone" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Phone / WhatsApp</label>
                   <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="01XXXXXXXXX"
-                    className="mt-2 w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm text-[#111111] placeholder-[#9E9690] outline-none transition-colors focus:border-[#9B6F47]"
+                    id="phone" name="phone" type="tel" placeholder="01XXXXXXXXX"
+                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] placeholder-[#C5BEB7] outline-none transition-colors focus:border-[#9B6F47]"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">
-                  Email
-                </label>
+                <label htmlFor="email" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Email</label>
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                  className="mt-2 w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm text-[#111111] placeholder-[#9E9690] outline-none transition-colors focus:border-[#9B6F47]"
+                  id="email" name="email" type="email" required placeholder="you@example.com"
+                  className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] placeholder-[#C5BEB7] outline-none transition-colors focus:border-[#9B6F47]"
                 />
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">
-                  Subject
-                </label>
+                <label htmlFor="subject" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Subject</label>
                 <select
-                  id="subject"
-                  name="subject"
-                  className="mt-2 w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition-colors focus:border-[#9B6F47]"
+                  id="subject" name="subject"
+                  className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] outline-none transition-colors focus:border-[#9B6F47]"
                 >
                   <option value="Order inquiry">Order inquiry</option>
                   <option value="Product question">Product question</option>
@@ -167,32 +143,26 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">
-                  Message
-                </label>
+                <label htmlFor="message" className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Message</label>
                 <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={5}
-                  placeholder="How can we help?"
-                  className="mt-2 w-full resize-none border border-[#E5DFD6] bg-white px-4 py-3 text-sm text-[#111111] placeholder-[#9E9690] outline-none transition-colors focus:border-[#9B6F47]"
+                  id="message" name="message" required rows={5} placeholder="How can we help?"
+                  className="mt-2 w-full resize-none border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm text-[#111111] placeholder-[#C5BEB7] outline-none transition-colors focus:border-[#9B6F47]"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="group relative w-full overflow-hidden bg-[#111111] py-4 text-[11px] uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:bg-[#9B6F47]"
-              >
-                Send Message
-              </button>
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="bg-[#111111] px-12 py-4 text-[11px] uppercase tracking-[0.25em] text-white transition-colors duration-300 hover:bg-[#9B6F47]"
+                >
+                  Send Message
+                </button>
+              </div>
             </form>
           </FadeInSection>
 
         </div>
       </div>
-
-
     </div>
   )
 }
