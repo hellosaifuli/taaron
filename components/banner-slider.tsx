@@ -60,17 +60,23 @@ export default function BannerSlider() {
           <Link
             key={i}
             href={arch.href}
-            className="group relative flex-shrink-0 snap-center overflow-hidden bg-[#EDE9E3] w-[calc(100vw-24px)] lg:w-auto lg:flex-1"
+            className="group relative flex-shrink-0 snap-center bg-[#EDE9E3] w-[calc(100vw-24px)] lg:w-auto lg:flex-1"
             style={{ borderTopLeftRadius: '9999px', borderTopRightRadius: '9999px' }}
           >
-            <Image
-              src={arch.image}
-              alt={arch.alt}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 1024px) 100vw, 33vw"
-              priority={i === 0}
-            />
+            {/* Inner clip — overflow-hidden must be on a child to clip scale transforms */}
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{ borderTopLeftRadius: '9999px', borderTopRightRadius: '9999px' }}
+            >
+              <Image
+                src={arch.image}
+                alt={arch.alt}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                priority={i === 0}
+              />
+            </div>
             {/* Category pill */}
             <div className="absolute inset-x-0 bottom-5 flex justify-center">
               <span className="rounded-full bg-black/40 px-5 py-2 text-[11px] uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-black/60">
