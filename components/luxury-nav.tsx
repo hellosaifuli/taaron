@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useCart } from '@/components/cart-provider'
+import { createClient } from '@/lib/supabase/client'
 
 const shopLinks = [
   { label: 'All Products', href: '/category/all' },
@@ -16,6 +17,31 @@ const shopLinks = [
 export default function LuxuryNav() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { count } = useCart()
+  const [user, setUser] = useState<{ email: string; name: string } | null>(null)
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        const name = user.user_metadata?.full_name || user.email || ''
+        setUser({ email: user.email ?? '', name })
+      }
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        const name = session.user.user_metadata?.full_name || session.user.email || ''
+        setUser({ email: session.user.email ?? '', name })
+      } else {
+        setUser(null)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const initial = user?.name?.charAt(0).toUpperCase() ?? ''
 
   return (
     <>
@@ -48,7 +74,22 @@ export default function LuxuryNav() {
           <div className="h-4 w-px bg-[#E5DFD6]" />
           <div className="flex items-center gap-6">
             <Link href="/contact" className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">Contact</Link>
-            <Link href="/auth" className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">Account</Link>
+
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]"
+                title={user.email}
+              >
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#111111] text-[10px] font-semibold text-white">
+                  {initial}
+                </span>
+                <span>My Orders</span>
+              </Link>
+            ) : (
+              <Link href="/auth" className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">Account</Link>
+            )}
+
             <Link href="/checkout" className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">
               {count > 0 ? `Cart (${count})` : 'Cart'}
             </Link>
@@ -61,6 +102,14 @@ export default function LuxuryNav() {
             Taaron
           </Link>
           <div className="flex items-center gap-4">
+            {/* Avatar indicator on mobile pill when signed in */}
+            {user && (
+              <Link href="/dashboard" title={user.email} aria-label="My account">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#111111] text-[10px] font-semibold text-white">
+                  {initial}
+                </span>
+              </Link>
+            )}
             <Link href="/checkout" className="relative flex items-center gap-1.5 text-[12px] tracking-wide text-[#111111]" aria-label="Cart">
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
@@ -90,6 +139,19 @@ export default function LuxuryNav() {
       {mobileOpen && (
         <div className="fixed inset-0 z-40 flex flex-col bg-[#F7F4EF] pt-[72px] lg:hidden">
 
+          {/* Signed-in greeting */}
+          {user && (
+            <div className="mx-6 mt-4 flex items-center gap-3 rounded-2xl border border-[#E5DFD6] bg-white px-5 py-4">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#111111] text-[13px] font-semibold text-white">
+                {initial}
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-[#111111]">{user.name}</p>
+                <p className="truncate text-[11px] text-[#9E9690]">{user.email}</p>
+              </div>
+            </div>
+          )}
+
           {/* Nav links */}
           <nav className="flex-1 overflow-y-auto px-6 py-2">
             <Link href="/" className="flex items-center border-b border-[#E5DFD6] py-5 text-[13px] uppercase tracking-widest text-[#111111]" onClick={() => setMobileOpen(false)}>
@@ -111,12 +173,20 @@ export default function LuxuryNav() {
             </div>
 
             <Link href="/contact" className="flex items-center border-b border-[#E5DFD6] py-5 text-[13px] uppercase tracking-widest text-[#111111]" onClick={() => setMobileOpen(false)}>Contact</Link>
-            <Link href="/auth" className="flex items-center py-5 text-[13px] uppercase tracking-widest text-[#111111]" onClick={() => setMobileOpen(false)}>Account</Link>
+
+            {user ? (
+              <Link href="/dashboard" className="flex items-center py-5 text-[13px] uppercase tracking-widest text-[#111111]" onClick={() => setMobileOpen(false)}>
+                My Orders
+              </Link>
+            ) : (
+              <Link href="/auth" className="flex items-center py-5 text-[13px] uppercase tracking-widest text-[#111111]" onClick={() => setMobileOpen(false)}>
+                Account
+              </Link>
+            )}
           </nav>
 
-          {/* Contact info at bottom — matching reference */}
+          {/* Contact info at bottom */}
           <div className="flex-shrink-0 space-y-2 px-4 pb-8 pt-2">
-            {/* Phone card */}
             <div className="rounded-full border border-[#E5DFD6] bg-white px-6 py-4">
               <p className="text-[10px] uppercase tracking-[0.25em] text-[#9E9690]">WhatsApp / Phone</p>
               <a href="https://wa.me/8801920585212" target="_blank" rel="noopener noreferrer" className="mt-1 block text-[17px] font-medium text-[#111111]">
@@ -124,7 +194,6 @@ export default function LuxuryNav() {
               </a>
               <p className="mt-0.5 text-[11px] text-[#9B6F47]">Sun – Thu, 10am – 7pm BST</p>
             </div>
-
           </div>
 
         </div>
