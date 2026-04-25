@@ -13,15 +13,13 @@ export default function ContactPage() {
       {/* Header */}
       <div className="mx-auto max-w-screen-xl px-6 py-16 lg:px-12 lg:py-20">
         <FadeInSection>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Taaron / Support</p>
           <h1
-            className="mt-3 font-serif text-4xl font-bold lg:text-5xl xl:text-6xl"
+            className="font-serif text-4xl font-bold lg:text-5xl xl:text-6xl"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Get in Touch
           </h1>
-          <div className="mt-4 h-px w-12 bg-[#9B6F47]" />
-          <p className="mt-5 max-w-lg text-sm leading-relaxed text-[#5C5652]">
+          <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#5C5652]">
             Questions about an order, a product, or anything else — we respond within one business day.
           </p>
         </FadeInSection>
@@ -39,29 +37,27 @@ export default function ContactPage() {
                 href="https://wa.me/8801920585212"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block border border-[#E5DFD6] bg-white p-6 transition-all duration-300 hover:border-[#9B6F47] hover:-translate-y-0.5 hover:shadow-sm"
+                className="group block bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">WhatsApp / Phone</p>
                 <p className="mt-2 text-lg font-medium text-[#111111] transition-colors group-hover:text-[#9B6F47]">
                   +880 1920-585212
                 </p>
                 <p className="mt-1 text-xs text-[#9E9690]">Sun – Thu, 10am – 7pm BST</p>
-                <div className="mt-4 h-px w-6 bg-[#9B6F47] transition-all duration-300 group-hover:w-12" />
               </a>
 
               <a
                 href="mailto:hello@taaron.com"
-                className="group block border border-[#E5DFD6] bg-white p-6 transition-all duration-300 hover:border-[#9B6F47] hover:-translate-y-0.5 hover:shadow-sm"
+                className="group block bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Email</p>
                 <p className="mt-2 text-lg font-medium text-[#111111] transition-colors group-hover:text-[#9B6F47]">
                   hello@taaron.com
                 </p>
                 <p className="mt-1 text-xs text-[#9E9690]">Response within 1 business day</p>
-                <div className="mt-4 h-px w-6 bg-[#9B6F47] transition-all duration-300 group-hover:w-12" />
               </a>
 
-              <div className="border border-[#E5DFD6] bg-white p-6">
+              <div className="bg-white p-6">
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Location</p>
                 <p className="mt-2 text-sm leading-relaxed text-[#111111]">
                   Dhaka, Bangladesh
@@ -69,7 +65,7 @@ export default function ContactPage() {
                 <p className="mt-1 text-xs text-[#9E9690]">COD & bKash available nationwide</p>
               </div>
 
-              <div className="border border-[#E5DFD6] bg-white p-6">
+              <div className="bg-white p-6">
                 <p className="mb-4 text-[10px] uppercase tracking-widest text-[#9E9690]">Follow Us</p>
                 <div className="flex gap-4">
                   <a
@@ -196,25 +192,6 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* Bottom strip */}
-      <div className="border-t border-[#E5DFD6] bg-white px-6 py-10 lg:px-12">
-        <div className="mx-auto max-w-screen-xl">
-          <div className="grid gap-6 text-center sm:grid-cols-3 sm:text-left">
-            <div>
-              <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Delivery</p>
-              <p className="mt-2 text-sm text-[#111111]">Dhaka 1–2 days · Nationwide 3–5 days</p>
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Payment</p>
-              <p className="mt-2 text-sm text-[#111111]">COD & bKash accepted</p>
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Returns</p>
-              <p className="mt-2 text-sm text-[#111111]">30-day hassle-free returns</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
     </div>
   )

@@ -64,22 +64,20 @@ export default function ReturnsPage() {
       {/* Header */}
       <div className="mx-auto max-w-screen-xl px-6 py-16 lg:px-12 lg:py-20">
         <FadeInSection>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Taaron / Support</p>
           <h1
-            className="mt-3 font-serif text-4xl font-bold lg:text-5xl xl:text-6xl"
+            className="font-serif text-4xl font-bold lg:text-5xl xl:text-6xl"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Returns &amp; Exchanges
           </h1>
-          <div className="mt-4 h-px w-12 bg-[#9B6F47]" />
-          <p className="mt-5 max-w-lg text-sm leading-relaxed text-[#5C5652]">
+          <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#5C5652]">
             Not quite right? No problem. We accept returns within 30 days of delivery — no fuss, no questions.
           </p>
         </FadeInSection>
       </div>
 
       {/* Process steps */}
-      <section className="border-y border-[#E5DFD6] bg-white px-6 py-16 lg:px-12 lg:py-20">
+      <section className="border-y border-[#E5DFD6] px-6 py-16 lg:px-12 lg:py-20">
         <div className="mx-auto max-w-screen-xl">
           <FadeInSection>
             <p className="mb-12 text-[10px] uppercase tracking-[0.4em] text-[#9E9690]">How it works</p>
@@ -95,7 +93,6 @@ export default function ReturnsPage() {
                     {step.n}
                   </p>
                   <h3 className="mt-4 text-sm font-semibold uppercase tracking-widest text-[#111111]">{step.title}</h3>
-                  <div className="mt-3 h-px w-8 bg-[#9B6F47] transition-all duration-500 group-hover:w-16" />
                   <p className="mt-4 text-sm leading-loose text-[#5C5652]">{step.body}</p>
                 </div>
               </FadeInSection>
@@ -110,17 +107,17 @@ export default function ReturnsPage() {
 
           <FadeInSection>
             <div className="space-y-4">
-              <div className="group border border-[#E5DFD6] bg-white p-6 transition-all duration-300 hover:border-[#9B6F47] hover:-translate-y-0.5 hover:shadow-sm">
+              <div className="group bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Return Window</p>
                 <p className="mt-2 text-2xl font-semibold text-[#111111]">30 Days</p>
                 <p className="mt-1 text-xs text-[#5C5652]">From date of delivery</p>
               </div>
-              <div className="group border border-[#E5DFD6] bg-white p-6 transition-all duration-300 hover:border-[#9B6F47] hover:-translate-y-0.5 hover:shadow-sm">
+              <div className="group bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Refund Method</p>
                 <p className="mt-2 text-sm font-medium text-[#111111]">bKash · Bank Transfer</p>
                 <p className="mt-1 text-xs text-[#5C5652]">3–5 business days after inspection</p>
               </div>
-              <div className="group border border-[#E5DFD6] bg-white p-6 transition-all duration-300 hover:border-[#9B6F47] hover:-translate-y-0.5 hover:shadow-sm">
+              <div className="group bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Contact</p>
                 <a href="mailto:hello@taaron.com" className="mt-2 block text-sm font-medium text-[#9B6F47] hover:underline">
                   hello@taaron.com

@@ -204,8 +204,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <span className="text-xs uppercase tracking-wider text-[#9E9690]">BDT</span>
             </div>
 
-            <div className="mt-4 h-px w-12 bg-[#9B6F47]" />
-
             {/* Add to cart */}
             <div className="mt-8">
               <AddToCart product={product} />

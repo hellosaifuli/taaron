@@ -27,7 +27,6 @@ export function ProductDescription({ product }: { product: Product }) {
           />
           <span className="text-xs text-[#9E9690] tracking-wide uppercase">BDT</span>
         </div>
-        <div className="h-px w-16 bg-[#9B6F47] mb-6" />
       </div>
 
       <div className="mb-8">

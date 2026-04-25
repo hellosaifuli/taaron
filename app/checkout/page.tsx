@@ -68,7 +68,6 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#F7F4EF] px-4 text-center">
-        <div className="h-px w-12 bg-[#9B6F47]" />
         <p className="text-sm text-[#5C5652]">Your cart is empty.</p>
         <Link
           href="/"
@@ -89,7 +88,6 @@ export default function CheckoutPage() {
           <h1 className="font-serif text-3xl font-medium lg:text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
             Checkout
           </h1>
-          <div className="mt-3 h-px w-12 bg-[#9B6F47]" />
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[1fr_400px] lg:gap-16 xl:grid-cols-[1fr_440px]">
