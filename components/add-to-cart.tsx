@@ -42,6 +42,7 @@ export default function AddToCart({ product }: AddToCartProps) {
 
   const handleAdd = () => {
     if (needsVariant) { toast.error('Please select a variant first.'); return }
+    if (selectedVariantData?.stock_quantity === 0) { toast.error('This variant is out of stock.'); return }
     addItem({
       product_id: product.id,
       variant_id: selectedVariant,
@@ -57,6 +58,7 @@ export default function AddToCart({ product }: AddToCartProps) {
 
   const handleBuyNow = () => {
     if (needsVariant) { toast.error('Please select a variant first.'); return }
+    if (selectedVariantData?.stock_quantity === 0) { toast.error('This variant is out of stock.'); return }
     addItem({
       product_id: product.id,
       variant_id: selectedVariant,
@@ -76,22 +78,32 @@ export default function AddToCart({ product }: AddToCartProps) {
           <div>
             <p className="mb-3 text-[11px] uppercase tracking-[0.15em] text-[#9E9690]">Select Variant</p>
             <div className="flex flex-wrap gap-2">
-              {variants.map((v) => (
-                <button
-                  key={v.id}
-                  onClick={() => setSelectedVariant(v.id)}
-                  className={`border px-4 py-2.5 text-xs tracking-wide transition-all duration-150 ${
-                    selectedVariant === v.id
-                      ? 'border-[#111111] bg-[#111111] text-white'
-                      : 'border-[#E5DFD6] text-[#5C5652] hover:border-[#111111]'
-                  }`}
-                >
-                  {v.name}
-                  {v.price_adjustment > 0 && (
-                    <span className="ml-1 text-[#9B6F47]">+৳{v.price_adjustment}</span>
-                  )}
-                </button>
-              ))}
+              {variants.map((v) => {
+                const outOfStock = v.stock_quantity === 0
+                const isSelected = selectedVariant === v.id
+                return (
+                  <button
+                    key={v.id}
+                    onClick={() => !outOfStock && setSelectedVariant(v.id)}
+                    disabled={outOfStock}
+                    className={`relative border px-4 py-2.5 text-xs tracking-wide transition-all duration-150 ${
+                      outOfStock
+                        ? 'cursor-not-allowed border-[#E5DFD6] text-[#C4BDB5] line-through'
+                        : isSelected
+                        ? 'border-[#111111] bg-[#111111] text-white'
+                        : 'border-[#E5DFD6] text-[#5C5652] hover:border-[#111111]'
+                    }`}
+                  >
+                    {v.name}
+                    {v.price_adjustment > 0 && !outOfStock && (
+                      <span className={`ml-1 ${isSelected ? 'text-white/70' : 'text-[#9B6F47]'}`}>+৳{v.price_adjustment}</span>
+                    )}
+                    {outOfStock && (
+                      <span className="ml-1 text-[10px] not-italic normal-case no-underline">sold out</span>
+                    )}
+                  </button>
+                )
+              })}
             </div>
           </div>
         )}

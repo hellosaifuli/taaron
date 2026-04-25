@@ -99,7 +99,7 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
                 alt={product.name}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 1024px) 50vw, 40vw"
+                sizes="(max-width: 1024px) 100vw, 40vw"
               />
               {/* Pill label — name + price */}
               <div className="absolute inset-x-0 bottom-3 flex justify-center px-3">

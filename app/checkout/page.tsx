@@ -189,10 +189,23 @@ export default function CheckoutPage() {
                   />
                   <div>
                     <p className="text-sm font-medium">bKash</p>
-                    <p className={`text-xs ${paymentMethod === 'bkash' ? 'text-white/60' : 'text-[#9E9690]'}`}>Pay securely with bKash</p>
+                    <p className={`text-xs ${paymentMethod === 'bkash' ? 'text-white/60' : 'text-[#9E9690]'}`}>Pay via bKash mobile transfer</p>
                   </div>
                 </label>
               </div>
+
+              {/* bKash payment instructions */}
+              {paymentMethod === 'bkash' && (
+                <div className="mt-4 border-l-2 border-[#9B6F47] bg-[#FEF9EE] px-4 py-4 text-sm">
+                  <p className="mb-2 text-[10px] uppercase tracking-widest text-[#9B6F47]">bKash Payment Instructions</p>
+                  <ol className="space-y-1.5 text-[#5C5652]" style={{ listStyleType: 'decimal', paddingLeft: '1.1rem' }}>
+                    <li>Place your order using the button below.</li>
+                    <li>Send <strong className="text-[#111111]">৳{total.toLocaleString()}</strong> to bKash number <strong className="text-[#111111]">01920-585212</strong> (Send Money).</li>
+                    <li>Use your order number as the reference.</li>
+                    <li>We will confirm your order once payment is received.</li>
+                  </ol>
+                </div>
+              )}
             </div>
 
             <button
@@ -237,6 +250,23 @@ export default function CheckoutPage() {
               ))}
             </div>
 
+            {/* Free shipping progress bar */}
+            {shipping > 0 && (
+              <div className="mt-5 rounded-sm bg-[#F7F4EF] px-4 py-3">
+                <div className="mb-2 flex justify-between text-[10px] uppercase tracking-wider text-[#5C5652]">
+                  <span>Free shipping progress</span>
+                  <span className="text-[#9B6F47]">৳{(3000 - subtotal).toLocaleString()} away</span>
+                </div>
+                <div className="h-1 w-full overflow-hidden rounded-full bg-[#E5DFD6]">
+                  <div
+                    className="h-full rounded-full bg-[#9B6F47] transition-all duration-500"
+                    style={{ width: `${Math.min(100, (subtotal / 3000) * 100)}%` }}
+                  />
+                </div>
+                <p className="mt-1.5 text-[10px] text-[#9E9690]">Free shipping on orders over ৳3,000</p>
+              </div>
+            )}
+
             <div className="mt-4 space-y-3 border-t border-[#E5DFD6] pt-5 text-sm">
               <div className="flex justify-between text-[#5C5652]">
                 <span>Subtotal</span>
@@ -250,7 +280,7 @@ export default function CheckoutPage() {
               </div>
               {shipping === 0 && (
                 <p className="text-[10px] uppercase tracking-wider text-[#9B6F47]">
-                  Free shipping on orders over ৳3,000
+                  Free shipping applied
                 </p>
               )}
               <div className="flex justify-between border-t border-[#E5DFD6] pt-4 font-semibold text-[#111111]">

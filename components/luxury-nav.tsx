@@ -47,6 +47,7 @@ export default function LuxuryNav() {
           </Link>
           <div className="h-4 w-px bg-[#E5DFD6]" />
           <div className="flex items-center gap-6">
+            <Link href="/contact" className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">Contact</Link>
             <Link href="/auth" className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">Account</Link>
             <Link href="/checkout" className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">
               {count > 0 ? `Cart (${count})` : 'Cart'}
