@@ -122,7 +122,7 @@ export default function ReturnsPage() {
               <div className="border border-[#DDE3EB] bg-white p-6">
                 <p className="text-[10px] uppercase tracking-widest text-[#7A8EA6]">Contact</p>
                 <a href="mailto:hello@taaron.com" className="mt-2 block text-sm font-medium text-[#1969B5] hover:underline">hello@taaron.com</a>
-                <p className="mt-1 text-xs text-[#4B5C73]">Or WhatsApp us</p>
+                <a href="https://wa.me/8801920585212" target="_blank" rel="noopener noreferrer" className="mt-1 block text-xs text-[#4B5C73] hover:underline">Or WhatsApp us: +880 1920-585212</a>
               </div>
             </div>
           </FadeInSection>

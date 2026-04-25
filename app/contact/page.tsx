@@ -36,8 +36,8 @@ export default function ContactPage() {
 
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-[#7A8EA6]">WhatsApp / Phone</p>
-                <a href="tel:+8801XXXXXXXXX" className="mt-2 block text-lg font-medium text-[#1E2737] transition-colors hover:text-[#1969B5]">
-                  +880 1XXX-XXXXXX
+                <a href="https://wa.me/8801920585212" target="_blank" rel="noopener noreferrer" className="mt-2 block text-lg font-medium text-[#1E2737] transition-colors hover:text-[#1969B5]">
+                  +880 1920-585212
                 </a>
                 <p className="mt-1 text-xs text-[#7A8EA6]">Sun – Thu, 10am – 7pm BST</p>
               </div>
