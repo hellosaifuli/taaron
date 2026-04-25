@@ -60,7 +60,7 @@ export default async function Home() {
       <Script id="org-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       <Script id="website-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
 
-      <BannerSlider />
+      <BannerSlider featuredProducts={products} />
       <ProductMasonry initialProducts={products} />
     </>
   )
