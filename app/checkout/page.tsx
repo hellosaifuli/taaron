@@ -93,36 +93,6 @@ export default function CheckoutPage() {
           <div className="mt-3 h-px w-12 bg-[#9B6F47]" />
         </div>
 
-        {/* ─── Our Promise / Built Different ─────────────────────────── */}
-        <div className="mb-16 py-12 border-b border-[#E5DFD6]">
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Our Promise</p>
-            <h2 className="mt-3 font-serif leading-tight text-[#111111]" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
-              Built Different.
-            </h2>
-          </div>
-          <div className="mt-10 grid gap-8 sm:grid-cols-3">
-            <div>
-              <p className="font-serif text-[#9B6F47]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>01</p>
-              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#111111]">Full-Grain Leather</h3>
-              <div className="mt-2 h-px w-6 bg-[#9B6F47]" />
-              <p className="mt-3 text-sm leading-relaxed text-[#5C5652]">Top-tier hides that develop a rich patina over time — your piece becomes more beautiful with every use.</p>
-            </div>
-            <div>
-              <p className="font-serif text-[#9B6F47]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>02</p>
-              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#111111]">Artisanal Craft</h3>
-              <div className="mt-2 h-px w-6 bg-[#9B6F47]" />
-              <p className="mt-3 text-sm leading-relaxed text-[#5C5652]">Hand-stitched edges, burnished corners, and precision hardware. Each detail is intentional, built to last decades.</p>
-            </div>
-            <div>
-              <p className="font-serif text-[#9B6F47]/20" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 4rem)' }}>03</p>
-              <h3 className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#111111]">Quiet Luxury</h3>
-              <div className="mt-2 h-px w-6 bg-[#9B6F47]" />
-              <p className="mt-3 text-sm leading-relaxed text-[#5C5652]">No logos, no noise. Just honest materials, clean lines, and the confidence of owning something truly well-made.</p>
-            </div>
-          </div>
-        </div>
-
         <div className="grid gap-10 lg:grid-cols-[1fr_400px] lg:gap-16 xl:grid-cols-[1fr_440px]">
 
           {/* ── Form — order-2 on mobile so summary shows first ── */}
@@ -320,15 +290,6 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div className="mt-6 space-y-2 border-t border-[#E5DFD6] pt-6">
-              <p className="text-[10px] uppercase tracking-wider text-[#9E9690]">Guaranteed</p>
-              {['Secure checkout', 'COD & bKash accepted', '30-day returns'].map((t) => (
-                <div key={t} className="flex items-center gap-2 text-xs text-[#5C5652]">
-                  <div className="h-px w-3 bg-[#9B6F47]" />
-                  {t}
-                </div>
-              ))}
-            </div>
           </aside>
         </div>
       </div>
