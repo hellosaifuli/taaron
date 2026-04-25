@@ -1,9 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
-import Image from 'next/image'
 import AddToCart from '@/components/add-to-cart'
 import RelatedProducts from '@/components/related-products'
 import ProductAccordion from '@/components/product-accordion'
+import ProductGallery from '@/components/product-gallery'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
 
@@ -81,8 +80,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
     ...(extraImages ?? []).map((img) => ({ url: img.url, alt: img.alt || product.name })),
   ]
 
-  const mainImage = allImages[0]
-
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -112,63 +109,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* ── Editorial split: image left | info right ─────────────── */}
         <div className="lg:flex lg:min-h-screen">
 
-          {/* Gallery — full-bleed left panel, sticky on desktop */}
-          <div className="relative lg:sticky lg:top-0 lg:h-screen lg:w-[58%] lg:flex-shrink-0 lg:overflow-hidden">
-
-            {/* Main image */}
-            <div className="relative w-full overflow-hidden bg-[#EDE9E3]" style={{ aspectRatio: '4/5', maxHeight: '85vh' }}>
-              {mainImage ? (
-                <Image
-                  src={mainImage.url}
-                  alt={mainImage.alt || product.name}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-sm text-[#9E9690]">
-                  No image
-                </div>
-              )}
-
-              {/* Gradient fade to cream at bottom */}
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F7F4EF] to-transparent lg:hidden" />
-
-              {/* Breadcrumb overlay */}
-              <nav aria-label="Breadcrumb" className="absolute top-24 left-6 lg:top-8 lg:left-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#111111]/50 mix-blend-multiply">
-                <Link href="/" className="transition-colors hover:text-[#111111]">Home</Link>
-                <span>/</span>
-                <Link href="/category/all" className="transition-colors hover:text-[#111111]">Shop</Link>
-                <span>/</span>
-                <span className="text-[#111111]/30">{product.name}</span>
-              </nav>
-
-              {/* Image count */}
-              {allImages.length > 1 && (
-                <div className="absolute bottom-4 right-4 bg-black/30 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white backdrop-blur-sm">
-                  1 / {allImages.length}
-                </div>
-              )}
-            </div>
-
-            {/* Thumbnail strip — desktop only */}
-            {allImages.length > 1 && (
-              <div className="hidden lg:flex gap-1.5 bg-[#F7F4EF] p-3">
-                {allImages.slice(0, 6).map((img, i) => (
-                  <div key={i} className="relative h-16 flex-1 overflow-hidden bg-[#EDE9E3]">
-                    <Image
-                      src={img.url}
-                      alt={img.alt || product.name}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductGallery images={allImages} productName={product.name} />
 
           {/* ── Right panel: product info ─────────────────────────── */}
           <div className="flex flex-col px-6 pb-24 pt-10 lg:flex-1 lg:overflow-y-auto lg:px-14 lg:pt-28 lg:pb-20">
@@ -215,16 +156,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Accordion */}
             <ProductAccordion items={sections} />
 
-            {/* Thumbnail strip — mobile only */}
-            {allImages.length > 1 && (
-              <div className="mt-8 flex gap-2 overflow-x-auto pb-2 lg:hidden">
-                {allImages.map((img, i) => (
-                  <div key={i} className="relative h-20 w-20 flex-shrink-0 overflow-hidden bg-[#EDE9E3]">
-                    <Image src={img.url} alt={img.alt || product.name} fill className="object-cover" sizes="80px" />
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 

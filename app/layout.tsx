@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 import LuxuryNav from '@/components/luxury-nav'
 import SiteFooter from '@/components/site-footer'
 import { CartProvider } from '@/components/cart-provider'
+import PageLoader from '@/components/page-loader'
 import './globals.css'
 
 const inter = Inter({
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className={inter.variable}>
       <body className="bg-[#F7F4EF] text-[#111111] selection:bg-[#9B6F47]/15" style={{ fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
         <CartProvider>
+          <PageLoader />
           <LuxuryNav />
           <main>{children}</main>
           <SiteFooter />

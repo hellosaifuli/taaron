@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { fetchProducts, type Product } from '@/app/actions/products'
+import StitchImage from '@/components/stitch-image'
 
 const PLACEHOLDER_IMAGES = [
   'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80',
@@ -94,10 +95,9 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
                 pat.oval ? 'lg:rounded-full' : '',
               ].join(' ')}
             >
-              <Image
+              <StitchImage
                 src={img}
                 alt={product.name}
-                fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 40vw"
               />

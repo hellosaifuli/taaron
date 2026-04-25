@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
+import Link from 'next/link'
+import StitchImage from '@/components/stitch-image'
 
 interface GalleryImage {
   url: string
@@ -14,79 +15,57 @@ interface ProductGalleryProps {
 }
 
 export default function ProductGallery({ images, productName }: ProductGalleryProps) {
-  const [active, setActive] = useState(0)
-  const [zoomed, setZoomed] = useState(false)
-  const [prev, setPrev] = useState<number | null>(null)
-  const [dir, setDir] = useState<'left' | 'right'>('right')
+  const [activeIdx, setActiveIdx] = useState(0)
+  const active = images[activeIdx] ?? images[0]
 
-  if (images.length === 0) {
+  if (!active) {
     return (
-      <div className="flex aspect-[4/5] items-center justify-center bg-[#EEF2F7] text-sm text-[#7A8EA6]">
-        No image available
+      <div className="relative lg:sticky lg:top-0 lg:h-screen lg:w-[58%] lg:flex-shrink-0">
+        <div className="flex aspect-[4/5] max-h-[85vh] w-full items-center justify-center bg-[#EDE9E3] text-sm text-[#9E9690]">
+          No image
+        </div>
       </div>
     )
   }
 
-  const navigate = (nextIdx: number) => {
-    if (nextIdx === active) return
-    setDir(nextIdx > active ? 'right' : 'left')
-    setPrev(active)
-    setActive(nextIdx)
-    setTimeout(() => setPrev(null), 500)
-  }
-
-  const current = images[active]!
-
   return (
-    <div className="flex flex-col gap-3">
+    <div className="relative lg:sticky lg:top-0 lg:h-screen lg:w-[58%] lg:flex-shrink-0 lg:overflow-hidden">
+
       {/* Main image */}
-      <div
-        className={`relative aspect-[4/5] overflow-hidden bg-[#EEF2F7] ${zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
-        onClick={() => setZoomed((z) => !z)}
-      >
-        {/* Current image */}
-        <Image
-          src={current.url}
-          alt={current.alt || productName}
-          fill
-          className={`object-cover transition-all duration-500 ${
-            zoomed ? 'scale-150' : 'scale-100'
-          } ${prev !== null ? (dir === 'right' ? 'animate-slide-in-right' : 'animate-slide-in-left') : ''}`}
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          priority
+      <div className="relative w-full overflow-hidden bg-[#EDE9E3]" style={{ aspectRatio: '4/5', maxHeight: '85vh' }}>
+        <StitchImage
+          src={active.url}
+          alt={active.alt || productName}
+          className="object-cover"
+          priority={activeIdx === 0}
+          sizes="(max-width: 1024px) 100vw, 58vw"
         />
 
-        {/* Previous image fading out */}
-        {prev !== null && images[prev] && (
-          <Image
-            src={images[prev].url}
-            alt={images[prev]?.alt || productName}
-            fill
-            className={`object-cover transition-opacity duration-500 opacity-0`}
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-        )}
+        {/* Gradient fade to cream at bottom — mobile only */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F7F4EF] to-transparent lg:hidden" />
 
-        {/* Zoom hint */}
-        {!zoomed && (
-          <div className="absolute right-3 top-3 bg-[#1E2737]/50 px-2 py-1 text-[9px] uppercase tracking-widest text-white backdrop-blur-sm opacity-0 transition-opacity duration-300 hover:opacity-100 group-hover:opacity-100">
-            Click to zoom
-          </div>
-        )}
+        {/* Breadcrumb overlay */}
+        <nav aria-label="Breadcrumb" className="absolute top-24 left-6 lg:top-8 lg:left-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#111111]/50 mix-blend-multiply">
+          <Link href="/" className="transition-colors hover:text-[#111111]">Home</Link>
+          <span>/</span>
+          <Link href="/category/all" className="transition-colors hover:text-[#111111]">Shop</Link>
+          <span>/</span>
+          <span className="text-[#111111]/30">{productName}</span>
+        </nav>
 
-        {/* Counter */}
+        {/* Image counter */}
         {images.length > 1 && (
-          <div className="absolute bottom-4 right-4 bg-[#1E2737]/60 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white backdrop-blur-sm">
-            {active + 1} / {images.length}
+          <div className="absolute bottom-4 right-4 bg-black/30 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white backdrop-blur-sm">
+            {activeIdx + 1} / {images.length}
           </div>
         )}
 
-        {/* Prev / Next */}
+        {/* Prev / Next arrows */}
         {images.length > 1 && (
           <>
             <button
-              onClick={(e) => { e.stopPropagation(); navigate((active - 1 + images.length) % images.length) }}
-              className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 p-2 text-[#1E2737] shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:shadow-md"
+              onClick={() => setActiveIdx((i) => (i - 1 + images.length) % images.length)}
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center bg-white/80 text-[#111111] backdrop-blur-sm transition-colors hover:bg-white"
               aria-label="Previous image"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,8 +73,8 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               </svg>
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); navigate((active + 1) % images.length) }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 p-2 text-[#1E2737] shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:shadow-md"
+              onClick={() => setActiveIdx((i) => (i + 1) % images.length)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center bg-white/80 text-[#111111] backdrop-blur-sm transition-colors hover:bg-white"
               aria-label="Next image"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,25 +85,24 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         )}
       </div>
 
-      {/* Thumbnails */}
+      {/* Thumbnail strip — desktop, interactive */}
       {images.length > 1 && (
-        <div className="grid grid-cols-5 gap-2">
-          {images.map((img, i) => (
+        <div className="hidden lg:flex gap-1.5 bg-[#F7F4EF] p-3">
+          {images.slice(0, 6).map((img, i) => (
             <button
               key={i}
-              onClick={() => navigate(i)}
-              aria-label={`View image ${i + 1}`}
-              className={`group relative aspect-square overflow-hidden bg-[#EEF2F7] transition-all duration-300 ${
-                i === active
-                  ? 'ring-1 ring-[#1E2737] ring-offset-2'
-                  : 'opacity-50 hover:opacity-90'
+              onClick={() => setActiveIdx(i)}
+              className={`relative h-16 flex-1 overflow-hidden bg-[#EDE9E3] transition-all duration-200 ${
+                i === activeIdx
+                  ? 'ring-1 ring-[#9B6F47] ring-offset-1'
+                  : 'opacity-55 hover:opacity-100'
               }`}
+              aria-label={`View image ${i + 1}`}
             >
-              <Image
+              <StitchImage
                 src={img.url}
-                alt={img.alt || `${productName} view ${i + 1}`}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-110"
+                alt={img.alt || productName}
+                className="object-cover"
                 sizes="80px"
               />
             </button>
@@ -132,18 +110,27 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         </div>
       )}
 
-      {/* Dot indicators (mobile) */}
+      {/* Thumbnail strip — mobile, interactive */}
       {images.length > 1 && (
-        <div className="flex justify-center gap-1.5 lg:hidden">
-          {images.map((_, i) => (
+        <div className="flex gap-2 overflow-x-auto bg-[#F7F4EF] px-4 pb-4 pt-2 lg:hidden">
+          {images.map((img, i) => (
             <button
               key={i}
-              onClick={() => navigate(i)}
-              className={`h-1 rounded-full transition-all duration-300 ${
-                i === active ? 'w-6 bg-[#1E2737]' : 'w-2 bg-[#CBD5E1]'
+              onClick={() => setActiveIdx(i)}
+              className={`relative h-20 w-20 flex-shrink-0 overflow-hidden bg-[#EDE9E3] transition-all duration-200 ${
+                i === activeIdx
+                  ? 'ring-1 ring-[#9B6F47] ring-offset-1'
+                  : 'opacity-55 hover:opacity-100'
               }`}
-              aria-label={`Go to image ${i + 1}`}
-            />
+              aria-label={`View image ${i + 1}`}
+            >
+              <StitchImage
+                src={img.url}
+                alt={img.alt || productName}
+                className="object-cover"
+                sizes="80px"
+              />
+            </button>
           ))}
         </div>
       )}
