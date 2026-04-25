@@ -59,43 +59,44 @@ const faqs = [
 
 export default function ReturnsPage() {
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#1E2737] pt-24">
+    <div className="min-h-screen bg-[#F7F4EF] text-[#111111] pt-24">
 
       {/* Header */}
       <div className="mx-auto max-w-screen-xl px-6 py-16 lg:px-12 lg:py-20">
         <FadeInSection>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">Taaron / Support</p>
+          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Taaron / Support</p>
           <h1
             className="mt-3 font-serif text-4xl font-bold lg:text-5xl xl:text-6xl"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Returns &amp; Exchanges
           </h1>
-          <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#4B5C73]">
+          <div className="mt-4 h-px w-12 bg-[#9B6F47]" />
+          <p className="mt-5 max-w-lg text-sm leading-relaxed text-[#5C5652]">
             Not quite right? No problem. We accept returns within 30 days of delivery — no fuss, no questions.
           </p>
         </FadeInSection>
       </div>
 
       {/* Process steps */}
-      <section className="border-y border-[#EBEBEB] bg-white px-6 py-16 lg:px-12 lg:py-20">
+      <section className="border-y border-[#E5DFD6] bg-white px-6 py-16 lg:px-12 lg:py-20">
         <div className="mx-auto max-w-screen-xl">
           <FadeInSection>
-            <p className="mb-12 text-[10px] uppercase tracking-[0.4em] text-[#7A8EA6]">How it works</p>
+            <p className="mb-12 text-[10px] uppercase tracking-[0.4em] text-[#9E9690]">How it works</p>
           </FadeInSection>
           <div className="grid gap-10 md:grid-cols-4">
             {steps.map((step, idx) => (
               <FadeInSection key={step.n} delay={idx * 100}>
                 <div className="group">
                   <p
-                    className="font-serif text-5xl font-medium text-[#1969B5]/20 transition-colors duration-500 group-hover:text-[#1969B5]/60"
+                    className="font-serif text-5xl font-medium text-[#9B6F47]/20 transition-colors duration-500 group-hover:text-[#9B6F47]/60"
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
                     {step.n}
                   </p>
-                  <h3 className="mt-4 text-sm font-semibold uppercase tracking-widest text-[#1E2737]">{step.title}</h3>
-                  <div className="mt-3 h-px w-8 bg-[#1969B5] transition-all duration-500 group-hover:w-16" />
-                  <p className="mt-4 text-sm leading-loose text-[#4B5C73]">{step.body}</p>
+                  <h3 className="mt-4 text-sm font-semibold uppercase tracking-widest text-[#111111]">{step.title}</h3>
+                  <div className="mt-3 h-px w-8 bg-[#9B6F47] transition-all duration-500 group-hover:w-16" />
+                  <p className="mt-4 text-sm leading-loose text-[#5C5652]">{step.body}</p>
                 </div>
               </FadeInSection>
             ))}
@@ -108,42 +109,49 @@ export default function ReturnsPage() {
         <div className="grid gap-16 lg:grid-cols-[1fr_1.5fr]">
 
           <FadeInSection>
-            <div className="space-y-6">
-              <div className="border border-[#DDE3EB] bg-white p-6">
-                <p className="text-[10px] uppercase tracking-widest text-[#7A8EA6]">Return Window</p>
-                <p className="mt-2 text-2xl font-semibold text-[#1E2737]">30 Days</p>
-                <p className="mt-1 text-xs text-[#4B5C73]">From date of delivery</p>
+            <div className="space-y-4">
+              <div className="group border border-[#E5DFD6] bg-white p-6 transition-all duration-300 hover:border-[#9B6F47] hover:-translate-y-0.5 hover:shadow-sm">
+                <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Return Window</p>
+                <p className="mt-2 text-2xl font-semibold text-[#111111]">30 Days</p>
+                <p className="mt-1 text-xs text-[#5C5652]">From date of delivery</p>
               </div>
-              <div className="border border-[#DDE3EB] bg-white p-6">
-                <p className="text-[10px] uppercase tracking-widest text-[#7A8EA6]">Refund Method</p>
-                <p className="mt-2 text-sm font-medium text-[#1E2737]">bKash · Bank Transfer</p>
-                <p className="mt-1 text-xs text-[#4B5C73]">3–5 business days after inspection</p>
+              <div className="group border border-[#E5DFD6] bg-white p-6 transition-all duration-300 hover:border-[#9B6F47] hover:-translate-y-0.5 hover:shadow-sm">
+                <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Refund Method</p>
+                <p className="mt-2 text-sm font-medium text-[#111111]">bKash · Bank Transfer</p>
+                <p className="mt-1 text-xs text-[#5C5652]">3–5 business days after inspection</p>
               </div>
-              <div className="border border-[#DDE3EB] bg-white p-6">
-                <p className="text-[10px] uppercase tracking-widest text-[#7A8EA6]">Contact</p>
-                <a href="mailto:hello@taaron.com" className="mt-2 block text-sm font-medium text-[#1969B5] hover:underline">hello@taaron.com</a>
-                <a href="https://wa.me/8801920585212" target="_blank" rel="noopener noreferrer" className="mt-1 block text-xs text-[#4B5C73] hover:underline">Or WhatsApp us: +880 1920-585212</a>
+              <div className="group border border-[#E5DFD6] bg-white p-6 transition-all duration-300 hover:border-[#9B6F47] hover:-translate-y-0.5 hover:shadow-sm">
+                <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Contact</p>
+                <a href="mailto:hello@taaron.com" className="mt-2 block text-sm font-medium text-[#9B6F47] hover:underline">
+                  hello@taaron.com
+                </a>
+                <a href="https://wa.me/8801920585212" target="_blank" rel="noopener noreferrer" className="mt-1 block text-xs text-[#5C5652] hover:text-[#9B6F47] transition-colors">
+                  Or WhatsApp us: +880 1920-585212
+                </a>
               </div>
             </div>
           </FadeInSection>
 
           {/* FAQ */}
           <FadeInSection delay={100}>
-            <p className="mb-8 text-[10px] uppercase tracking-[0.4em] text-[#7A8EA6]">Common Questions</p>
-            <dl className="divide-y divide-[#DDE3EB]">
+            <p className="mb-8 text-[10px] uppercase tracking-[0.4em] text-[#9E9690]">Common Questions</p>
+            <dl className="divide-y divide-[#E5DFD6]">
               {faqs.map((faq) => (
-                <div key={faq.q} className="py-5">
-                  <dt className="text-sm font-semibold text-[#1E2737]">{faq.q}</dt>
-                  <dd className="mt-2 text-sm leading-loose text-[#4B5C73]">{faq.a}</dd>
+                <div key={faq.q} className="group py-5">
+                  <dt className="text-sm font-semibold text-[#111111] transition-colors group-hover:text-[#9B6F47]">
+                    {faq.q}
+                  </dt>
+                  <dd className="mt-2 text-sm leading-loose text-[#5C5652]">{faq.a}</dd>
                 </div>
               ))}
             </dl>
           </FadeInSection>
+
         </div>
       </section>
 
       {/* CTA */}
-      <section className="border-t border-[#EBEBEB] bg-[#1E2737] px-6 py-16 lg:px-12">
+      <section className="border-t border-[#E5DFD6] bg-[#111111] px-6 py-16 lg:px-12">
         <div className="mx-auto max-w-screen-xl text-center">
           <FadeInSection>
             <h2
@@ -152,10 +160,10 @@ export default function ReturnsPage() {
             >
               Ready to start a return?
             </h2>
-            <p className="mt-3 text-sm text-[#7A8EA6]">Get in touch and we&apos;ll handle the rest.</p>
+            <p className="mt-3 text-sm text-[#9E9690]">Get in touch and we&apos;ll handle the rest.</p>
             <Link
               href="/contact"
-              className="mt-8 inline-block border border-white/30 px-10 py-3.5 text-[11px] uppercase tracking-[0.2em] text-white transition-all hover:border-white hover:bg-white hover:text-[#1E2737]"
+              className="mt-8 inline-block border border-white/30 px-10 py-3.5 text-[11px] uppercase tracking-[0.2em] text-white transition-all duration-300 hover:border-[#9B6F47] hover:bg-[#9B6F47]"
             >
               Contact Us
             </Link>

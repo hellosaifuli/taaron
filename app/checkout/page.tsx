@@ -118,7 +118,7 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     required
                     placeholder="Enter your full name"
-                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#9E9690] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
@@ -129,7 +129,7 @@ export default function CheckoutPage() {
                     value={formData.customer_email}
                     onChange={handleChange}
                     placeholder="email@example.com"
-                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#9E9690] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
@@ -141,7 +141,7 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     required
                     placeholder="+880 1XXXXXXXXX"
-                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#9E9690] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -153,7 +153,7 @@ export default function CheckoutPage() {
                     required
                     rows={3}
                     placeholder="House, Road, Area"
-                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#9E9690] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
@@ -165,7 +165,7 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     required
                     placeholder="Dhaka"
-                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#9E9690] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
@@ -176,7 +176,7 @@ export default function CheckoutPage() {
                     value={formData.shipping_postal_code}
                     onChange={handleChange}
                     placeholder="1200"
-                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#CBD5E1] focus:border-[#111111]"
+                    className="w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#9E9690] focus:border-[#9B6F47]"
                   />
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function CheckoutPage() {
                 Payment Method
               </h2>
               <div className="space-y-3">
-                <label className={`flex cursor-pointer items-center gap-4 border px-5 py-4 transition-colors ${paymentMethod === 'cod' ? 'border-[#1E2737] bg-white' : 'border-[#E5DFD6] hover:border-[#7A8EA6]'}`}>
+                <label className={`flex cursor-pointer items-center gap-4 border px-5 py-4 transition-colors ${paymentMethod === 'cod' ? 'border-[#9B6F47] bg-white' : 'border-[#E5DFD6] hover:border-[#9E9690]'}`}>
                   <input
                     type="radio"
                     value="cod"
@@ -201,7 +201,7 @@ export default function CheckoutPage() {
                     <p className="text-xs text-[#9E9690]">Pay when your order arrives</p>
                   </div>
                 </label>
-                <label className={`flex cursor-pointer items-center gap-4 border px-5 py-4 transition-colors ${paymentMethod === 'bkash' ? 'border-[#1E2737] bg-white' : 'border-[#E5DFD6] hover:border-[#7A8EA6]'}`}>
+                <label className={`flex cursor-pointer items-center gap-4 border px-5 py-4 transition-colors ${paymentMethod === 'bkash' ? 'border-[#9B6F47] bg-white' : 'border-[#E5DFD6] hover:border-[#9E9690]'}`}>
                   <input
                     type="radio"
                     value="bkash"
