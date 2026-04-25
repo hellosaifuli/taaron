@@ -112,51 +112,51 @@ export default function CheckoutPage() {
               <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-[#9E9690]">Shipping Information</p>
               <div className="grid gap-8 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <label className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Full Name *</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Full Name *</label>
                   <input
                     type="text" name="customer_name" value={formData.customer_name}
                     onChange={handleChange} required placeholder="Enter your full name"
-                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#C5BEB7] focus:border-[#9B6F47]"
+                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Email</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Email</label>
                   <input
                     type="email" name="customer_email" value={formData.customer_email}
                     onChange={handleChange} placeholder="email@example.com"
-                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#C5BEB7] focus:border-[#9B6F47]"
+                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Phone *</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Phone *</label>
                   <input
                     type="tel" name="customer_phone" value={formData.customer_phone}
                     onChange={handleChange} required placeholder="+880 1XXXXXXXXX"
-                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#C5BEB7] focus:border-[#9B6F47]"
+                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Address *</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Address *</label>
                   <textarea
                     name="shipping_address" value={formData.shipping_address}
                     onChange={handleChange} required rows={2} placeholder="House, Road, Area"
-                    className="mt-2 w-full resize-none border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#C5BEB7] focus:border-[#9B6F47]"
+                    className="mt-2 w-full resize-none border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#9E9690]">City *</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">City *</label>
                   <input
                     type="text" name="shipping_city" value={formData.shipping_city}
                     onChange={handleChange} required placeholder="Dhaka"
-                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#C5BEB7] focus:border-[#9B6F47]"
+                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#9E9690]">Postal Code</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">Postal Code</label>
                   <input
                     type="text" name="shipping_postal_code" value={formData.shipping_postal_code}
                     onChange={handleChange} placeholder="1200"
-                    className="mt-2 w-full border-0 border-b border-[#E5DFD6] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#C5BEB7] focus:border-[#9B6F47]"
+                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
                   />
                 </div>
               </div>
