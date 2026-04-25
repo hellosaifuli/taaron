@@ -65,7 +65,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #F7F4EF 0%, transparent 60%)' }} />
 
         <div className="relative">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Taaron / Collection</p>
           <h1
             className="mt-2 text-[#111111]"
             style={{
