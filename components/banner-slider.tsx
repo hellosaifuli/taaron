@@ -2,11 +2,86 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import type { Product } from '@/app/actions/products'
 
 interface BannerSliderProps {
   featuredProducts?: Product[]
+}
+
+interface Star {
+  id: number
+  x: number
+  y: number
+  size: number
+  opacity: number
+  duration: number
+  delay: number
+  driftX: number
+  driftY: number
+}
+
+function StarField() {
+  const [reduced, setReduced] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduced(mq.matches)
+    const handler = () => setReduced(mq.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  const stars = useMemo<Star[]>(() => {
+    const rng = (seed: number) => {
+      let s = seed
+      return () => { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646 }
+    }
+    const rand = rng(42)
+    return Array.from({ length: 14 }, (_, i) => ({
+      id: i,
+      x: rand() * 100,
+      y: rand() * 100,
+      size: 1 + rand() * 1.5,
+      opacity: 0.04 + rand() * 0.07,
+      duration: 18 + rand() * 20,
+      delay: -(rand() * 20),
+      driftX: (rand() - 0.5) * 3,
+      driftY: (rand() - 0.5) * 3,
+    }))
+  }, [])
+
+  if (reduced) return null
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      {stars.map((s) => (
+        <div
+          key={s.id}
+          style={{
+            position: 'absolute',
+            left: `${s.x}%`,
+            top: `${s.y}%`,
+            width: `${s.size}px`,
+            height: `${s.size}px`,
+            borderRadius: '50%',
+            background: '#9B6F47',
+            opacity: s.opacity,
+            animation: `starDrift ${s.duration}s ${s.delay}s linear infinite`,
+            '--dx': `${s.driftX}vw`,
+            '--dy': `${s.driftY}vh`,
+          } as React.CSSProperties}
+        />
+      ))}
+      <style>{`
+        @keyframes starDrift {
+          0%   { transform: translate(0, 0) scale(1); opacity: var(--op, 0.06); }
+          50%  { transform: translate(var(--dx), var(--dy)) scale(1.4); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
+      `}</style>
+    </div>
+  )
 }
 
 export default function BannerSlider({ featuredProducts = [] }: BannerSliderProps) {
@@ -42,8 +117,10 @@ export default function BannerSlider({ featuredProducts = [] }: BannerSliderProp
   return (
     <section className="relative flex h-svh min-h-[580px] flex-col bg-[#F7F4EF]">
 
+      <StarField />
+
       {/* Headline */}
-      <div className="flex-shrink-0 px-4 pb-4 pt-[88px] text-center sm:pb-6 sm:pt-[92px]">
+      <div className="relative flex-shrink-0 px-4 pb-4 pt-[88px] text-center sm:pb-6 sm:pt-[92px]">
         <p className="mb-2 text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Crafted in Leather</p>
         <h1
           style={{
@@ -66,7 +143,7 @@ export default function BannerSlider({ featuredProducts = [] }: BannerSliderProp
       {/* Arch panels */}
       <div
         ref={containerRef}
-        className="flex flex-1 snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-3 pb-3 lg:overflow-visible lg:snap-none"
+        className="relative flex flex-1 snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-3 pb-3 lg:overflow-visible lg:snap-none"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {panels.map((panel, i) => (
@@ -76,7 +153,6 @@ export default function BannerSlider({ featuredProducts = [] }: BannerSliderProp
             className="group relative flex-shrink-0 snap-center bg-[#EDE9E3] w-[calc(100vw-24px)] lg:w-auto lg:flex-1"
             style={{ borderTopLeftRadius: '9999px', borderTopRightRadius: '9999px' }}
           >
-            {/* Inner clip */}
             <div
               className="absolute inset-0 overflow-hidden"
               style={{ borderTopLeftRadius: '9999px', borderTopRightRadius: '9999px' }}
@@ -94,7 +170,6 @@ export default function BannerSlider({ featuredProducts = [] }: BannerSliderProp
                 <div className="h-full w-full bg-[#EDE9E3]" />
               )}
             </div>
-            {/* Product name pill */}
             <div className="absolute inset-x-0 bottom-5 flex justify-center px-4">
               <span className="max-w-[80%] truncate rounded-full bg-black/40 px-5 py-2 text-[11px] uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-black/60 text-center">
                 {panel.label}
