@@ -86,8 +86,7 @@ export default function CheckoutPage() {
 
         {/* Header */}
         <div className="mb-12">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">Taaron</p>
-          <h1 className="mt-2 font-serif text-3xl font-medium lg:text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
+          <h1 className="font-serif text-3xl font-medium lg:text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
             Checkout
           </h1>
           <div className="mt-3 h-px w-12 bg-[#9B6F47]" />
