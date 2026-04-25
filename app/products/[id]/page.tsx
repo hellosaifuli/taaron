@@ -38,13 +38,6 @@ export async function generateMetadata({ params }: ProductPageProps) {
   }
 }
 
-const trustItems = [
-  'Free shipping on orders over ৳3,000',
-  'COD & bKash accepted',
-  '100% genuine full-grain leather',
-  '30-day hassle-free returns',
-]
-
 const accordionSections = (description: string | null) => [
   {
     title: 'Description',
@@ -216,16 +209,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Add to cart */}
             <div className="mt-8">
               <AddToCart product={product} />
-            </div>
-
-            {/* Trust signals */}
-            <div className="mt-8 space-y-3">
-              {trustItems.map((t) => (
-                <div key={t} className="flex items-center gap-3 text-xs text-[#5C5652]">
-                  <div className="h-px w-3 flex-shrink-0 bg-[#9B6F47]" />
-                  {t}
-                </div>
-              ))}
             </div>
 
             {/* Divider */}
