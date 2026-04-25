@@ -82,7 +82,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </div>
 
       {/* ── Product count bar ────────────────────────────────── */}
-      <div className="border-b border-[#E5DFD6] px-6 py-4 lg:px-12">
+      <div className="px-6 py-4 lg:px-12">
         <p className="text-[10px] uppercase tracking-[0.3em] text-[#9E9690]">
           {displayProducts.length} {displayProducts.length === 1 ? 'Product' : 'Products'}
         </p>
