@@ -27,11 +27,11 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const meta = categoryMeta[slug]
   if (!meta) return {}
   return {
-    title: `${meta.name} — Taaron`,
+    title: meta.name,
     description: meta.description,
     alternates: { canonical: `${baseUrl}/category/${slug}` },
     openGraph: {
-      title: `${meta.name} — Taaron`,
+      title: meta.name,
       description: meta.description,
       url: `${baseUrl}/category/${slug}`,
       siteName: 'Taaron',
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${meta.name} — Taaron`,
+      title: meta.name,
       description: meta.description,
       images: [`${baseUrl}/taaron-logo.png`],
     },

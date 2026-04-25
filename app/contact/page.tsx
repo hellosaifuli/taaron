@@ -7,11 +7,11 @@ const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
   : 'http://localhost:3000'
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Taaron',
+  title: 'Contact Us',
   description: "Get in touch with Taaron. We're here to help with orders, product questions, and anything else. Respond within one business day.",
   alternates: { canonical: `${baseUrl}/contact` },
   openGraph: {
-    title: 'Contact Us — Taaron',
+    title: 'Contact Us',
     description: "Questions about an order or product? Reach us via WhatsApp, email, or the contact form. We respond within one business day.",
     url: `${baseUrl}/contact`,
     siteName: 'Taaron',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Us — Taaron',
+    title: 'Contact Us',
     description: "Get in touch with Taaron. We respond within one business day.",
     images: [`${baseUrl}/taaron-logo.png`],
   },

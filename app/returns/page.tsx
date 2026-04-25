@@ -7,11 +7,11 @@ const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
   : 'http://localhost:3000'
 
 export const metadata: Metadata = {
-  title: 'Returns & Exchanges — Taaron',
+  title: 'Returns & Exchanges',
   description: '30-day hassle-free returns and exchanges on all Taaron leather goods. Unused condition required. Full refund via bKash or bank transfer.',
   alternates: { canonical: `${baseUrl}/returns` },
   openGraph: {
-    title: 'Returns & Exchanges — Taaron',
+    title: 'Returns & Exchanges',
     description: '30-day hassle-free returns. Full refund via bKash or bank transfer within 3–5 business days after inspection.',
     url: `${baseUrl}/returns`,
     siteName: 'Taaron',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Returns & Exchanges — Taaron',
+    title: 'Returns & Exchanges',
     description: '30-day hassle-free returns on all Taaron leather goods.',
     images: [`${baseUrl}/taaron-logo.png`],
   },
