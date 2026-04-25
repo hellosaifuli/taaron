@@ -1,11 +1,12 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useCart } from '@/components/cart-provider'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -13,6 +14,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'bkash'>('cod')
+  const [isGuest, setIsGuest] = useState(true)
   const [formData, setFormData] = useState({
     customer_name: '',
     customer_email: '',
@@ -21,6 +23,17 @@ export default function CheckoutPage() {
     shipping_city: '',
     shipping_postal_code: '',
   })
+
+  // Pre-fill email if the user is already signed in
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        setIsGuest(false)
+        setFormData((prev) => ({ ...prev, customer_email: user.email ?? '' }))
+      }
+    })
+  }, [])
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const shipping = subtotal > 3000 ? 0 : 100
@@ -41,10 +54,6 @@ export default function CheckoutPage() {
         body: JSON.stringify({ items, payment_method: paymentMethod, ...formData }),
       })
       const data = await response.json()
-      if (response.status === 401) {
-        router.push('/auth?redirect=/checkout')
-        return
-      }
       if (!response.ok) {
         setError(data.error || 'Failed to create order')
       } else {
@@ -104,6 +113,20 @@ export default function CheckoutPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="order-2 lg:order-1">
+
+            {/* Guest sign-in nudge */}
+            {isGuest && (
+              <div className="mb-8 flex items-center justify-between border border-[#E5DFD6] bg-white px-5 py-4">
+                <p className="text-sm text-[#5C5652]">
+                  Have an account?{' '}
+                  <Link href="/auth?redirect=/checkout" className="font-medium text-[#9B6F47] hover:underline">
+                    Sign in
+                  </Link>
+                  {' '}to track your orders.
+                </p>
+                <span className="ml-4 flex-shrink-0 text-[10px] uppercase tracking-widest text-[#9E9690]">Optional</span>
+              </div>
+            )}
 
             {error && (
               <div className="mb-8 border-l-2 border-red-400 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -215,6 +238,11 @@ export default function CheckoutPage() {
             >
               {loading ? 'Placing Order…' : `Place Order — ৳${total.toLocaleString()}`}
             </button>
+
+            <p className="mt-4 text-center text-[11px] text-[#9E9690]">
+              By placing an order you agree to our{' '}
+              <Link href="/returns" className="underline hover:text-[#111111]">returns policy</Link>.
+            </p>
           </form>
 
           {/* Order Summary */}
@@ -252,7 +280,7 @@ export default function CheckoutPage() {
 
             {/* Free shipping progress bar */}
             {shipping > 0 && (
-              <div className="mt-5 rounded-sm bg-[#F7F4EF] px-4 py-3">
+              <div className="mt-5 rounded-sm bg-white px-4 py-3">
                 <div className="mb-2 flex justify-between text-[10px] uppercase tracking-wider text-[#5C5652]">
                   <span>Free shipping progress</span>
                   <span className="text-[#9B6F47]">৳{(3000 - subtotal).toLocaleString()} away</span>

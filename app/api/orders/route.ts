@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 
-// GET user's orders
+// GET user's orders (authenticated only)
 export async function GET(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -43,14 +44,13 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({ orders })
 }
 
-// POST create order
+// POST create order — works for both authenticated users and guests
 export async function POST(request: NextRequest) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const authClient = await createClient()
+  const { data: { user } } = await authClient.auth.getUser()
 
-  if (!user) {
-    return NextResponse.json({ error: 'Please sign in to place an order.', code: 'UNAUTHENTICATED' }, { status: 401 })
-  }
+  // Use admin client for inserts so guest orders bypass RLS
+  const supabase = createAdminClient()
 
   const {
     items,
@@ -63,7 +63,11 @@ export async function POST(request: NextRequest) {
     shipping_postal_code,
   } = await request.json()
 
-  // Calculate total
+  if (!items?.length || !customer_name || !customer_phone || !shipping_address || !shipping_city) {
+    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+  }
+
+  // Verify items against the database to prevent price tampering
   let subtotal = 0
   for (const item of items) {
     const { data: product } = await supabase
@@ -80,27 +84,25 @@ export async function POST(request: NextRequest) {
   const shipping_cost = subtotal > 3000 ? 0 : 100
   const total = subtotal + shipping_cost
 
-  // Generate order number
   const order_number = `ORD-${Date.now()}`
 
-  // Create order
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
-      user_id: user.id,
+      user_id: user?.id ?? null,
       order_number,
       payment_method,
       subtotal,
       shipping_cost,
       total,
       customer_name,
-      customer_email,
+      customer_email: customer_email || null,
       customer_phone,
       shipping_address,
       shipping_city,
-      shipping_postal_code,
+      shipping_postal_code: shipping_postal_code || null,
       status: 'pending',
-      payment_status: payment_method === 'cod' ? 'pending' : 'pending',
+      payment_status: 'pending',
     })
     .select()
 
@@ -110,7 +112,6 @@ export async function POST(request: NextRequest) {
 
   const orderId = order[0].id
 
-  // Add order items
   for (const item of items) {
     await supabase.from('order_items').insert({
       order_id: orderId,
@@ -121,7 +122,6 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  // Create payment record
   if (payment_method === 'bkash') {
     await supabase.from('payments').insert({
       order_id: orderId,
