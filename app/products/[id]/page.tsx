@@ -3,6 +3,7 @@ import AddToCart from '@/components/add-to-cart'
 import RelatedProducts from '@/components/related-products'
 import ProductAccordion from '@/components/product-accordion'
 import ProductGallery from '@/components/product-gallery'
+import FadeInSection from '@/components/fade-in-section'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
 
@@ -114,47 +115,46 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* ── Right panel: product info ─────────────────────────── */}
           <div className="flex flex-col px-6 pb-24 pt-10 lg:flex-1 lg:overflow-y-auto lg:px-14 lg:pt-28 lg:pb-20">
 
-            {/* SKU label */}
-            {product.sku && (
-              <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
-                SKU: {product.sku}
-              </p>
-            )}
-
-            {/* Product name — big editorial */}
-            <h1
-              className="mt-3 leading-tight text-[#111111]"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                fontWeight: 400,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              {product.name}
-            </h1>
-
-            {/* Price */}
-            <div className="mt-6 flex items-baseline gap-3">
-              <p
-                className="text-[#111111]"
-                style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 500 }}
+            <FadeInSection from="right">
+              {product.sku && (
+                <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
+                  SKU: {product.sku}
+                </p>
+              )}
+              <h1
+                className="mt-3 leading-tight text-[#111111]"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.01em',
+                }}
               >
-                ৳{product.price.toLocaleString()}
-              </p>
-              <span className="text-xs uppercase tracking-wider text-[#9E9690]">BDT</span>
-            </div>
+                {product.name}
+              </h1>
+            </FadeInSection>
 
-            {/* Add to cart */}
-            <div className="mt-8">
+            <FadeInSection delay={120} from="right">
+              <div className="mt-6 flex items-baseline gap-3">
+                <p
+                  className="text-[#111111]"
+                  style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 500 }}
+                >
+                  ৳{product.price.toLocaleString()}
+                </p>
+                <span className="text-xs uppercase tracking-wider text-[#9E9690]">BDT</span>
+              </div>
+            </FadeInSection>
+
+            <FadeInSection delay={200} from="right" className="mt-8">
               <AddToCart product={product} />
-            </div>
+            </FadeInSection>
 
-            {/* Divider */}
             <div className="my-8 h-px bg-[#E5DFD6]" />
 
-            {/* Accordion */}
-            <ProductAccordion items={sections} />
+            <FadeInSection delay={280} from="up">
+              <ProductAccordion items={sections} />
+            </FadeInSection>
 
           </div>
         </div>

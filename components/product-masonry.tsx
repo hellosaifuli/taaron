@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { fetchProducts, type Product } from '@/app/actions/products'
 import StitchImage from '@/components/stitch-image'
@@ -14,16 +13,14 @@ const PLACEHOLDER_IMAGES = [
   'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=800&q=80',
 ]
 
-// Bento pattern — 7 items per group, 10-col grid
-// Each entry: { desktop col-span, desktop aspect class, is oval }
 const PATTERN = [
-  { lg: 'lg:col-span-6', aspect: 'lg:aspect-[4/5]',  oval: false }, // 0: wide portrait
-  { lg: 'lg:col-span-4', aspect: 'lg:aspect-square',  oval: true  }, // 1: circle
-  { lg: 'lg:col-span-3', aspect: 'lg:aspect-[3/4]',   oval: false }, // 2: small
-  { lg: 'lg:col-span-4', aspect: 'lg:aspect-[3/5]',   oval: false }, // 3: tall center
-  { lg: 'lg:col-span-3', aspect: 'lg:aspect-[3/4]',   oval: false }, // 4: small
-  { lg: 'lg:col-span-6', aspect: 'lg:aspect-[4/3]',   oval: false }, // 5: landscape
-  { lg: 'lg:col-span-4', aspect: 'lg:aspect-[3/4]',   oval: false }, // 6: portrait
+  { lg: 'lg:col-span-6', aspect: 'lg:aspect-[4/5]',  oval: false },
+  { lg: 'lg:col-span-4', aspect: 'lg:aspect-square',  oval: true  },
+  { lg: 'lg:col-span-3', aspect: 'lg:aspect-[3/4]',   oval: false },
+  { lg: 'lg:col-span-4', aspect: 'lg:aspect-[3/5]',   oval: false },
+  { lg: 'lg:col-span-3', aspect: 'lg:aspect-[3/4]',   oval: false },
+  { lg: 'lg:col-span-6', aspect: 'lg:aspect-[4/3]',   oval: false },
+  { lg: 'lg:col-span-4', aspect: 'lg:aspect-[3/4]',   oval: false },
 ]
 
 export default function ProductMasonry({ initialProducts }: { initialProducts: Product[] }) {
@@ -31,6 +28,7 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(initialProducts.length === 50)
   const sentinelRef = useRef<HTMLDivElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
   const loadingRef = useRef(false)
   const hasMoreRef = useRef(initialProducts.length === 50)
   const countRef = useRef(initialProducts.length)
@@ -39,16 +37,15 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
     countRef.current = products.length
   }, [products.length])
 
+  // ── Infinite scroll ────────────────────────────────────────────────────
   useEffect(() => {
     const sentinel = sentinelRef.current
     if (!sentinel) return
 
     const handleIntersect = async ([entry]: IntersectionObserverEntry[]) => {
       if (!entry?.isIntersecting || loadingRef.current || !hasMoreRef.current) return
-
       loadingRef.current = true
       setLoading(true)
-
       try {
         const more = await fetchProducts(countRef.current)
         const reachedEnd = more.length < 50
@@ -58,9 +55,7 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
           setProducts(prev => [...prev, ...more])
           countRef.current += more.length
         }
-      } catch {
-        // silently fail — user can scroll again
-      } finally {
+      } catch { /* silently fail */ } finally {
         loadingRef.current = false
         setLoading(false)
       }
@@ -69,13 +64,53 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
     const observer = new IntersectionObserver(handleIntersect, { rootMargin: '400px' })
     observer.observe(sentinel)
     return () => observer.disconnect()
-  }, []) // set up once, reads live values via refs
+  }, [])
+
+  // ── Card scroll-reveal stagger ─────────────────────────────────────────
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const grid = gridRef.current
+    if (!grid) return
+
+    // Track which cards in the current viewport batch have been seen
+    let batchCounter = 0
+    let batchTimer: ReturnType<typeof setTimeout>
+
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return
+          const el = entry.target as HTMLElement
+          // Stagger: cap at 5 per visual batch, 70ms apart
+          const delay = Math.min(batchCounter, 4) * 70
+          batchCounter++
+          clearTimeout(batchTimer)
+          batchTimer = setTimeout(() => { batchCounter = 0 }, 200)
+
+          el.style.transitionDelay = `${delay}ms`
+          el.classList.add('card-revealed')
+          cardObserver.unobserve(el)
+        })
+      },
+      { rootMargin: '0px 0px -60px 0px', threshold: 0.05 }
+    )
+
+    const cards = grid.querySelectorAll('[data-card]')
+    cards.forEach(card => {
+      if (!card.classList.contains('card-revealed')) {
+        cardObserver.observe(card)
+      }
+    })
+
+    return () => cardObserver.disconnect()
+  }, [products.length])
 
   return (
     <div className="bg-[#F7F4EF]">
-      {/* Bento grid */}
-      {/* Mobile: 2 equal cols. Desktop (lg+): 10-col bento pattern with items-start */}
-      <div className="grid grid-cols-1 gap-2 p-2 lg:grid-cols-10 lg:items-start lg:gap-3 lg:p-3">
+      <div
+        ref={gridRef}
+        className="grid grid-cols-1 gap-2 p-2 lg:grid-cols-10 lg:items-start lg:gap-3 lg:p-3"
+      >
         {products.map((product, idx) => {
           const pat = PATTERN[idx % 7]!
           const img =
@@ -87,8 +122,9 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
             <Link
               key={`${product.id}-${idx}`}
               href={`/products/${product.id}`}
+              data-card
               className={[
-                'group relative block overflow-hidden bg-[#EDE9E3]',
+                'masonry-card group relative block overflow-hidden bg-[#EDE9E3]',
                 'aspect-[3/4]',
                 pat.lg,
                 pat.aspect,
@@ -101,7 +137,6 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 40vw"
               />
-              {/* Pill label — name + price */}
               <div className="absolute inset-x-0 bottom-3 flex justify-center px-3">
                 <div className="max-w-full truncate rounded-full bg-black/50 px-5 py-2 text-center text-[13px] leading-tight text-white backdrop-blur-sm">
                   {product.name}
@@ -113,7 +148,6 @@ export default function ProductMasonry({ initialProducts }: { initialProducts: P
         })}
       </div>
 
-      {/* Sentinel + state */}
       <div ref={sentinelRef} className="flex justify-center py-12">
         {loading && (
           <div className="flex items-center gap-2">

@@ -45,6 +45,24 @@ body {
   --base-gap: 4.8px;
 }
 
+/* ── Masonry card scroll-reveal ──────────────────────────────────────────
+   Cards start hidden; JS adds .card-revealed when they enter the viewport.
+   prefers-reduced-motion: cards are shown immediately (JS early-returns). */
+.masonry-card {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.masonry-card.card-revealed {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .masonry-card { opacity: 1; transform: none; transition: none; }
+}
+
 /* Glass surface (kept for backward compat) */
 .glass-shell {
   display: block;

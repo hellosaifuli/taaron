@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import FadeInSection from '@/components/fade-in-section'
 
 const STATUS_STYLES: Record<string, string> = {
   pending:   'border-[#E5DFD6] bg-[#FEF9EE] text-[#9B6F47]',
@@ -58,9 +59,9 @@ export default async function DashboardPage() {
         {/* Orders */}
         {orders && orders.length > 0 ? (
           <div className="space-y-3">
-            {orders.map((order: any) => (
+            {orders.map((order: any, i: number) => (
+              <FadeInSection key={order.id} delay={i * 60} from="up">
               <div
-                key={order.id}
                 className="border border-[#E5DFD6] bg-white p-6 transition-colors hover:border-[#111111]"
               >
                 <div className="flex items-start justify-between">
@@ -108,6 +109,7 @@ export default async function DashboardPage() {
                   </Link>
                 </div>
               </div>
+              </FadeInSection>
             ))}
           </div>
         ) : (
