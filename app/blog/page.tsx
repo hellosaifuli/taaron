@@ -120,20 +120,20 @@ export default function BlogPage() {
           <FadeInSection from="up">
             <p className="mb-10 text-[10px] uppercase tracking-[0.4em] text-[#9E9690]">All Articles</p>
           </FadeInSection>
-          <div className="grid gap-px bg-[#E5DFD6] sm:grid-cols-2 lg:grid-cols-3">
+          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
             {rest.map((post, i) => (
-              <FadeInSection key={post.slug} delay={i * 70} from="up">
-                <Link href={`/blog/${post.slug}`} className="group flex flex-col bg-white p-8 transition-colors hover:bg-[#FEF9EE]">
+              <FadeInSection key={post.slug} delay={i * 70} from="up" className="mb-4 break-inside-avoid">
+                <Link href={`/blog/${post.slug}`} className="group flex flex-col p-8 transition-all duration-300 hover:bg-white hover:shadow-sm">
                   <span className={`self-start px-2.5 py-1 text-[9px] uppercase tracking-widest ${CATEGORY_COLORS[post.category] ?? 'bg-[#EDE9E3] text-[#5C5652]'}`}>
                     {post.category}
                   </span>
                   <h2
-                    className="mt-5 flex-1 leading-snug text-[#111111] transition-colors group-hover:text-[#9B6F47]"
+                    className="mt-5 leading-snug text-[#111111] transition-colors group-hover:text-[#9B6F47]"
                     style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 400 }}
                   >
                     {post.title}
                   </h2>
-                  <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-[#5C5652]">{post.excerpt}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-[#5C5652]">{post.excerpt}</p>
                   <div className="mt-6 flex items-center justify-between border-t border-[#E5DFD6] pt-4 text-xs text-[#9E9690]">
                     <span>{formatDate(post.date)}</span>
                     <span>{post.readTime}</span>
