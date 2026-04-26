@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 function StitchCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const rafRef = useRef<number>()
+  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current

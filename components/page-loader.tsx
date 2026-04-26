@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 
 function StitchOverlay({ visible }: { visible: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const rafRef = useRef<number>()
+  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (!visible) return
@@ -99,7 +99,7 @@ export default function PageLoader() {
   const pathname = usePathname()
   const [loading, setLoading] = useState(false)
   const prevPath = useRef(pathname)
-  const timer = useRef<ReturnType<typeof setTimeout>>()
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (pathname !== prevPath.current) {
