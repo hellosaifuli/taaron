@@ -100,15 +100,16 @@ export async function POST(request: NextRequest) {
       shipping_city,
       shipping_postal_code,
       status: 'pending',
-      payment_status: payment_method === 'cod' ? 'pending' : 'pending',
+      payment_status: 'pending',
     })
     .select()
+    .single()
 
-  if (orderError) {
-    return NextResponse.json({ error: orderError.message }, { status: 400 })
+  if (orderError || !order) {
+    return NextResponse.json({ error: orderError?.message ?? 'Failed to create order.' }, { status: 400 })
   }
 
-  const orderId = order[0].id
+  const orderId = order.id
 
   // Add order items
   for (const item of items) {
@@ -131,5 +132,5 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  return NextResponse.json(order[0], { status: 201 })
+  return NextResponse.json(order, { status: 201 })
 }
