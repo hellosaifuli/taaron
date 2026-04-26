@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
-import Image from 'next/image'
 import AddToCart from '@/components/add-to-cart'
 import RelatedProducts from '@/components/related-products'
 import ProductAccordion from '@/components/product-accordion'
+import ProductGallery from '@/components/product-gallery'
+import FadeInSection from '@/components/fade-in-section'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
 
@@ -81,14 +81,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
     ...(extraImages ?? []).map((img) => ({ url: img.url, alt: img.alt || product.name })),
   ]
 
-  const mainImage = allImages[0]
-
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     description: product.description,
     sku: product.sku,
+    url: `${baseUrl}/products/${id}`,
+    inLanguage: 'en',
     image: allImages.map((i) => i.url),
     brand: { '@type': 'Brand', name: 'Taaron' },
     offers: {
@@ -96,8 +96,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
       url: `${baseUrl}/products/${id}`,
       priceCurrency: 'BDT',
       price: product.price,
+      priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       availability: 'https://schema.org/InStock',
-      seller: { '@type': 'Organization', name: 'Taaron' },
+      itemCondition: 'https://schema.org/NewCondition',
+      areaServed: { '@type': 'Country', name: 'Bangladesh' },
+      seller: { '@type': 'Organization', name: 'Taaron', url: baseUrl },
     },
   }
 
@@ -112,119 +115,52 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* ── Editorial split: image left | info right ─────────────── */}
         <div className="lg:flex lg:min-h-screen">
 
-          {/* Gallery — full-bleed left panel, sticky on desktop */}
-          <div className="relative lg:sticky lg:top-0 lg:h-screen lg:w-[58%] lg:flex-shrink-0 lg:overflow-hidden">
-
-            {/* Main image */}
-            <div className="relative w-full overflow-hidden bg-[#EDE9E3]" style={{ aspectRatio: '4/5', maxHeight: '85vh' }}>
-              {mainImage ? (
-                <Image
-                  src={mainImage.url}
-                  alt={mainImage.alt || product.name}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-sm text-[#9E9690]">
-                  No image
-                </div>
-              )}
-
-              {/* Gradient fade to cream at bottom */}
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F7F4EF] to-transparent lg:hidden" />
-
-              {/* Breadcrumb overlay */}
-              <nav aria-label="Breadcrumb" className="absolute top-24 left-6 lg:top-8 lg:left-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#111111]/50 mix-blend-multiply">
-                <Link href="/" className="transition-colors hover:text-[#111111]">Home</Link>
-                <span>/</span>
-                <Link href="/category/all" className="transition-colors hover:text-[#111111]">Shop</Link>
-                <span>/</span>
-                <span className="text-[#111111]/30">{product.name}</span>
-              </nav>
-
-              {/* Image count */}
-              {allImages.length > 1 && (
-                <div className="absolute bottom-4 right-4 bg-black/30 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white backdrop-blur-sm">
-                  1 / {allImages.length}
-                </div>
-              )}
-            </div>
-
-            {/* Thumbnail strip — desktop only */}
-            {allImages.length > 1 && (
-              <div className="hidden lg:flex gap-1.5 bg-[#F7F4EF] p-3">
-                {allImages.slice(0, 6).map((img, i) => (
-                  <div key={i} className="relative h-16 flex-1 overflow-hidden bg-[#EDE9E3]">
-                    <Image
-                      src={img.url}
-                      alt={img.alt || product.name}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductGallery images={allImages} productName={product.name} />
 
           {/* ── Right panel: product info ─────────────────────────── */}
           <div className="flex flex-col px-6 pb-24 pt-10 lg:flex-1 lg:overflow-y-auto lg:px-14 lg:pt-28 lg:pb-20">
 
-            {/* SKU label */}
-            {product.sku && (
-              <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
-                SKU: {product.sku}
-              </p>
-            )}
-
-            {/* Product name — big editorial */}
-            <h1
-              className="mt-3 leading-tight text-[#111111]"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                fontWeight: 400,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              {product.name}
-            </h1>
-
-            {/* Price */}
-            <div className="mt-6 flex items-baseline gap-3">
-              <p
-                className="text-[#111111]"
-                style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 500 }}
+            <FadeInSection from="right">
+              {product.sku && (
+                <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
+                  SKU: {product.sku}
+                </p>
+              )}
+              <h1
+                className="mt-3 leading-tight text-[#111111]"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.01em',
+                }}
               >
-                ৳{product.price.toLocaleString()}
-              </p>
-              <span className="text-xs uppercase tracking-wider text-[#9E9690]">BDT</span>
-            </div>
+                {product.name}
+              </h1>
+            </FadeInSection>
 
-            {/* Add to cart */}
-            <div className="mt-8">
+            <FadeInSection delay={120} from="right">
+              <div className="mt-6 flex items-baseline gap-3">
+                <p
+                  className="text-[#111111]"
+                  style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 500 }}
+                >
+                  ৳{product.price.toLocaleString()}
+                </p>
+                <span className="text-xs uppercase tracking-wider text-[#9E9690]">BDT</span>
+              </div>
+            </FadeInSection>
+
+            <FadeInSection delay={200} from="right" className="mt-8">
               <AddToCart product={product} />
-            </div>
+            </FadeInSection>
 
-            {/* Divider */}
             <div className="my-8 h-px bg-[#E5DFD6]" />
 
-            {/* Accordion */}
-            <ProductAccordion items={sections} />
+            <FadeInSection delay={280} from="up">
+              <ProductAccordion items={sections} />
+            </FadeInSection>
 
-            {/* Thumbnail strip — mobile only */}
-            {allImages.length > 1 && (
-              <div className="mt-8 flex gap-2 overflow-x-auto pb-2 lg:hidden">
-                {allImages.map((img, i) => (
-                  <div key={i} className="relative h-20 w-20 flex-shrink-0 overflow-hidden bg-[#EDE9E3]">
-                    <Image src={img.url} alt={img.alt || product.name} fill className="object-cover" sizes="80px" />
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 

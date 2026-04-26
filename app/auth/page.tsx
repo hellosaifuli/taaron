@@ -1,14 +1,17 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
-export default function AuthPage() {
+function AuthForm() {
   const router = useRouter()
-  const [mode, setMode] = useState<'login' | 'signup'>('login')
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect') || '/dashboard'
+  const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [formData, setFormData] = useState({ email: '', password: '', full_name: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +22,29 @@ export default function AuthPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setSuccess('')
+
+    if (mode === 'forgot') {
+      try {
+        const response = await fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email }),
+        })
+        if (response.ok) {
+          setSuccess('Password reset link sent. Check your email.')
+        } else {
+          const data = await response.json()
+          setError(data.error || 'Failed to send reset email.')
+        }
+      } catch {
+        setError('Network error. Please try again.')
+      } finally {
+        setLoading(false)
+      }
+      return
+    }
+
     try {
       const endpoint = mode === 'login' ? '/api/auth/sign-in' : '/api/auth/sign-up'
       const response = await fetch(endpoint, {
@@ -30,7 +56,7 @@ export default function AuthPage() {
       if (!response.ok) {
         setError(data.error || 'Authentication failed')
       } else {
-        router.push('/dashboard')
+        router.push(redirectTo)
       }
     } catch {
       setError('Network error. Please try again.')
@@ -42,6 +68,8 @@ export default function AuthPage() {
   const inputClass =
     'w-full border border-[#E5DFD6] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition-colors placeholder:text-[#C4BDB5] focus:border-[#111111]'
   const labelClass = 'mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-[#9E9690]'
+
+  const headingMap = { login: 'Welcome Back', signup: 'Create Account', forgot: 'Reset Password' }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F4EF] px-4 pt-20">
@@ -60,13 +88,22 @@ export default function AuthPage() {
               fontWeight: 400,
             }}
           >
-            {mode === 'login' ? 'Welcome Back' : 'Create Account'}
+            {headingMap[mode]}
           </h1>
+          {mode === 'forgot' && (
+            <p className="mt-2 text-xs text-[#5C5652]">Enter your email and we&apos;ll send a reset link.</p>
+          )}
         </div>
 
         {error && (
           <div className="mb-6 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="mb-6 border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+            {success}
           </div>
         )}
 
@@ -99,25 +136,44 @@ export default function AuthPage() {
             />
           </div>
 
-          <div>
-            <label className={labelClass}>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={inputClass}
-              placeholder="••••••••"
-              required
-            />
-          </div>
+          {mode !== 'forgot' && (
+            <div>
+              <div className="mb-1.5 flex items-center justify-between">
+                <label className={labelClass} style={{ marginBottom: 0 }}>Password</label>
+                {mode === 'login' && (
+                  <button
+                    type="button"
+                    onClick={() => { setMode('forgot'); setError('') }}
+                    className="text-[10px] uppercase tracking-widest text-[#9B6F47] hover:underline"
+                  >
+                    Forgot?
+                  </button>
+                )}
+              </div>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={inputClass}
+                placeholder="••••••••"
+                required
+              />
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
             className="mt-2 w-full bg-[#111111] py-3.5 text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-[#9B6F47] disabled:opacity-50"
           >
-            {loading ? 'Please wait…' : mode === 'login' ? 'Sign In' : 'Create Account'}
+            {loading
+              ? 'Please wait…'
+              : mode === 'login'
+              ? 'Sign In'
+              : mode === 'signup'
+              ? 'Create Account'
+              : 'Send Reset Link'}
           </button>
         </form>
 
@@ -134,7 +190,7 @@ export default function AuthPage() {
             </>
           ) : (
             <>
-              Already have one?{' '}
+              {mode === 'forgot' ? 'Remember it?' : 'Already have one?'}{' '}
               <button
                 onClick={() => { setMode('login'); setError('') }}
                 className="font-medium text-[#9B6F47] hover:underline"
@@ -152,5 +208,13 @@ export default function AuthPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense>
+      <AuthForm />
+    </Suspense>
   )
 }

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 
 // GET user's orders (auth required)
@@ -28,8 +29,11 @@ export async function GET() {
 
 // POST create order — guest checkout supported (user_id nullable)
 export async function POST(request: NextRequest) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const authClient = await createClient()
+  const { data: { user } } = await authClient.auth.getUser()
+
+  // Use admin client for inserts so guest orders bypass RLS
+  const supabase = createAdminClient()
 
   const {
     items,

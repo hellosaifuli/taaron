@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import ProductMasonry from '@/components/product-masonry'
+import FadeInSection from '@/components/fade-in-section'
 import type { Product } from '@/app/actions/products'
 
 interface CategoryPageProps {
@@ -102,7 +103,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         {/* Subtle texture layer */}
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #F7F4EF 0%, transparent 60%)' }} />
 
-        <div className="relative">
+        <FadeInSection from="up" className="relative">
           <h1
             className="mt-2 text-[#111111]"
             style={{
@@ -116,7 +117,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             {meta.name}
           </h1>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-[#5C5652]">{meta.description}</p>
-        </div>
+        </FadeInSection>
       </div>
 
       {/* ── Product count bar ────────────────────────────────── */}

@@ -26,10 +26,27 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Taaron',
-  alternateName: 'তারণ',
+  alternateName: 'তারুণ',
   url: baseUrl,
-  logo: `${baseUrl}/taaron-logo.png`,
-  description: 'Premium leather goods brand from Bangladesh.',
+  logo: {
+    '@type': 'ImageObject',
+    url: `${baseUrl}/taaron-logo.png`,
+    width: 1200,
+    height: 630,
+  },
+  description: 'Premium leather goods brand from Bangladesh. Artisanal craftsmanship, minimalist design.',
+  areaServed: { '@type': 'Country', name: 'Bangladesh' },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: 'hello@taaron.bd',
+    availableLanguage: ['English', 'Bengali'],
+    areaServed: 'BD',
+  },
+  sameAs: [
+    'https://www.facebook.com/taaron.bd',
+    'https://www.instagram.com/taaron.bd',
+  ],
 }
 
 const websiteSchema = {
@@ -37,9 +54,10 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: 'Taaron',
   url: baseUrl,
+  inLanguage: 'en',
   potentialAction: {
     '@type': 'SearchAction',
-    target: { '@type': 'EntryPoint', urlTemplate: `${baseUrl}/?q={search_term_string}` },
+    target: { '@type': 'EntryPoint', urlTemplate: `${baseUrl}/category/all?q={search_term_string}` },
     'query-input': 'required name=search_term_string',
   },
 }
