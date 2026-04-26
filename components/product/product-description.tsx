@@ -11,11 +11,11 @@ export function ProductDescription({ product }: { product: Product }) {
         <span className="mb-4 text-xs uppercase tracking-widest text-[#9E9690] font-medium">
           Taaron
         </span>
-        <h1 
+        <h1
           className="mb-4 text-4xl md:text-5xl font-display font-medium leading-tight transition-all"
           style={{
-            fontFamily: 'var(--font-display)',
-            color: '#111111',
+            fontFamily: "var(--font-display)",
+            color: "#111111",
           }}
         >
           {product.title}
@@ -25,12 +25,17 @@ export function ProductDescription({ product }: { product: Product }) {
             amount={product.priceRange.maxVariantPrice.amount}
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}
           />
-          <span className="text-xs text-[#9E9690] tracking-wide uppercase">BDT</span>
+          <span className="text-xs text-[#9E9690] tracking-wide uppercase">
+            BDT
+          </span>
         </div>
       </div>
 
       <div className="mb-8">
-        <VariantSelector options={product.options} variants={product.variants} />
+        <VariantSelector
+          options={product.options}
+          variants={product.variants}
+        />
       </div>
 
       {product.descriptionHtml ? (
@@ -39,7 +44,7 @@ export function ProductDescription({ product }: { product: Product }) {
           html={product.descriptionHtml}
         />
       ) : null}
-      
+
       <div className="mb-8">
         <AddToCart product={product} />
       </div>

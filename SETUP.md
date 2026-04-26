@@ -10,6 +10,7 @@ Minimal ecommerce for Bangladesh. COD + bKash. Supabase backend. Next.js 15.
 2. Create account → Create project
 3. Copy `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 4. Create `.env.local`:
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
@@ -34,6 +35,7 @@ Visit `http://localhost:3000`
 ## 📋 Pages & Features
 
 ### Customer Flow
+
 - **`/`** - Product listing (grid layout)
 - **`/products/[id]`** - Product detail + variants
 - **`/checkout`** - Cart → Address → Payment method
@@ -42,11 +44,13 @@ Visit `http://localhost:3000`
 - **`/dashboard`** - My orders history
 
 ### Admin
+
 - **`/admin/products`** - Add products, view list
 
 ## 🗄️ Database
 
 **Tables:**
+
 - `user_profiles` - Customer info
 - `products` - Name, price, description, images
 - `product_variants` - Size/color/options with stock
@@ -68,10 +72,12 @@ POST   /api/orders                 - Create order
 ## 💳 Payment Methods
 
 Currently configured:
+
 - **COD** (Cash on Delivery) - No integration needed
 - **bKash** (placeholder) - Needs webhook integration
 
 For bKash production:
+
 1. Get merchant credentials
 2. Add to `.env.local`
 3. Implement webhook in `/api/payments/bkash`

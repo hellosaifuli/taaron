@@ -1,16 +1,16 @@
-import { createClient } from '@/lib/supabase/server'
-import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from "@/lib/supabase/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // GET all products
 export async function GET(request: NextRequest) {
-  const supabase = await createClient()
-  const searchParams = request.nextUrl.searchParams
-  const page = parseInt(searchParams.get('page') || '1')
-  const limit = parseInt(searchParams.get('limit') || '20')
-  const offset = (page - 1) * limit
+  const supabase = await createClient();
+  const searchParams = request.nextUrl.searchParams;
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "20");
+  const offset = (page - 1) * limit;
 
   const { data: products, error: productsError } = await supabase
-    .from('products')
+    .from("products")
     .select(
       `
       id,
@@ -29,38 +29,40 @@ export async function GET(request: NextRequest) {
         stock_quantity,
         image_url
       )
-    `
+    `,
     )
-    .eq('status', 'active')
+    .eq("status", "active")
     .range(offset, offset + limit - 1)
-    .order('created_at', { ascending: false })
+    .order("created_at", { ascending: false });
 
   if (productsError) {
-    return NextResponse.json({ error: productsError.message }, { status: 400 })
+    return NextResponse.json({ error: productsError.message }, { status: 400 });
   }
 
   return NextResponse.json({
     products,
     page,
     limit,
-  })
+  });
 }
 
 // POST create product (admin only)
 export async function POST(request: NextRequest) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@taaron.bd'
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@taaron.bd";
 
   if (!user || user.email !== ADMIN_EMAIL) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { name, description, price, cost, sku, image_url, thumbnail_url } =
-    await request.json()
+    await request.json();
 
   const { data, error } = await supabase
-    .from('products')
+    .from("products")
     .insert({
       name,
       description,
@@ -70,11 +72,11 @@ export async function POST(request: NextRequest) {
       image_url,
       thumbnail_url,
     })
-    .select()
+    .select();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 })
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  return NextResponse.json(data[0], { status: 201 })
+  return NextResponse.json(data[0], { status: 201 });
 }

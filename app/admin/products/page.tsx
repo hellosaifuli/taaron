@@ -1,41 +1,50 @@
-import { createClient } from '@/lib/supabase/server'
-import Image from 'next/image'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
-import { deleteProduct, toggleStatus } from './actions'
+import { createClient } from "@/lib/supabase/server";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { deleteProduct, toggleStatus } from "./actions";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@taaron.bd'
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@taaron.bd";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 export const metadata = {
-  title: 'Admin — Products',
+  title: "Admin — Products",
   robots: { index: false, follow: false },
-}
+};
 
 export default async function AdminProductsPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user || user.email !== ADMIN_EMAIL) redirect('/auth')
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || user.email !== ADMIN_EMAIL) redirect("/auth");
 
   const { data: products } = await supabase
-    .from('products')
-    .select('id, name, price, sku, status, image_url, created_at')
-    .order('created_at', { ascending: false })
+    .from("products")
+    .select("id, name, price, sku, status, image_url, created_at")
+    .order("created_at", { ascending: false });
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] pt-20">
       <div className="mx-auto max-w-screen-xl px-6 py-12 lg:px-12">
-
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">Admin</p>
-            <h1 className="mt-1 font-serif text-3xl font-medium" style={{ fontFamily: 'var(--font-display)' }}>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-[#1969B5]">
+              Admin
+            </p>
+            <h1
+              className="mt-1 font-serif text-3xl font-medium"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
               Products
             </h1>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/" className="text-[11px] uppercase tracking-widest text-[#4B5C73] hover:text-[#1E2737]">
+            <Link
+              href="/"
+              className="text-[11px] uppercase tracking-widest text-[#4B5C73] hover:text-[#1E2737]"
+            >
               ← Store
             </Link>
           </div>
@@ -46,31 +55,47 @@ export default async function AdminProductsPage() {
         {/* Products Table */}
         <section className="mt-12">
           <div className="mb-6 rounded border border-[#DDE3EB] bg-[#FAFAFA] p-4 text-sm text-[#4B5C73]">
-            💡 <strong>To add products:</strong> Use Supabase Dashboard → SQL Editor or Tables view
+            💡 <strong>To add products:</strong> Use Supabase Dashboard → SQL
+            Editor or Tables view
           </div>
-          
+
           <h2 className="text-sm font-semibold uppercase tracking-widest text-[#1E2737]">
-            All Products <span className="font-normal text-[#7A8EA6]">({products?.length ?? 0})</span>
+            All Products{" "}
+            <span className="font-normal text-[#7A8EA6]">
+              ({products?.length ?? 0})
+            </span>
           </h2>
 
           <div className="mt-4 divide-y divide-[#DDE3EB] border border-[#DDE3EB] bg-white">
             {!products?.length ? (
-              <p className="px-6 py-8 text-sm text-[#7A8EA6]">No products yet.</p>
+              <p className="px-6 py-8 text-sm text-[#7A8EA6]">
+                No products yet.
+              </p>
             ) : (
               products.map((p) => (
                 <div key={p.id} className="flex items-center gap-4 px-6 py-4">
                   {/* Thumbnail */}
                   <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden bg-[#EEF2F7]">
                     {p.image_url ? (
-                      <Image src={p.image_url} alt={p.name} fill className="object-cover" sizes="56px" />
+                      <Image
+                        src={p.image_url}
+                        alt={p.name}
+                        fill
+                        className="object-cover"
+                        sizes="56px"
+                      />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-[10px] text-[#7A8EA6]">—</div>
+                      <div className="flex h-full items-center justify-center text-[10px] text-[#7A8EA6]">
+                        —
+                      </div>
                     )}
                   </div>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="truncate text-sm font-medium text-[#1E2737]">{p.name}</p>
+                    <p className="truncate text-sm font-medium text-[#1E2737]">
+                      {p.name}
+                    </p>
                     <p className="text-xs text-[#7A8EA6]">
                       ৳{p.price.toLocaleString()}
                       {p.sku && <span className="ml-3">SKU: {p.sku}</span>}
@@ -78,7 +103,9 @@ export default async function AdminProductsPage() {
                   </div>
 
                   {/* Status badge */}
-                  <span className={`hidden flex-shrink-0 px-2 py-0.5 text-[10px] uppercase tracking-wider sm:block ${p.status === 'active' ? 'bg-green-50 text-green-700' : 'bg-[#EEF2F7] text-[#7A8EA6]'}`}>
+                  <span
+                    className={`hidden flex-shrink-0 px-2 py-0.5 text-[10px] uppercase tracking-wider sm:block ${p.status === "active" ? "bg-green-50 text-green-700" : "bg-[#EEF2F7] text-[#7A8EA6]"}`}
+                  >
                     {p.status}
                   </span>
 
@@ -97,12 +124,25 @@ export default async function AdminProductsPage() {
                     >
                       View
                     </Link>
-                    <form action={async () => { 'use server'; await toggleStatus(p.id, p.status) }}>
-                      <button type="submit" className="text-[11px] uppercase tracking-widest text-[#1969B5] hover:text-[#1E2737]">
-                        {p.status === 'active' ? 'Unpublish' : 'Publish'}
+                    <form
+                      action={async () => {
+                        "use server";
+                        await toggleStatus(p.id, p.status);
+                      }}
+                    >
+                      <button
+                        type="submit"
+                        className="text-[11px] uppercase tracking-widest text-[#1969B5] hover:text-[#1E2737]"
+                      >
+                        {p.status === "active" ? "Unpublish" : "Publish"}
                       </button>
                     </form>
-                    <form action={async () => { 'use server'; await deleteProduct(p.id) }}>
+                    <form
+                      action={async () => {
+                        "use server";
+                        await deleteProduct(p.id);
+                      }}
+                    >
                       <button
                         type="submit"
                         className="text-[11px] uppercase tracking-widest text-red-400 hover:text-red-600"
@@ -119,5 +159,5 @@ export default async function AdminProductsPage() {
         </section>
       </div>
     </div>
-  )
+  );
 }
