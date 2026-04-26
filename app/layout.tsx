@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
 import { Toaster } from 'sonner'
+import { Analytics } from '@vercel/analytics/next'
 import LuxuryNav from '@/components/luxury-nav'
 import SiteFooter from '@/components/site-footer'
 import { CartProvider } from '@/components/cart-provider'
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <SiteFooter />
         </CartProvider>
         <Toaster closeButton position="bottom-right" />
+        <Analytics />
       </body>
     </html>
   )
