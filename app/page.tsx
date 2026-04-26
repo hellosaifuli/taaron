@@ -26,7 +26,7 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Taaron',
-  alternateName: 'তারণ',
+  alternateName: 'তারুণ',
   url: baseUrl,
   logo: {
     '@type': 'ImageObject',

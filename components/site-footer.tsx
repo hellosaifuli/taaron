@@ -32,7 +32,7 @@ export default function SiteFooter() {
       <div className="px-6 py-5 lg:px-12">
         <div className="mx-auto max-w-screen-xl">
           <div className="flex flex-col items-center gap-4 text-[11px] uppercase tracking-widest text-[#5C5652] sm:flex-row sm:justify-between">
-            <span>© {new Date().getFullYear()} Taaron তারণ</span>
+            <span>© {new Date().getFullYear()} Taaron তারুণ</span>
             <div className="flex items-center gap-5">
               <Link href="/category/all" className="transition-colors hover:text-[#111111]">Shop</Link>
               <Link href="/contact" className="transition-colors hover:text-[#111111]">Contact</Link>
