@@ -25,7 +25,7 @@ export default async function OrderConfirmationPage({
     .select(
       `
       id, order_number, status, payment_method, payment_status,
-      subtotal, shipping_cost, total,
+      subtotal, shipping_cost, total, user_id,
       customer_name, customer_email, customer_phone,
       shipping_address, shipping_city, created_at,
       order_items (
@@ -292,13 +292,27 @@ export default async function OrderConfirmationPage({
             >
               Continue Shopping
             </Link>
-            <Link
-              href="/dashboard"
-              className="flex-1 border border-[#E5DFD6] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors hover:border-[#111111] hover:text-[#111111]"
-            >
-              View Orders
-            </Link>
+            {order.user_id ? (
+              <Link
+                href="/dashboard"
+                className="flex-1 border border-[#E5DFD6] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors hover:border-[#111111] hover:text-[#111111]"
+              >
+                View Orders
+              </Link>
+            ) : (
+              <Link
+                href="/auth"
+                className="flex-1 border border-[#E5DFD6] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors hover:border-[#111111] hover:text-[#111111]"
+              >
+                Create Account
+              </Link>
+            )}
           </div>
+          {!order.user_id && (
+            <p className="mt-3 text-center text-[11px] text-[#9E9690]">
+              Create an account to track this and future orders.
+            </p>
+          )}
         </FadeInSection>
       </div>
     </div>
