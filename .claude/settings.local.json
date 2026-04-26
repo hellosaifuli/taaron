@@ -30,7 +30,18 @@
       "Bash(xargs sed *)",
       "WebFetch(domain:claudetype.com)",
       "Bash(vercel --version)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Bash(ssh *)",
+      "Bash(git remote *)",
+      "mcp__claude_ai_Supabase__list_projects",
+      "mcp__claude_ai_Supabase__apply_migration",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(git rebase *)",
+      "Bash(git fetch *)",
+      "Bash(git merge *)"
     ]
   }
 }
