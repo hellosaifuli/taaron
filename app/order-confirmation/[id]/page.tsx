@@ -1,4 +1,4 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import FadeInSection from "@/components/fade-in-section";
@@ -18,7 +18,7 @@ export default async function OrderConfirmationPage({
   params,
 }: OrderConfirmationProps) {
   const { id } = await params;
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: order } = await supabase
     .from("orders")
