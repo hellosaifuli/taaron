@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCart } from "@/components/cart-provider";
 import { createClient } from "@/lib/supabase/client";
 
@@ -20,6 +21,7 @@ export default function LuxuryNav() {
   const [user, setUser] = useState<{ email: string; name: string } | null>(
     null,
   );
+  const pathname = usePathname();
 
   useEffect(() => {
     const supabase = createClient();
@@ -28,8 +30,14 @@ export default function LuxuryNav() {
       if (user) {
         const name = user.user_metadata?.full_name || user.email || "";
         setUser({ email: user.email ?? "", name });
+      } else {
+        setUser(null);
       }
     });
+  }, [pathname]);
+
+  useEffect(() => {
+    const supabase = createClient();
 
     const {
       data: { subscription },
@@ -45,8 +53,6 @@ export default function LuxuryNav() {
 
     return () => subscription.unsubscribe();
   }, []);
-
-  const initial = user?.name?.charAt(0).toUpperCase() ?? "";
 
   return (
     <>
@@ -108,13 +114,10 @@ export default function LuxuryNav() {
             {user ? (
               <Link
                 href="/dashboard"
-                className="flex items-center gap-2 text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]"
+                className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]"
                 title={user.email}
               >
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#111111] text-[10px] font-semibold text-white">
-                  {initial}
-                </span>
-                <span>My Orders</span>
+                My Orders
               </Link>
             ) : (
               <Link
@@ -147,16 +150,13 @@ export default function LuxuryNav() {
             Taaron
           </Link>
           <div className="flex items-center gap-4">
-            {/* Avatar indicator on mobile pill when signed in */}
             {user && (
               <Link
                 href="/dashboard"
+                className="text-[12px] tracking-wide text-[#111111]"
                 title={user.email}
-                aria-label="My account"
               >
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#111111] text-[10px] font-semibold text-white">
-                  {initial}
-                </span>
+                My Orders
               </Link>
             )}
             <Link
@@ -220,18 +220,13 @@ export default function LuxuryNav() {
         <div className="fixed inset-0 z-40 flex flex-col bg-[#F7F4EF] pt-[72px] lg:hidden">
           {/* Signed-in greeting */}
           {user && (
-            <div className="mx-6 mt-4 flex items-center gap-3 rounded-2xl border border-[#E5DFD6] bg-white px-5 py-4">
-              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#111111] text-[13px] font-semibold text-white">
-                {initial}
-              </span>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-medium text-[#111111]">
-                  {user.name}
-                </p>
-                <p className="truncate text-[11px] text-[#9E9690]">
-                  {user.email}
-                </p>
-              </div>
+            <div className="mx-6 mt-4 rounded-2xl border border-[#E5DFD6] bg-white px-5 py-4">
+              <p className="truncate text-sm font-medium text-[#111111]">
+                {user.name}
+              </p>
+              <p className="truncate text-[11px] text-[#9E9690]">
+                {user.email}
+              </p>
             </div>
           )}
 

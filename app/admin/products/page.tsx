@@ -21,7 +21,7 @@ export default async function AdminProductsPage() {
 
   const { data: products } = await supabase
     .from("products")
-    .select("id, name, price, sku, status, image_url, created_at")
+    .select("id, name, price, sku, status, image_url, category, created_at")
     .order("created_at", { ascending: false });
 
   return (
@@ -47,6 +47,12 @@ export default async function AdminProductsPage() {
             >
               ← Store
             </Link>
+            <Link
+              href="/admin/products/new"
+              className="bg-[#1E2737] px-5 py-2.5 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#1969B5]"
+            >
+              + Add Product
+            </Link>
           </div>
         </div>
 
@@ -54,11 +60,6 @@ export default async function AdminProductsPage() {
 
         {/* Products Table */}
         <section className="mt-12">
-          <div className="mb-6 rounded border border-[#DDE3EB] bg-[#FAFAFA] p-4 text-sm text-[#4B5C73]">
-            💡 <strong>To add products:</strong> Use Supabase Dashboard → SQL
-            Editor or Tables view
-          </div>
-
           <h2 className="text-sm font-semibold uppercase tracking-widest text-[#1E2737]">
             All Products{" "}
             <span className="font-normal text-[#7A8EA6]">
@@ -99,6 +100,9 @@ export default async function AdminProductsPage() {
                     <p className="text-xs text-[#7A8EA6]">
                       ৳{p.price.toLocaleString()}
                       {p.sku && <span className="ml-3">SKU: {p.sku}</span>}
+                      {p.category && (
+                        <span className="ml-3 capitalize">{p.category}</span>
+                      )}
                     </p>
                   </div>
 

@@ -29,6 +29,7 @@ export async function createProduct(formData: FormData) {
   const thumbnail_url = (formData.get("thumbnail_url") as string) || null;
   const status = (formData.get("status") as string) || "active";
   const extra_images = (formData.get("extra_images") as string) || "";
+  const category = (formData.get("category") as string) || null;
 
   const { data: product, error } = await supabase
     .from("products")
@@ -41,6 +42,7 @@ export async function createProduct(formData: FormData) {
       image_url,
       thumbnail_url,
       status,
+      category,
     })
     .select()
     .single();
@@ -64,6 +66,7 @@ export async function createProduct(formData: FormData) {
 
   revalidatePath("/admin/products");
   revalidatePath("/");
+  revalidatePath("/category/[slug]", "page");
   redirect("/admin/products");
 }
 
@@ -81,6 +84,7 @@ export async function updateProduct(id: string, formData: FormData) {
   const thumbnail_url = (formData.get("thumbnail_url") as string) || null;
   const status = formData.get("status") as string;
   const extra_images = (formData.get("extra_images") as string) || "";
+  const category = (formData.get("category") as string) || null;
 
   const { error } = await supabase
     .from("products")
@@ -93,6 +97,7 @@ export async function updateProduct(id: string, formData: FormData) {
       image_url,
       thumbnail_url,
       status,
+      category,
     })
     .eq("id", id);
 
@@ -115,6 +120,7 @@ export async function updateProduct(id: string, formData: FormData) {
   revalidatePath("/admin/products");
   revalidatePath(`/products/${id}`);
   revalidatePath("/");
+  revalidatePath("/category/[slug]", "page");
   redirect("/admin/products");
 }
 

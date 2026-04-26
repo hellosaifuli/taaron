@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 
 function AuthForm() {
   const router = useRouter();
@@ -50,19 +51,41 @@ function AuthForm() {
     }
 
     try {
-      const endpoint =
-        mode === "login" ? "/api/auth/sign-in" : "/api/auth/sign-up";
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        setError(data.error || "Authentication failed");
+      const supabase = createClient();
+
+      if (mode === "login") {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        });
+        if (error) {
+          setError(error.message);
+          return;
+        }
       } else {
-        router.push(redirectTo);
+        // Sign up: API route handles user_profiles insert
+        const response = await fetch("/api/auth/sign-up", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          setError(data.error || "Sign up failed");
+          return;
+        }
+        // Sign in via browser client so onAuthStateChange fires
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        });
+        if (signInError) {
+          setError(signInError.message);
+          return;
+        }
       }
+
+      router.push(redirectTo);
     } catch {
       setError("Network error. Please try again.");
     } finally {
@@ -126,7 +149,7 @@ function AuthForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === "signup" && (
             <div>
-              <label className={labelClass}>Full Name</label>
+              <label className={labelClass}>Full Name <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 name="full_name"
@@ -140,7 +163,7 @@ function AuthForm() {
           )}
 
           <div>
-            <label className={labelClass}>Email</label>
+            <label className={labelClass}>Email <span className="text-red-500">*</span></label>
             <input
               type="email"
               name="email"
@@ -156,7 +179,7 @@ function AuthForm() {
             <div>
               <div className="mb-1.5 flex items-center justify-between">
                 <label className={labelClass} style={{ marginBottom: 0 }}>
-                  Password
+                  Password <span className="text-red-500">*</span>
                 </label>
                 {mode === "login" && (
                   <button
