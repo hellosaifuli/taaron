@@ -33,7 +33,7 @@ const localBusinessSchema = {
   description: 'Premium leather wallets, bags, and belts crafted in Bangladesh.',
   url: 'https://taaron.store',
   telephone: '+8801920585212',
-  email: 'hello@taaron.com',
+  email: 'taaron.store@gmail.com',
   address: { '@type': 'PostalAddress', addressLocality: 'Dhaka', addressCountry: 'BD' },
   openingHours: 'Mo-Fr 10:00-19:00',
   contactPoint: {
@@ -105,12 +105,12 @@ export default function ContactPage() {
               </a>
 
               <a
-                href="mailto:hello@taaron.com"
+                href="mailto:taaron.store@gmail.com"
                 className="group block py-7 transition-colors"
               >
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Email</p>
                 <p className="mt-2 text-xl font-medium text-[#111111] transition-colors group-hover:text-[#9B6F47]" style={{ fontFamily: 'var(--font-display)' }}>
-                  hello@taaron.com
+                  taaron.store@gmail.com
                 </p>
                 <p className="mt-1 text-xs text-[#9E9690]">Response within 1 business day</p>
               </a>
@@ -139,7 +139,7 @@ export default function ContactPage() {
           {/* Form */}
           <FadeInSection delay={100}>
             <form
-              action="https://formsubmit.co/hello@taaron.com"
+              action="https://formsubmit.co/taaron.store@gmail.com"
               method="POST"
               className="space-y-6"
             >

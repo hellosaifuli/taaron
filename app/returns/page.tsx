@@ -129,8 +129,8 @@ export default function ReturnsPage() {
               </div>
               <div className="py-6">
                 <p className="text-[10px] uppercase tracking-widest text-[#9E9690]">Contact</p>
-                <a href="mailto:hello@taaron.com" className="mt-2 block text-sm font-medium text-[#9B6F47] transition-colors hover:text-[#111111]">
-                  hello@taaron.com
+                <a href="mailto:taaron.store@gmail.com" className="mt-2 block text-sm font-medium text-[#9B6F47] transition-colors hover:text-[#111111]">
+                  taaron.store@gmail.com
                 </a>
                 <a href="https://wa.me/8801920585212" target="_blank" rel="noopener noreferrer" className="mt-1 block text-xs text-[#5C5652] transition-colors hover:text-[#9B6F47]">
                   WhatsApp: +880 1920-585212
