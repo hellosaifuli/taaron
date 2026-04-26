@@ -58,12 +58,14 @@ export default function LuxuryNav() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div className="invisible absolute left-0 top-full mt-3 min-w-[170px] rounded-2xl border border-[#E5DFD6] bg-[#F2EFE8] py-2 opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100">
-                {shopLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className="block px-5 py-2.5 text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">
-                    {link.label}
-                  </Link>
-                ))}
+              <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <div className="min-w-[170px] rounded-2xl border border-[#E5DFD6] bg-[#F2EFE8] py-2 shadow-lg">
+                  {shopLinks.map((link) => (
+                    <Link key={link.href} href={link.href} className="block px-5 py-2.5 text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
