@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { MetadataRoute } from 'next'
+import { posts } from '@/lib/blog'
 
 export const dynamic = 'force-dynamic'
 
@@ -9,9 +10,17 @@ const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 const staticRoutes: MetadataRoute.Sitemap = [
   { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
+  { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
   { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
   { url: `${baseUrl}/returns`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
 ]
+
+const blogRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
+  url: `${baseUrl}/blog/${p.slug}`,
+  lastModified: new Date(p.date),
+  changeFrequency: 'monthly' as const,
+  priority: 0.7,
+}))
 
 const categoryRoutes: MetadataRoute.Sitemap = [
   'all', 'bags', 'wallets', 'belts', 'cardholder', 'ladies',
@@ -36,5 +45,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes]
+  return [...staticRoutes, ...categoryRoutes, ...blogRoutes, ...productRoutes]
 }
