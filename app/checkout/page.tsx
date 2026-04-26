@@ -260,7 +260,7 @@ export default function CheckoutPage() {
                     <div className="h-16 w-16 flex-shrink-0 bg-[#EDE9E3]" />
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="truncate text-sm font-medium text-[#111111]">{item.name}</p>
+                    <p className="truncate text-sm font-medium text-[#111111]">{item.name ?? 'Product'}</p>
                     <p className="mt-0.5 text-xs text-[#9E9690]">Qty {item.quantity}</p>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">

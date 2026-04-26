@@ -127,7 +127,7 @@ export default async function BlogPostPage({ params }: Props) {
               </p>
             </FadeInSection>
 
-            {post.sections.map((section, i) => (
+            {(post.sections ?? []).map((section, i) => (
               <FadeInSection key={i} delay={i * 40} from="up">
                 <div className="mb-8">
                   {section.heading && (

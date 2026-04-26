@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 })
   }
 
-  // Server-side price verification
+  // Server-side price verification — includes variant price_adjustment
   let subtotal = 0
   for (const item of items) {
     const { data: product } = await supabase
@@ -58,7 +58,17 @@ export async function POST(request: NextRequest) {
       .select('price')
       .eq('id', item.product_id)
       .single()
-    if (product) subtotal += product.price * item.quantity
+    if (!product) continue
+    let unitPrice = product.price
+    if (item.variant_id) {
+      const { data: variant } = await supabase
+        .from('product_variants')
+        .select('price_adjustment')
+        .eq('id', item.variant_id)
+        .single()
+      if (variant) unitPrice += variant.price_adjustment
+    }
+    subtotal += unitPrice * item.quantity
   }
 
   const shipping_cost = subtotal > 3000 ? 0 : 100
