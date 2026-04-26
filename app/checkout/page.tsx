@@ -446,7 +446,7 @@ export default function CheckoutPage() {
           </form>
 
           {/* Order Summary */}
-          <aside className="order-1 lg:order-2 lg:sticky lg:top-24 h-fit">
+          <aside className="order-1 lg:order-2 lg:sticky lg:top-24 h-fit min-w-0">
             <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-[#9E9690]">
               Order Summary
             </p>
@@ -471,9 +471,12 @@ export default function CheckoutPage() {
                     <div className="h-16 w-16 flex-shrink-0 bg-[#EDE9E3]" />
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="truncate text-sm font-medium text-[#111111]">
+                    <Link
+                      href={`/products/${item.product_id}`}
+                      className="line-clamp-2 text-sm font-medium text-[#111111] hover:text-[#9B6F47] transition-colors"
+                    >
                       {item.name ?? "Product"}
-                    </p>
+                    </Link>
                     <p className="mt-0.5 text-xs text-[#9E9690]">
                       Qty {item.quantity}
                     </p>
