@@ -73,8 +73,6 @@ export default function LuxuryNav() {
           </Link>
           <div className="h-4 w-px bg-[#E5DFD6]" />
           <div className="flex items-center gap-6">
-            <Link href="/contact" className="text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">Contact</Link>
-
             {user ? (
               <Link
                 href="/dashboard"
@@ -171,8 +169,6 @@ export default function LuxuryNav() {
                 </Link>
               ))}
             </div>
-
-            <Link href="/contact" className="flex items-center border-b border-[#E5DFD6] py-5 text-[13px] uppercase tracking-widest text-[#111111]" onClick={() => setMobileOpen(false)}>Contact</Link>
 
             {user ? (
               <Link href="/dashboard" className="flex items-center py-5 text-[13px] uppercase tracking-widest text-[#111111]" onClick={() => setMobileOpen(false)}>
