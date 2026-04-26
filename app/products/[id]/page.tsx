@@ -155,7 +155,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <AddToCart product={product} />
             </FadeInSection>
 
-            <div className="my-8 h-px bg-[#E5DFD6]" />
 
             <FadeInSection delay={280} from="up">
               <ProductAccordion items={sections} />
