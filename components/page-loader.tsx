@@ -99,7 +99,7 @@ export default function PageLoader() {
   const pathname = usePathname()
   const [loading, setLoading] = useState(false)
   const prevPath = useRef(pathname)
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     if (pathname !== prevPath.current) {
