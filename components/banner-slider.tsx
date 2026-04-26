@@ -191,7 +191,7 @@ export default function BannerSlider({
               )}
             </div>
             <div className="absolute inset-x-0 bottom-5 flex justify-center px-4">
-              <span className="max-w-[80%] truncate rounded-full bg-black/40 px-5 py-2 text-[11px] uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-black/60 text-center">
+              <span className="max-w-[80%] line-clamp-2 rounded-full bg-black/40 px-5 py-2 text-[11px] uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-black/60 text-center leading-snug">
                 {panel.label}
               </span>
             </div>
