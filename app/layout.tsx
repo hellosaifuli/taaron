@@ -2,20 +2,12 @@ import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 import { Toaster } from "sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import LuxuryNav from "@/components/luxury-nav";
 import SiteFooter from "@/components/site-footer";
 import { CartProvider } from "@/components/cart-provider";
 import PageLoader from "@/components/page-loader";
 import "./globals.css";
-import { Inter } from 'next/font/google'
-import { ReactNode } from 'react'
-import { Toaster } from 'sonner'
-import { Analytics } from '@vercel/analytics/next'
-import LuxuryNav from '@/components/luxury-nav'
-import SiteFooter from '@/components/site-footer'
-import { CartProvider } from '@/components/cart-provider'
-import PageLoader from '@/components/page-loader'
-import './globals.css'
 
 const inter = Inter({
   subsets: ["latin"],
