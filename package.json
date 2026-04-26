@@ -19,10 +19,13 @@
     "next": "15.6.0-canary.60",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "resend": "^6.12.2",
     "sonner": "^2.0.1"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["sharp"]
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
   },
   "devDependencies": {
     "@tailwindcss/container-queries": "^0.1.1",
