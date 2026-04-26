@@ -109,13 +109,17 @@ export async function POST(request: NextRequest) {
       status: "pending",
       payment_status: "pending",
     })
-    .select();
+    .select()
+    .single();
 
-  if (orderError) {
-    return NextResponse.json({ error: orderError.message }, { status: 400 });
+  if (orderError || !order) {
+    return NextResponse.json(
+      { error: orderError?.message ?? "Failed to create order." },
+      { status: 400 },
+    );
   }
 
-  const orderId = order[0].id;
+  const orderId = order.id;
 
   for (const item of items) {
     await supabase.from("order_items").insert({
@@ -158,5 +162,5 @@ export async function POST(request: NextRequest) {
     total,
   });
 
-  return NextResponse.json(order[0], { status: 201 });
+  return NextResponse.json(order, { status: 201 });
 }
