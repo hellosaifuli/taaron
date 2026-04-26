@@ -100,7 +100,7 @@ export default async function DashboardPage() {
         {orders && orders.length > 0 ? (
           <div className="space-y-4">
             {orders.map((order: any, i: number) => {
-              const style = STATUS_STYLES[order.status] ?? STATUS_STYLES.pending
+              const style = STATUS_STYLES[order.status] ?? { pill: 'bg-[#FEF9EE] text-[#9B6F47] border-[#E5DFD6]', bar: 'w-1/4 bg-[#9B6F47]', label: 'Pending' }
               return (
                 <FadeInSection key={order.id} delay={i * 60} from="up">
                   <div className="group bg-white transition-all duration-200 hover:shadow-sm">
