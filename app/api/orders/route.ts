@@ -67,6 +67,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Server-side price verification — includes variant price_adjustment
+  const verifiedPrices = new Map<string, number>();
   let subtotal = 0;
   for (const item of items) {
     const { data: product } = await supabase
@@ -84,6 +85,7 @@ export async function POST(request: NextRequest) {
         .single();
       if (variant) unitPrice += variant.price_adjustment;
     }
+    verifiedPrices.set(`${item.product_id}:${item.variant_id ?? ""}`, unitPrice);
     subtotal += unitPrice * item.quantity;
   }
 
@@ -122,12 +124,15 @@ export async function POST(request: NextRequest) {
   const orderId = order.id;
 
   for (const item of items) {
+    const verifiedPrice =
+      verifiedPrices.get(`${item.product_id}:${item.variant_id ?? ""}`) ??
+      item.price;
     await supabase.from("order_items").insert({
       order_id: orderId,
       product_id: item.product_id,
       variant_id: item.variant_id || null,
       quantity: item.quantity,
-      price: item.price,
+      price: verifiedPrice,
     });
   }
 

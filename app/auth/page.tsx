@@ -3,7 +3,6 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 
 function AuthForm() {
   const router = useRouter();
@@ -38,9 +37,14 @@ function AuthForm() {
         });
         if (response.ok) {
           setSuccess("Password reset link sent. Check your email.");
+          setFormData((f) => ({ ...f, email: "" }));
         } else {
-          const data = await response.json();
-          setError(data.error || "Failed to send reset email.");
+          let errMsg = "Failed to send reset email.";
+          try {
+            const data = await response.json();
+            errMsg = data.error || errMsg;
+          } catch {}
+          setError(errMsg);
         }
       } catch {
         setError("Network error. Please try again.");
@@ -51,41 +55,19 @@ function AuthForm() {
     }
 
     try {
-      const supabase = createClient();
-
-      if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-        if (error) {
-          setError(error.message);
-          return;
-        }
+      const endpoint =
+        mode === "login" ? "/api/auth/sign-in" : "/api/auth/sign-up";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.error || "Authentication failed");
       } else {
-        // Sign up: API route handles user_profiles insert
-        const response = await fetch("/api/auth/sign-up", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-        const data = await response.json();
-        if (!response.ok) {
-          setError(data.error || "Sign up failed");
-          return;
-        }
-        // Sign in via browser client so onAuthStateChange fires
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-        if (signInError) {
-          setError(signInError.message);
-          return;
-        }
+        router.push(redirectTo);
       }
-
-      router.push(redirectTo);
     } catch {
       setError("Network error. Please try again.");
     } finally {

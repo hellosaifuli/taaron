@@ -22,13 +22,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  // Create user profile
+  // Create user profile — non-fatal if it fails; auth still works
   if (data.user) {
-    await supabase.from("user_profiles").insert({
-      id: data.user.id,
-      email: data.user.email,
-      full_name: full_name || "",
-    });
+    await supabase.from("user_profiles").upsert(
+      { id: data.user.id, email: data.user.email, full_name: full_name || "" },
+      { onConflict: "id" },
+    );
   }
 
   return NextResponse.json(data, { status: 201 });
