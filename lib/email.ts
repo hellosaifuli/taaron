@@ -1,7 +1,5 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const STORE_EMAIL = "taaron.store@gmail.com";
 const STORE_NAME = "Taaron";
 const FROM = `${STORE_NAME} <orders@taaron.store>`;
@@ -135,6 +133,7 @@ function customerEmailHtml(o: OrderEmailData): string {
 export async function sendOrderEmails(data: OrderEmailData) {
   if (!process.env.RESEND_API_KEY) return;
 
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const emails: Promise<unknown>[] = [
     resend.emails.send({
       from: FROM,
