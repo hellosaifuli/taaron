@@ -149,9 +149,11 @@ export default function ProductMasonry({
                 sizes="(max-width: 1024px) 100vw, 40vw"
               />
               <div className="absolute inset-x-0 bottom-3 flex justify-center px-3">
-                <div className="max-w-full truncate rounded-full bg-black/50 px-5 py-2 text-center text-[13px] leading-tight text-white backdrop-blur-sm">
-                  {product.name}
-                  <span className="ml-2.5 opacity-70">
+                <div className="flex min-w-0 max-w-full items-center gap-2.5 rounded-full bg-black/50 px-5 py-2 backdrop-blur-sm">
+                  <span className="truncate text-[13px] leading-tight text-white">
+                    {product.name}
+                  </span>
+                  <span className="flex-shrink-0 text-[13px] leading-tight text-white/70">
                     ৳{product.price.toLocaleString()}
                   </span>
                 </div>
