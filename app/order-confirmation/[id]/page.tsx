@@ -238,7 +238,7 @@ export default async function OrderConfirmationPage({
               Items
             </p>
             <div className="divide-y divide-[#E5DFD6]">
-              {order.order_items.map((item: any, idx: number) => (
+              {(order.order_items ?? []).map((item: any, idx: number) => (
                 <div
                   key={idx}
                   className="flex items-center justify-between py-4 first:pt-0"
