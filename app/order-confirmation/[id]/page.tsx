@@ -216,8 +216,9 @@ export default async function OrderConfirmationPage({
                   <span
                     className={`font-medium ${order.payment_status === "paid" ? "text-green-600" : "text-[#9B6F47]"}`}
                   >
-                    {order.payment_status.charAt(0).toUpperCase() +
-                      order.payment_status.slice(1)}
+                    {order.payment_status
+                      ? order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1)
+                      : "Pending"}
                   </span>
                 </div>
                 {order.payment_method === "cod" && (
@@ -257,16 +258,18 @@ export default async function OrderConfirmationPage({
               ))}
             </div>
             <div className="mt-4 space-y-2 border-t border-[#E5DFD6] pt-4 text-sm">
-              <div className="flex justify-between text-[#5C5652]">
-                <span>Subtotal</span>
-                <span className="tabular-nums">
-                  ৳{order.subtotal.toLocaleString()}
-                </span>
-              </div>
+              {order.subtotal != null && (
+                <div className="flex justify-between text-[#5C5652]">
+                  <span>Subtotal</span>
+                  <span className="tabular-nums">
+                    ৳{order.subtotal.toLocaleString()}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between text-[#5C5652]">
                 <span>Shipping</span>
                 <span className="tabular-nums">
-                  {order.shipping_cost === 0 ? (
+                  {(order.shipping_cost ?? 0) === 0 ? (
                     <span className="text-[#9B6F47]">Free</span>
                   ) : (
                     `৳${order.shipping_cost}`
@@ -276,7 +279,7 @@ export default async function OrderConfirmationPage({
               <div className="flex justify-between border-t border-[#E5DFD6] pt-3 font-semibold text-[#111111]">
                 <span>Total</span>
                 <span className="tabular-nums">
-                  ৳{order.total.toLocaleString()}
+                  ৳{(order.total ?? 0).toLocaleString()}
                 </span>
               </div>
             </div>
