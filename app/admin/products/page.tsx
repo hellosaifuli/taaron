@@ -7,7 +7,10 @@ import { deleteProduct, toggleStatus } from './actions'
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@taaron.bd'
 
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Admin — Products' }
+export const metadata = {
+  title: 'Admin — Products',
+  robots: { index: false, follow: false },
+}
 
 export default async function AdminProductsPage() {
   const supabase = await createClient()

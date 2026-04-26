@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Script from 'next/script'
 import FadeInSection from '@/components/fade-in-section'
 
 const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
@@ -42,9 +43,20 @@ const faqs = [
   { q: 'What about sale or discounted items?', a: 'Sale items are final sale and cannot be returned unless they arrive defective.' },
 ]
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: { '@type': 'Answer', text: faq.a },
+  })),
+}
+
 export default function ReturnsPage() {
   return (
     <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
+      <Script id="faq-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* Banner header */}
       <div

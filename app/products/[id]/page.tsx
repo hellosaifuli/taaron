@@ -87,6 +87,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     name: product.name,
     description: product.description,
     sku: product.sku,
+    url: `${baseUrl}/products/${id}`,
+    inLanguage: 'en',
     image: allImages.map((i) => i.url),
     brand: { '@type': 'Brand', name: 'Taaron' },
     offers: {
@@ -94,8 +96,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
       url: `${baseUrl}/products/${id}`,
       priceCurrency: 'BDT',
       price: product.price,
+      priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       availability: 'https://schema.org/InStock',
-      seller: { '@type': 'Organization', name: 'Taaron' },
+      itemCondition: 'https://schema.org/NewCondition',
+      areaServed: { '@type': 'Country', name: 'Bangladesh' },
+      seller: { '@type': 'Organization', name: 'Taaron', url: baseUrl },
     },
   }
 

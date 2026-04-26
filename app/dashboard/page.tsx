@@ -2,6 +2,13 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import FadeInSection from '@/components/fade-in-section'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'My Orders',
+  description: 'View and manage your Taaron orders.',
+  robots: { index: false, follow: false },
+}
 
 const STATUS_STYLES: Record<string, string> = {
   pending:   'border-[#E5DFD6] bg-[#FEF9EE] text-[#9B6F47]',

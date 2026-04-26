@@ -7,6 +7,10 @@ import { updateProduct } from '../actions'
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@taaron.bd'
 
 export const dynamic = 'force-dynamic'
+export const metadata = {
+  title: 'Edit Product — Admin',
+  robots: { index: false, follow: false },
+}
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

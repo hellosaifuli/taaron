@@ -29,11 +29,12 @@ export const metadata = {
     template: '%s | Taaron',
   },
   description:
-    'Taaron crafts premium leather wallets, bags, and belts for everyday elegance. Artisanal craftsmanship, minimalist design, and modern luxury — without the heavy price tag. Shop in Bangladesh with COD & bKash.',
+    'Taaron crafts premium leather wallets, bags, and belts in Bangladesh. Artisanal craftsmanship, minimalist design, modern luxury. COD & bKash available.',
   keywords: [
     'leather goods Bangladesh', 'premium leather wallet', 'leather bag Bangladesh',
     'leather belt', 'artisanal leather', 'taaron', 'তারণ', 'luxury leather Bangladesh',
     'handmade leather wallet', 'leather cardholder', 'ladies leather bag', 'minimalist wallet',
+    'bkash payment leather', 'cash on delivery leather Bangladesh',
   ],
   authors: [{ name: 'Taaron', url: baseUrl }],
   creator: 'Taaron',
@@ -68,7 +69,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en-BD" className={inter.variable}>
       <body className="bg-[#F7F4EF] text-[#111111] selection:bg-[#9B6F47]/15" style={{ fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
         <CartProvider>
           <PageLoader />

@@ -9,17 +9,17 @@ const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 const staticRoutes: MetadataRoute.Sitemap = [
   { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
-  { url: `${baseUrl}/auth`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
-  { url: `${baseUrl}/dashboard`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+  { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+  { url: `${baseUrl}/returns`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
 ]
 
 const categoryRoutes: MetadataRoute.Sitemap = [
-  'bags', 'belts', 'wallets', 'cardholder', 'ladies', 'new-arrivals'
+  'all', 'bags', 'wallets', 'belts', 'cardholder', 'ladies',
 ].map((slug) => ({
-  url: `${baseUrl}/?category=${slug}`,
+  url: `${baseUrl}/category/${slug}`,
   lastModified: new Date(),
   changeFrequency: 'weekly' as const,
-  priority: 0.8,
+  priority: slug === 'all' ? 0.9 : 0.8,
 }))
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

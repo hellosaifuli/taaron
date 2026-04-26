@@ -2,6 +2,13 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import FadeInSection from '@/components/fade-in-section'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Order Confirmed',
+  description: 'Your Taaron order has been placed successfully.',
+  robots: { index: false, follow: false },
+}
 
 interface OrderConfirmationProps {
   params: Promise<{ id: string }>
