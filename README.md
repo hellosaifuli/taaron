@@ -72,19 +72,19 @@ lib/supabase/
 
 ### Customer Flow
 
-| Page | Path | Features |
-|------|------|----------|
-| Home | `/` | Product grid, categories, hero |
-| Product | `/products/[id]` | Images, variants, description |
-| Checkout | `/checkout` | Cart, address, payment method |
-| Order Confirm | `/order-confirmation/[id]` | Status timeline, details |
-| Dashboard | `/dashboard` | Order history |
-| Auth | `/auth` | Login/signup |
+| Page          | Path                       | Features                       |
+| ------------- | -------------------------- | ------------------------------ |
+| Home          | `/`                        | Product grid, categories, hero |
+| Product       | `/products/[id]`           | Images, variants, description  |
+| Checkout      | `/checkout`                | Cart, address, payment method  |
+| Order Confirm | `/order-confirmation/[id]` | Status timeline, details       |
+| Dashboard     | `/dashboard`               | Order history                  |
+| Auth          | `/auth`                    | Login/signup                   |
 
 ### Admin Flow
 
-| Page | Path | Features |
-|------|------|----------|
+| Page        | Path              | Features                    |
+| ----------- | ----------------- | --------------------------- |
 | Add Product | `/admin/products` | Create products with images |
 
 ## API Routes
@@ -101,6 +101,7 @@ POST   /api/orders                # Create order
 ## Database Schema
 
 **Tables:**
+
 - `user_profiles` - Customer info (name, email, address)
 - `products` - Products with price, description, images
 - `product_variants` - Size/color options with stock
@@ -109,6 +110,7 @@ POST   /api/orders                # Create order
 - `payments` - Payment tracking (COD/bKash)
 
 **RLS Policies:**
+
 - Users see only own orders, payments
 - Everyone sees active products
 - Admin create products (no RLS limit)
@@ -116,17 +118,20 @@ POST   /api/orders                # Create order
 ## Design System
 
 ### Colors
+
 - **Primary:** Gray 900 (#111827)
 - **Background:** White
 - **Borders:** Gray 200 (#e5e7eb)
 - **Text:** Gray 900 (dark), Gray 600 (secondary)
 
 ### Typography
+
 - Font: System sans-serif (Tailwind default)
 - Headings: Font-light, tracking-wider
 - Body: Regular, text-sm to text-base
 
 ### Layout
+
 - Full-width responsive
 - Max-width: 7xl container (1280px)
 - Grid: 2 cols mobile, 4 cols desktop
@@ -135,11 +140,13 @@ POST   /api/orders                # Create order
 ## Payment Methods
 
 ### Cash on Delivery (COD)
+
 - No integration needed
 - Order status: pending (payment pending until delivery)
 - Customer pays on delivery
 
 ### bKash
+
 - Placeholder structure in place
 - To enable:
   1. Get merchant credentials
@@ -150,6 +157,7 @@ POST   /api/orders                # Create order
 ## Deployment to Vercel
 
 ### Step 1: Push to GitHub
+
 ```bash
 git init
 git add .
@@ -158,12 +166,14 @@ git push origin main
 ```
 
 ### Step 2: Deploy
+
 1. Visit [vercel.com](https://vercel.com)
 2. Import GitHub repo
 3. Add environment variables
 4. Deploy
 
 ### Step 3: Custom Domain (taaron.bd)
+
 1. Vercel Dashboard → Domains
 2. Add `taaron.bd`
 3. Update registrar nameservers to Vercel's
@@ -172,6 +182,7 @@ git push origin main
 ## Admin Operations
 
 ### Add Product
+
 1. Visit `/admin/products`
 2. Fill form (name, price, description, SKU)
 3. Add image URL
@@ -179,12 +190,14 @@ git push origin main
 5. Product appears on home page
 
 ### Add Product Variants
+
 1. Via Supabase UI or API
 2. Insert into `product_variants` table
 3. Link to product_id
 4. Add variant names, prices, stock
 
 ### View Orders
+
 1. Visit Supabase Dashboard
 2. Go to `orders` table
 3. See all orders with status
@@ -195,6 +208,7 @@ git push origin main
 ### Local Testing
 
 **Test signup/login:**
+
 ```bash
 curl -X POST http://localhost:3000/api/auth/sign-up \
   -H "Content-Type: application/json" \
@@ -202,6 +216,7 @@ curl -X POST http://localhost:3000/api/auth/sign-up \
 ```
 
 **Test product creation:**
+
 ```bash
 curl -X POST http://localhost:3000/api/products \
   -H "Content-Type: application/json" \
@@ -209,6 +224,7 @@ curl -X POST http://localhost:3000/api/products \
 ```
 
 ### Environment Variables
+
 See `.env.example` for all required variables.
 
 ## Next Steps
@@ -227,6 +243,7 @@ See `.env.example` for all required variables.
 ## Support
 
 For questions or issues:
+
 - Check Supabase docs: https://supabase.com/docs
 - Check Next.js docs: https://nextjs.org/docs
 - Visit taaron.bd

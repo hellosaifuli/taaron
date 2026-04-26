@@ -1,22 +1,25 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import StitchImage from '@/components/stitch-image'
+import { useState } from "react";
+import Link from "next/link";
+import StitchImage from "@/components/stitch-image";
 
 interface GalleryImage {
-  url: string
-  alt: string
+  url: string;
+  alt: string;
 }
 
 interface ProductGalleryProps {
-  images: GalleryImage[]
-  productName: string
+  images: GalleryImage[];
+  productName: string;
 }
 
-export default function ProductGallery({ images, productName }: ProductGalleryProps) {
-  const [activeIdx, setActiveIdx] = useState(0)
-  const active = images[activeIdx] ?? images[0]
+export default function ProductGallery({
+  images,
+  productName,
+}: ProductGalleryProps) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const active = images[activeIdx] ?? images[0];
 
   if (!active) {
     return (
@@ -25,14 +28,16 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
           No image
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="relative lg:sticky lg:top-0 lg:h-screen lg:w-[58%] lg:flex-shrink-0 lg:overflow-hidden">
-
       {/* Main image */}
-      <div className="relative w-full overflow-hidden bg-[#EDE9E3]" style={{ aspectRatio: '4/5', maxHeight: '85vh' }}>
+      <div
+        className="relative w-full overflow-hidden bg-[#EDE9E3]"
+        style={{ aspectRatio: "4/5", maxHeight: "85vh" }}
+      >
         <StitchImage
           src={active.url}
           alt={active.alt || productName}
@@ -45,10 +50,20 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F7F4EF] to-transparent lg:hidden" />
 
         {/* Breadcrumb overlay */}
-        <nav aria-label="Breadcrumb" className="absolute top-24 left-6 lg:top-8 lg:left-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#111111]/50 mix-blend-multiply">
-          <Link href="/" className="transition-colors hover:text-[#111111]">Home</Link>
+        <nav
+          aria-label="Breadcrumb"
+          className="absolute top-24 left-6 lg:top-8 lg:left-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#111111]/50 mix-blend-multiply"
+        >
+          <Link href="/" className="transition-colors hover:text-[#111111]">
+            Home
+          </Link>
           <span>/</span>
-          <Link href="/category/all" className="transition-colors hover:text-[#111111]">Shop</Link>
+          <Link
+            href="/category/all"
+            className="transition-colors hover:text-[#111111]"
+          >
+            Shop
+          </Link>
           <span>/</span>
           <span className="text-[#111111]/30">{productName}</span>
         </nav>
@@ -64,12 +79,24 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         {images.length > 1 && (
           <>
             <button
-              onClick={() => setActiveIdx((i) => (i - 1 + images.length) % images.length)}
+              onClick={() =>
+                setActiveIdx((i) => (i - 1 + images.length) % images.length)
+              }
               className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center bg-white/80 text-[#111111] backdrop-blur-sm transition-colors hover:bg-white"
               aria-label="Previous image"
             >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
             <button
@@ -77,8 +104,18 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center bg-white/80 text-[#111111] backdrop-blur-sm transition-colors hover:bg-white"
               aria-label="Next image"
             >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </>
@@ -94,8 +131,8 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               onClick={() => setActiveIdx(i)}
               className={`relative h-16 flex-1 overflow-hidden bg-[#EDE9E3] transition-all duration-200 ${
                 i === activeIdx
-                  ? 'ring-1 ring-[#9B6F47] ring-offset-1'
-                  : 'opacity-55 hover:opacity-100'
+                  ? "ring-1 ring-[#9B6F47] ring-offset-1"
+                  : "opacity-55 hover:opacity-100"
               }`}
               aria-label={`View image ${i + 1}`}
             >
@@ -119,8 +156,8 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               onClick={() => setActiveIdx(i)}
               className={`relative h-20 w-20 flex-shrink-0 overflow-hidden bg-[#EDE9E3] transition-all duration-200 ${
                 i === activeIdx
-                  ? 'ring-1 ring-[#9B6F47] ring-offset-1'
-                  : 'opacity-55 hover:opacity-100'
+                  ? "ring-1 ring-[#9B6F47] ring-offset-1"
+                  : "opacity-55 hover:opacity-100"
               }`}
               aria-label={`View image ${i + 1}`}
             >
@@ -135,5 +172,5 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         </div>
       )}
     </div>
-  )
+  );
 }
