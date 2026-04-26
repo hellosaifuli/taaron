@@ -69,11 +69,71 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#F7F4EF] px-4 text-center">
-        <p className="text-sm text-[#5C5652]">Your cart is empty.</p>
-        <Link href="/" className="bg-[#111111] px-8 py-3 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47]">
-          Continue Shopping
-        </Link>
+      <div className="flex min-h-screen flex-col bg-[#F7F4EF]">
+        {/* Top gradient strip */}
+        <div
+          className="flex-shrink-0 pt-28 pb-12 px-6 lg:px-16"
+          style={{ background: 'linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)', minHeight: '30vh' }}
+        >
+          <div className="mx-auto max-w-screen-xl flex flex-col items-center text-center">
+            {/* Leather stitch icon */}
+            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white/60 backdrop-blur-sm">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="12" width="32" height="20" rx="2" stroke="#9B6F47" strokeWidth="1.5"/>
+                <path d="M4 18h32" stroke="#9B6F47" strokeWidth="1" strokeDasharray="3 3"/>
+                <path d="M14 8l2 4M20 8v4M26 8l-2 4" stroke="#9B6F47" strokeWidth="1.5" strokeLinecap="round"/>
+                <circle cx="20" cy="24" r="3" stroke="#9B6F47" strokeWidth="1.5"/>
+              </svg>
+            </div>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47] mb-3">Your Cart</p>
+            <h1
+              className="text-[#111111]"
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(2rem, 4vw, 3.2rem)',
+                fontWeight: 400,
+                letterSpacing: '-0.01em',
+                lineHeight: 1.1,
+              }}
+            >
+              Nothing here yet
+            </h1>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-[#5C5652]">
+              Your bag is empty. Explore our leather goods — crafted for everyday elegance.
+            </p>
+            <Link
+              href="/"
+              className="mt-8 bg-[#111111] px-10 py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47]"
+            >
+              Shop the Collection
+            </Link>
+          </div>
+        </div>
+
+        {/* Category quick links */}
+        <div className="mx-auto w-full max-w-screen-xl px-6 py-14 lg:px-16">
+          <p className="mb-8 text-[10px] uppercase tracking-[0.4em] text-[#9E9690]">Browse Categories</p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {[
+              { label: 'Wallets', href: '/category/wallets' },
+              { label: 'Bags', href: '/category/bags' },
+              { label: 'Belts', href: '/category/belts' },
+              { label: 'Card Holders', href: '/category/cardholder' },
+              { label: 'Ladies Bags', href: '/category/ladies' },
+              { label: 'All Products', href: '/category/all' },
+            ].map((cat) => (
+              <Link
+                key={cat.href}
+                href={cat.href}
+                className="group border border-[#E5DFD6] px-4 py-5 text-center transition-all duration-200 hover:border-[#9B6F47] hover:bg-white"
+              >
+                <span className="text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors group-hover:text-[#9B6F47]">
+                  {cat.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
