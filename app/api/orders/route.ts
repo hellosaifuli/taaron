@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // Fire-and-forget email notifications
+  // Fire-and-forget email notifications — use server-verified prices
   sendOrderEmails({
     order_number,
     order_id: orderId,
@@ -156,10 +156,12 @@ export async function POST(request: NextRequest) {
     shipping_city,
     payment_method,
     items: items.map(
-      (i: { name: string; quantity: number; price: number }) => ({
+      (i: { name: string; quantity: number; product_id: string; variant_id?: string }) => ({
         name: i.name,
         quantity: i.quantity,
-        price: i.price,
+        price:
+          verifiedPrices.get(`${i.product_id}:${i.variant_id ?? ""}`) ??
+          0,
       }),
     ),
     subtotal,

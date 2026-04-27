@@ -304,13 +304,18 @@ export default async function DashboardPage() {
               </Link>
 
               <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {["Wallets", "Bags", "Belts", "Card Holders"].map((cat) => (
+                {[
+                  { label: "Wallets", slug: "wallets" },
+                  { label: "Bags", slug: "bags" },
+                  { label: "Belts", slug: "belts" },
+                  { label: "Card Holders", slug: "cardholder" },
+                ].map(({ label, slug }) => (
                   <Link
-                    key={cat}
-                    href={`/category/${cat.toLowerCase().replace(" ", "")}`}
+                    key={slug}
+                    href={`/category/${slug}`}
                     className="border border-[#E5DFD6] px-4 py-4 text-[11px] uppercase tracking-widest text-[#5C5652] transition-all hover:border-[#9B6F47] hover:text-[#9B6F47]"
                   >
-                    {cat}
+                    {label}
                   </Link>
                 ))}
               </div>
