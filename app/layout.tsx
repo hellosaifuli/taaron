@@ -6,7 +6,6 @@ import { Analytics } from "@vercel/analytics/next";
 import LuxuryNav from "@/components/luxury-nav";
 import SiteFooter from "@/components/site-footer";
 import { CartProvider } from "@/components/cart-provider";
-import PageLoader from "@/components/page-loader";
 import "./globals.css";
 
 const inter = Inter({
@@ -101,7 +100,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
       >
         <CartProvider>
-          <PageLoader />
           <LuxuryNav />
           <main>{children}</main>
           <SiteFooter />
