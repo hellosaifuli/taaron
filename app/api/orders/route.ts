@@ -34,12 +34,19 @@ export async function GET() {
 
 // POST create order — guest checkout supported (user_id nullable)
 export async function POST(request: NextRequest) {
+  try {
   const authClient = await createClient();
   const {
     data: { user },
   } = await authClient.auth.getUser();
 
   // Use admin client for inserts so guest orders bypass RLS
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return NextResponse.json(
+      { error: "Server configuration error. Please contact support." },
+      { status: 500 },
+    );
+  }
   const supabase = createAdminClient();
 
   const {
@@ -170,4 +177,11 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json(order, { status: 201 });
+  } catch (err) {
+    console.error("Order POST error:", err);
+    return NextResponse.json(
+      { error: "Unexpected server error. Please try again." },
+      { status: 500 },
+    );
+  }
 }

@@ -64,7 +64,13 @@ export default function CheckoutPage() {
           ...formData,
         }),
       });
-      const data = await response.json();
+      let data: { id?: string; error?: string } = {};
+      try {
+        data = await response.json();
+      } catch {
+        setError("Server returned an unexpected response. Please try again.");
+        return;
+      }
       if (!response.ok) {
         setError(data.error || "Failed to create order");
       } else {
@@ -72,7 +78,7 @@ export default function CheckoutPage() {
         router.push(`/order-confirmation/${data.id}`);
       }
     } catch {
-      setError("Network error. Please try again.");
+      setError("Could not reach the server. Check your connection and try again.");
     } finally {
       setLoading(false);
     }
