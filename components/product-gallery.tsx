@@ -52,20 +52,20 @@ export default function ProductGallery({
         {/* Breadcrumb overlay */}
         <nav
           aria-label="Breadcrumb"
-          className="absolute top-24 left-6 lg:top-8 lg:left-8 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[#111111]/50 mix-blend-multiply"
+          className="absolute top-24 left-6 lg:top-8 lg:left-8 flex items-center gap-2 rounded-full bg-white/75 px-4 py-2 text-[10px] uppercase tracking-widest backdrop-blur-md"
         >
-          <Link href="/" className="transition-colors hover:text-[#111111]">
+          <Link href="/" className="text-[#9B6F47] transition-colors hover:text-[#111111]">
             Home
           </Link>
-          <span>/</span>
+          <span className="text-[#9E9690]">/</span>
           <Link
             href="/category/all"
-            className="transition-colors hover:text-[#111111]"
+            className="text-[#9B6F47] transition-colors hover:text-[#111111]"
           >
             Shop
           </Link>
-          <span>/</span>
-          <span className="text-[#111111]/30">{productName}</span>
+          <span className="text-[#9E9690]">/</span>
+          <span className="max-w-[180px] truncate text-[#5C5652] lg:max-w-[320px]">{productName}</span>
         </nav>
 
         {/* Image counter */}
