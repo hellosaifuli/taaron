@@ -33,6 +33,25 @@ export default function ProductGallery({
 
   return (
     <div className="relative lg:sticky lg:top-0 lg:h-screen lg:w-[58%] lg:flex-shrink-0 lg:overflow-hidden">
+      {/* Breadcrumb — outside image div so no overlay blocks clicks */}
+      <nav
+        aria-label="Breadcrumb"
+        className="absolute top-24 left-6 lg:top-8 lg:left-8 z-20 flex items-center gap-2 rounded-full bg-black/40 px-4 py-2 text-[10px] uppercase tracking-widest backdrop-blur-sm"
+      >
+        <Link href="/" className="text-white/80 transition-colors hover:text-white">
+          Home
+        </Link>
+        <span className="text-white/40">/</span>
+        <Link
+          href="/category/all"
+          className="text-white/80 transition-colors hover:text-white"
+        >
+          Shop
+        </Link>
+        <span className="text-white/40">/</span>
+        <span className="max-w-[180px] truncate text-white/60 lg:max-w-[320px]">{productName}</span>
+      </nav>
+
       {/* Main image */}
       <div
         className="relative w-full overflow-hidden bg-[#EDE9E3]"
@@ -48,25 +67,6 @@ export default function ProductGallery({
 
         {/* Gradient fade to cream at bottom — mobile only */}
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F7F4EF] to-transparent lg:hidden" />
-
-        {/* Breadcrumb overlay */}
-        <nav
-          aria-label="Breadcrumb"
-          className="absolute top-24 left-6 lg:top-8 lg:left-8 flex items-center gap-2 rounded-full bg-black/40 px-4 py-2 text-[10px] uppercase tracking-widest backdrop-blur-sm"
-        >
-          <Link href="/" className="text-white/80 transition-colors hover:text-white">
-            Home
-          </Link>
-          <span className="text-white/40">/</span>
-          <Link
-            href="/category/all"
-            className="text-white/80 transition-colors hover:text-white"
-          >
-            Shop
-          </Link>
-          <span className="text-white/40">/</span>
-          <span className="max-w-[180px] truncate text-white/60 lg:max-w-[320px]">{productName}</span>
-        </nav>
 
         {/* Image counter */}
         {images.length > 1 && (
