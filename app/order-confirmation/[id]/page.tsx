@@ -27,7 +27,7 @@ export default async function OrderConfirmationPage({
       id, order_number, status, payment_method, payment_status,
       subtotal, shipping_cost, total, user_id,
       customer_name, customer_email, customer_phone,
-      shipping_address, shipping_city, created_at,
+      shipping_address, shipping_city, shipping_postal_code, created_at,
       order_items (
         quantity, price,
         products ( id, name, image_url )
@@ -192,7 +192,10 @@ export default async function OrderConfirmationPage({
                   {order.customer_name}
                 </p>
                 <p>{order.shipping_address}</p>
-                <p>{order.shipping_city}</p>
+                <p>
+                  {order.shipping_city}
+                  {order.shipping_postal_code ? ` — ${order.shipping_postal_code}` : ""}
+                </p>
                 <p>{order.customer_phone}</p>
                 {order.customer_email && <p>{order.customer_email}</p>}
               </div>
