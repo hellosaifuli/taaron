@@ -8,11 +8,103 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+const BD_DISTRICTS: { name: string; postal: string }[] = [
+  // Dhaka Division
+  { name: "Dhaka", postal: "1000" },
+  { name: "Gazipur", postal: "1700" },
+  { name: "Narayanganj", postal: "1400" },
+  { name: "Narsingdi", postal: "1600" },
+  { name: "Manikganj", postal: "1800" },
+  { name: "Munshiganj", postal: "1500" },
+  { name: "Rajbari", postal: "7700" },
+  { name: "Shariatpur", postal: "8000" },
+  { name: "Faridpur", postal: "7800" },
+  { name: "Madaripur", postal: "7900" },
+  { name: "Gopalganj", postal: "8100" },
+  // Chittagong Division
+  { name: "Chattogram", postal: "4000" },
+  { name: "Cox's Bazar", postal: "4700" },
+  { name: "Rangamati", postal: "4500" },
+  { name: "Bandarban", postal: "4600" },
+  { name: "Khagrachhari", postal: "4400" },
+  { name: "Feni", postal: "3900" },
+  { name: "Noakhali", postal: "3800" },
+  { name: "Lakshmipur", postal: "3700" },
+  { name: "Cumilla", postal: "3500" },
+  { name: "Brahmanbaria", postal: "3400" },
+  { name: "Chandpur", postal: "3600" },
+  // Sylhet Division
+  { name: "Sylhet", postal: "3100" },
+  { name: "Moulvibazar", postal: "3200" },
+  { name: "Habiganj", postal: "3300" },
+  { name: "Sunamganj", postal: "3000" },
+  // Rajshahi Division
+  { name: "Rajshahi", postal: "6000" },
+  { name: "Natore", postal: "6400" },
+  { name: "Naogaon", postal: "6500" },
+  { name: "Chapai Nawabganj", postal: "6300" },
+  { name: "Pabna", postal: "6600" },
+  { name: "Sirajganj", postal: "6700" },
+  { name: "Bogura", postal: "5800" },
+  { name: "Joypurhat", postal: "5900" },
+  // Khulna Division
+  { name: "Khulna", postal: "9000" },
+  { name: "Jashore", postal: "7400" },
+  { name: "Satkhira", postal: "9400" },
+  { name: "Bagerhat", postal: "9300" },
+  { name: "Narail", postal: "7500" },
+  { name: "Magura", postal: "7600" },
+  { name: "Jhenaidah", postal: "7300" },
+  { name: "Kushtia", postal: "7000" },
+  { name: "Chuadanga", postal: "7200" },
+  { name: "Meherpur", postal: "7100" },
+  // Barishal Division
+  { name: "Barishal", postal: "8200" },
+  { name: "Patuakhali", postal: "8600" },
+  { name: "Bhola", postal: "8300" },
+  { name: "Pirojpur", postal: "8500" },
+  { name: "Jhalokathi", postal: "8400" },
+  { name: "Barguna", postal: "8700" },
+  // Rangpur Division
+  { name: "Rangpur", postal: "5400" },
+  { name: "Dinajpur", postal: "5200" },
+  { name: "Thakurgaon", postal: "5100" },
+  { name: "Panchagarh", postal: "5000" },
+  { name: "Nilphamari", postal: "5300" },
+  { name: "Lalmonirhat", postal: "5500" },
+  { name: "Kurigram", postal: "5600" },
+  { name: "Gaibandha", postal: "5700" },
+  // Mymensingh Division
+  { name: "Mymensingh", postal: "2200" },
+  { name: "Netrokona", postal: "2400" },
+  { name: "Kishoreganj", postal: "2300" },
+  { name: "Jamalpur", postal: "2000" },
+  { name: "Sherpur", postal: "2100" },
+  { name: "Tangail", postal: "1900" },
+];
+
+function validatePhone(phone: string): string {
+  const cleaned = phone.replace(/[\s\-()]/g, "");
+  // Accept: 01XXXXXXXXX (11 digits) or +8801XXXXXXXXX or 8801XXXXXXXXX
+  if (!/^(\+?880|0)1[3-9]\d{8}$/.test(cleaned)) {
+    return "Enter a valid BD number: 01XXXXXXXXX or +8801XXXXXXXXX";
+  }
+  return "";
+}
+
+function validatePostalCode(code: string): string {
+  if (code && !/^\d{4}$/.test(code.trim())) {
+    return "Postal code must be 4 digits";
+  }
+  return "";
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, clearCart, removeItem: removeFromCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "bkash">("cod");
   const [isGuest, setIsGuest] = useState(true);
   const [formData, setFormData] = useState({
@@ -47,11 +139,43 @@ export default function CheckoutPage() {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "shipping_city") {
+      const district = BD_DISTRICTS.find((d) => d.name === value);
+      setFormData((prev) => ({
+        ...prev,
+        shipping_city: value,
+        shipping_postal_code: district ? district.postal : prev.shipping_postal_code,
+      }));
+      setFieldErrors((prev) => ({ ...prev, shipping_city: "" }));
+      return;
+    }
+    setFormData({ ...formData, [name]: value });
+    // Clear field error on change
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "customer_phone" && value) {
+      setFieldErrors((prev) => ({ ...prev, customer_phone: validatePhone(value) }));
+    }
+    if (name === "shipping_postal_code" && value) {
+      setFieldErrors((prev) => ({ ...prev, shipping_postal_code: validatePostalCode(value) }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Validate before submit
+    const phoneErr = validatePhone(formData.customer_phone);
+    const postalErr = validatePostalCode(formData.shipping_postal_code);
+    if (phoneErr || postalErr) {
+      setFieldErrors({ customer_phone: phoneErr, shipping_postal_code: postalErr });
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -304,10 +428,14 @@ export default function CheckoutPage() {
                     name="customer_phone"
                     value={formData.customer_phone}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     required
-                    placeholder="+880 1XXXXXXXXX"
-                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
+                    placeholder="01XXXXXXXXX"
+                    className={`mt-2 w-full border-0 border-b bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47] ${fieldErrors.customer_phone ? "border-red-400" : "border-[#B8AFA5]"}`}
                   />
+                  {fieldErrors.customer_phone && (
+                    <p className="mt-1 text-[11px] text-red-500">{fieldErrors.customer_phone}</p>
+                  )}
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
@@ -325,17 +453,23 @@ export default function CheckoutPage() {
                 </div>
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
-                    City *
+                    City / District *
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="shipping_city"
                     value={formData.shipping_city}
                     onChange={handleChange}
                     required
-                    placeholder="Dhaka"
-                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
-                  />
+                    className={`mt-2 w-full border-0 border-b bg-transparent py-3 text-sm outline-none transition-colors focus:border-[#9B6F47] ${formData.shipping_city ? "text-[#111111]" : "text-[#B8AFA5]"} ${fieldErrors.shipping_city ? "border-red-400" : "border-[#B8AFA5]"}`}
+                  >
+                    <option value="" disabled>Select district</option>
+                    {BD_DISTRICTS.map((d) => (
+                      <option key={d.name} value={d.name}>{d.name}</option>
+                    ))}
+                  </select>
+                  {fieldErrors.shipping_city && (
+                    <p className="mt-1 text-[11px] text-red-500">{fieldErrors.shipping_city}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
@@ -346,9 +480,14 @@ export default function CheckoutPage() {
                     name="shipping_postal_code"
                     value={formData.shipping_postal_code}
                     onChange={handleChange}
-                    placeholder="1200"
-                    className="mt-2 w-full border-0 border-b border-[#B8AFA5] bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47]"
+                    onBlur={handleBlur}
+                    placeholder="4 digits"
+                    maxLength={4}
+                    className={`mt-2 w-full border-0 border-b bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-[#B8AFA5] focus:border-[#9B6F47] ${fieldErrors.shipping_postal_code ? "border-red-400" : "border-[#B8AFA5]"}`}
                   />
+                  {fieldErrors.shipping_postal_code && (
+                    <p className="mt-1 text-[11px] text-red-500">{fieldErrors.shipping_postal_code}</p>
+                  )}
                 </div>
               </div>
             </div>
