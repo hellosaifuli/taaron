@@ -1,72 +1,82 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { getViewed, type ViewedProduct } from "@/components/view-tracker";
+import { getViewed } from "@/components/view-tracker";
+import { createClient } from "@/lib/supabase/client";
+import ProductMasonry from "@/components/product-masonry";
+import type { Product } from "@/app/actions/products";
 
-export default function RecentlyViewed({
-  currentId,
-}: {
-  currentId?: string;
-}) {
-  const [items, setItems] = useState<ViewedProduct[]>([]);
+export default function RecentlyViewed({ currentId }: { currentId?: string }) {
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    const viewed = getViewed().filter((p) => p.id !== currentId);
-    setItems(viewed.slice(0, 8));
+    async function load() {
+      const history = getViewed().filter((p) => p.id !== currentId);
+      if (!history.length) return;
+
+      const ids = history.map((p) => p.id);
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("products")
+        .select(
+          "id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)",
+        )
+        .eq("status", "active")
+        .in("id", ids)
+        .limit(12);
+
+      if (!data?.length) return;
+
+      // Preserve localStorage order (most recent first)
+      const ordered = ids
+        .map((id) => data.find((p: any) => p.id === id))
+        .filter(Boolean) as any[];
+
+      setProducts(
+        ordered.map((p) => ({
+          ...p,
+          color_variants: (p.product_variants ?? []).filter(
+            (v: any) => v.image_url,
+          ),
+        })),
+      );
+    }
+    load();
   }, [currentId]);
 
-  if (!items.length) return null;
+  if (!products.length) return null;
 
   return (
-    <section className="bg-[#F7F4EF] px-4 pb-4 lg:px-6">
-      <div className="mx-auto max-w-screen-xl">
-        <div className="mb-3 flex items-center justify-between">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-[#9B6F47]">
+    <section className="bg-[#F7F4EF]">
+      <div className="mx-auto flex max-w-screen-xl items-end justify-between px-6 py-8 lg:px-12">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
             Continue Browsing
           </p>
-          <button
-            onClick={() => {
-              localStorage.removeItem("taaron_viewed");
-              setItems([]);
+          <h2
+            className="mt-2 text-[#111111]"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.75rem, 3vw, 2.75rem)",
+              lineHeight: 1,
+              letterSpacing: "-0.01em",
+              fontWeight: 400,
             }}
-            className="text-[9px] uppercase tracking-widest text-[#C4BDB5] hover:text-[#9E9690]"
           >
-            Clear
-          </button>
+            Recently Viewed
+          </h2>
         </div>
-
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-          {items.map((p) => (
-            <Link
-              key={p.id}
-              href={`/products/${p.slug ?? p.id}`}
-              className="group flex-shrink-0"
-            >
-              <div className="relative h-28 w-24 overflow-hidden bg-[#EDE9E3]">
-                {p.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.image_url}
-                    alt={p.name}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-[10px] text-[#9E9690]">
-                    —
-                  </div>
-                )}
-              </div>
-              <p className="mt-1.5 max-w-[96px] truncate text-[11px] leading-tight text-[#1E2737]">
-                {p.name}
-              </p>
-              <p className="text-[10px] text-[#9B6F47]">
-                ৳{p.price.toLocaleString()}
-              </p>
-            </Link>
-          ))}
-        </div>
+        <button
+          onClick={() => {
+            localStorage.removeItem("taaron_viewed");
+            setProducts([]);
+          }}
+          className="text-[10px] uppercase tracking-widest text-[#C4BDB5] hover:text-[#9E9690]"
+        >
+          Clear
+        </button>
       </div>
+      <ProductMasonry initialProducts={products} disableInfiniteScroll />
     </section>
   );
 }

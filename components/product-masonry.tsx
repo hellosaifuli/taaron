@@ -137,8 +137,10 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
 
 export default function ProductMasonry({
   initialProducts,
+  disableInfiniteScroll = false,
 }: {
   initialProducts: Product[];
+  disableInfiniteScroll?: boolean;
 }) {
   const [products, setProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(false);
@@ -155,6 +157,7 @@ export default function ProductMasonry({
 
   // ── Infinite scroll ────────────────────────────────────────────────────
   useEffect(() => {
+    if (disableInfiniteScroll) return;
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
