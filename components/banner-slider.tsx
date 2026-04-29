@@ -130,9 +130,14 @@ export default function BannerSlider({
 
       {/* Headline */}
       <div className="relative flex-shrink-0 px-4 pb-4 pt-[88px] text-center sm:pb-6 sm:pt-[92px]">
-        <p className="mb-2 text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
+        {/* Line 1 — drops in from above */}
+        <p
+          className="banner-reveal mb-2 text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]"
+          style={{ animation: "bannerRevealDown 0.6s ease-out 0.1s" }}
+        >
           Crafted in Leather
         </p>
+
         <h1
           style={{
             fontFamily: "var(--font-display)",
@@ -143,12 +148,36 @@ export default function BannerSlider({
             fontWeight: 400,
           }}
         >
-          Everyday Elegance,{" "}
-          <em style={{ fontStyle: "italic", color: "#9B6F47" }}>
-            Inspired by Stars
-          </em>
+          {/* Line 2 — slides up */}
+          <span
+            className="banner-reveal block"
+            style={{ animation: "bannerRevealUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.35s" }}
+          >
+            Everyday Elegance,
+          </span>
+
+          {/* Line 3 — slides up later, then shimmer plays */}
+          <span
+            className="banner-reveal block"
+            style={{ animation: "bannerRevealUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.6s" }}
+          >
+            <em
+              className="shimmer-text"
+              style={{
+                fontStyle: "italic",
+                animation: "textShimmer 8s ease-in-out 1.8s infinite",
+              }}
+            >
+              Inspired by Stars
+            </em>
+          </span>
         </h1>
-        <p className="mx-auto mt-3 max-w-sm text-xs leading-relaxed text-[#5C5652]">
+
+        {/* Subtitle — fades up last */}
+        <p
+          className="banner-reveal mx-auto mt-3 max-w-sm text-xs leading-relaxed text-[#5C5652]"
+          style={{ animation: "bannerRevealUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.85s" }}
+        >
           Luxurious leather goods built for modern life — confidence and style,
           without the heavy price tag.
         </p>
