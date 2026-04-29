@@ -42,46 +42,45 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
 
   const href = `/products/${product.slug ?? product.id}`;
 
-  return (
-    <Link
-      href={href}
-      data-card
-      className={[
-        "masonry-card group relative block overflow-hidden bg-[#EDE9E3]",
-        "aspect-[3/4]",
-        pat.lg,
-        pat.aspect,
-        pat.oval ? "lg:rounded-full" : "",
-      ].join(" ")}
-    >
-      {/* Base image */}
+  // Shared pill content
+  const pill = (
+    <div className="flex min-w-0 max-w-full flex-wrap items-center justify-center gap-x-2.5 gap-y-0.5 rounded-full bg-black/60 px-4 py-2 backdrop-blur-sm">
+      <span className="text-center text-[13px] leading-tight text-white">
+        {product.name}
+      </span>
+      <span className="flex-shrink-0 text-[13px] leading-tight">
+        {isOnSale && (
+          <span className="mr-1.5 text-white/40 line-through">
+            ৳{product.compare_at_price!.toLocaleString()}
+          </span>
+        )}
+        <span className={isOnSale ? "text-red-300" : "text-white/70"}>
+          ৳{product.price.toLocaleString()}
+        </span>
+      </span>
+    </div>
+  );
+
+  // Shared inner content (image, overlays, swatches, sale badge)
+  const inner = (
+    <>
       <StitchImage
         src={baseImg}
         alt={product.name}
         className="object-cover transition-transform duration-700 group-hover:scale-105"
         sizes="(max-width: 1024px) 100vw, 40vw"
       />
-
-      {/* Variant image overlay — fades in on swatch hover */}
       {activeVariantImg && (
         <div className="absolute inset-0 z-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={activeVariantImg}
-            alt=""
-            className="h-full w-full object-cover"
-          />
+          <img src={activeVariantImg} alt="" className="h-full w-full object-cover" />
         </div>
       )}
-
-      {/* Sale badge — always visible */}
       {isOnSale && (
         <div className="absolute left-3 top-3 z-20 bg-red-500 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">
           -{discountPct}%
         </div>
       )}
-
-      {/* Color swatches — hover only (desktop) / always (touch via CSS) */}
       {colorVariants.length > 0 && (
         <div className="card-overlay absolute inset-x-0 bottom-[60px] z-20 flex justify-center gap-3 px-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
           {colorVariants.slice(0, 6).map((v) => (
@@ -93,17 +92,11 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
                 onMouseLeave={() => setActiveVariantImg(null)}
                 title={v.name}
                 className={`relative h-16 w-16 overflow-hidden rounded-full border-[3px] shadow-xl transition-all duration-150 hover:scale-110 ${
-                  activeVariantImg === v.image_url
-                    ? "border-white scale-110"
-                    : "border-white/80"
+                  activeVariantImg === v.image_url ? "border-white scale-110" : "border-white/80"
                 }`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={v.image_url}
-                  alt={v.name}
-                  className="h-full w-full object-cover"
-                />
+                <img src={v.image_url} alt={v.name} className="h-full w-full object-cover" />
               </button>
               <span className="swatch-name max-w-[64px] truncate text-center text-[10px] font-medium leading-tight text-white drop-shadow">
                 {v.name}
@@ -112,24 +105,47 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
           ))}
         </div>
       )}
+    </>
+  );
 
+  // Oval card: pill lives BELOW the circle on desktop (not clipped by overflow-hidden)
+  if (pat.oval) {
+    return (
+      <div
+        data-card
+        className={["masonry-card group relative", "aspect-[3/4]", pat.lg, pat.aspect].join(" ")}
+      >
+        <Link href={href} className="relative block h-full w-full overflow-hidden bg-[#EDE9E3] lg:rounded-full">
+          {inner}
+          {/* Pill inside on mobile (no oval shape on mobile) */}
+          <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center px-3 lg:hidden">
+            {pill}
+          </div>
+        </Link>
+        {/* Pill below circle on desktop — full name, not clipped */}
+        <div className="mt-3 hidden justify-center px-2 lg:flex">
+          {pill}
+        </div>
+      </div>
+    );
+  }
+
+  // Regular (non-oval) card
+  return (
+    <Link
+      href={href}
+      data-card
+      className={[
+        "masonry-card group relative block overflow-hidden bg-[#EDE9E3]",
+        "aspect-[3/4]",
+        pat.lg,
+        pat.aspect,
+      ].join(" ")}
+    >
+      {inner}
       {/* Name + price pill — always visible */}
       <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center px-3">
-        <div className="flex min-w-0 max-w-full items-center gap-2.5 rounded-full bg-black/60 px-4 py-2 backdrop-blur-sm">
-          <span className="truncate text-[13px] leading-tight text-white">
-            {product.name}
-          </span>
-          <span className="flex-shrink-0 text-[13px] leading-tight">
-            {isOnSale && (
-              <span className="mr-1.5 text-white/40 line-through">
-                ৳{product.compare_at_price!.toLocaleString()}
-              </span>
-            )}
-            <span className={isOnSale ? "text-red-300" : "text-white/70"}>
-              ৳{product.price.toLocaleString()}
-            </span>
-          </span>
-        </div>
+        {pill}
       </div>
     </Link>
   );
