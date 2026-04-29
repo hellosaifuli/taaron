@@ -32,7 +32,7 @@ export default function ProductGallery({
   }
 
   return (
-    <div className="relative lg:sticky lg:top-0 lg:h-screen lg:w-[58%] lg:flex-shrink-0 lg:overflow-hidden">
+    <div className="relative lg:sticky lg:top-0 lg:h-screen lg:w-1/2 lg:flex-shrink-0 lg:overflow-hidden">
       {/* Breadcrumb — outside image div so no overlay blocks clicks */}
       <nav
         aria-label="Breadcrumb"

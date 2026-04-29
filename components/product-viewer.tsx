@@ -43,7 +43,7 @@ export default function ProductViewer({
       <ProductGallery images={activeImages} productName={productName} />
 
       {/* Right panel — static content + AddToCart */}
-      <div className="flex flex-col px-6 pb-24 pt-10 lg:flex-1 lg:overflow-y-auto lg:px-14 lg:pt-28 lg:pb-20">
+      <div className="flex flex-col px-6 pb-24 pt-10 lg:w-1/2 lg:flex-shrink-0 lg:overflow-y-auto lg:px-14 lg:pt-28 lg:pb-20">
         {children}
         <AddToCart product={product} onVariantSelect={setVariantImage} />
         {afterCart}
