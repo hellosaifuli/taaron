@@ -16,15 +16,23 @@ interface AddToCartProps {
       name: string;
       price_adjustment: number;
       stock_quantity: number;
+      image_url?: string | null;
     }[];
   };
+  onVariantSelect?: (imageUrl: string | null) => void;
 }
 
-export default function AddToCart({ product }: AddToCartProps) {
+export default function AddToCart({ product, onVariantSelect }: AddToCartProps) {
   const router = useRouter();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+
+  function selectVariant(id: string | null) {
+    setSelectedVariant(id);
+    const variant = product.product_variants?.find((v) => v.id === id);
+    onVariantSelect?.(variant?.image_url ?? null);
+  }
   const [showStickyBar, setShowStickyBar] = useState(false);
   const ctaRef = useRef<HTMLDivElement>(null);
 
@@ -108,7 +116,7 @@ export default function AddToCart({ product }: AddToCartProps) {
                 return (
                   <button
                     key={v.id}
-                    onClick={() => !outOfStock && setSelectedVariant(v.id)}
+                    onClick={() => !outOfStock && selectVariant(v.id)}
                     disabled={outOfStock}
                     className={`relative border px-4 py-2.5 text-xs tracking-wide transition-all duration-150 ${
                       outOfStock

@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
-import AddToCart from "@/components/add-to-cart";
+import ProductViewer from "@/components/product-viewer";
 import RelatedProducts from "@/components/related-products";
 import ProductAccordion from "@/components/product-accordion";
-import ProductGallery from "@/components/product-gallery";
 import FadeInSection from "@/components/fade-in-section";
 import ViewTracker from "@/components/view-tracker";
 import PersonalizedProducts from "@/components/personalized-products";
@@ -158,10 +157,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
         {/* ── Editorial split: image left | info right ─────────────── */}
         <div className="lg:flex lg:min-h-screen">
-          <ProductGallery images={allImages} productName={product.name} />
-
-          {/* ── Right panel: product info ─────────────────────────── */}
-          <div className="flex flex-col px-6 pb-24 pt-10 lg:flex-1 lg:overflow-y-auto lg:px-14 lg:pt-28 lg:pb-20">
+          <ProductViewer
+            images={allImages}
+            productName={product.name}
+            product={product}
+          >
+            {/* Static right-panel content — server rendered, passed as children */}
             <FadeInSection from="right">
               {product.sku && (
                 <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
@@ -217,14 +218,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </FadeInSection>
 
-            <FadeInSection delay={200} from="right" className="mt-8">
-              <AddToCart product={product} />
-            </FadeInSection>
-
             <FadeInSection delay={280} from="up">
               <ProductAccordion items={sections} />
             </FadeInSection>
-          </div>
+          </ProductViewer>
         </div>
 
         {/* ── Personalized: based on browsing history ─────────────── */}
