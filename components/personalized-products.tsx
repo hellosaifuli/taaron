@@ -62,7 +62,7 @@ export default function PersonalizedProducts({
 
   return (
     <section className="bg-[#F7F4EF]">
-      <div className="mx-auto max-w-screen-xl px-6 py-8 lg:px-12">
+      <div className="px-2 py-6 lg:px-3">
         <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
           Based on your browsing
         </p>

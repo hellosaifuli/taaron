@@ -48,7 +48,7 @@ export default function RecentlyViewed({ currentId }: { currentId?: string }) {
 
   return (
     <section className="bg-[#F7F4EF]">
-      <div className="mx-auto flex max-w-screen-xl items-end justify-between px-6 py-8 lg:px-12">
+      <div className="flex items-end justify-between px-2 py-6 lg:px-3">
         <div>
           <p className="text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]">
             Continue Browsing
