@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -13,16 +14,13 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
-async function uniqueSlug(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  name: string,
-  excludeId?: string,
-): Promise<string> {
+async function uniqueSlug(name: string, excludeId?: string): Promise<string> {
+  const db = createAdminClient();
   const base = slugify(name);
   let slug = base;
   let n = 2;
   while (true) {
-    let q = supabase.from("products").select("id").eq("slug", slug);
+    let q = db.from("products").select("id").eq("slug", slug);
     if (excludeId) q = q.neq("id", excludeId);
     const { data } = await q;
     if (!data?.length) return slug;
@@ -38,11 +36,11 @@ async function assertAdmin() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user || user.email !== ADMIN_EMAIL) redirect("/auth");
-  return supabase;
 }
 
 export async function createProduct(formData: FormData) {
-  const supabase = await assertAdmin();
+  await assertAdmin();
+  const db = createAdminClient();
 
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
@@ -59,9 +57,9 @@ export async function createProduct(formData: FormData) {
   const status = (formData.get("status") as string) || "active";
   const extra_images = (formData.get("extra_images") as string) || "";
   const category = (formData.get("category") as string) || null;
-  const slug = await uniqueSlug(supabase, name);
+  const slug = await uniqueSlug(name);
 
-  const { data: product, error } = await supabase
+  const { data: product, error } = await db
     .from("products")
     .insert({
       name,
@@ -81,13 +79,12 @@ export async function createProduct(formData: FormData) {
 
   if (error) throw new Error(error.message);
 
-  // Insert extra images
   const imageUrls = extra_images
     .split("\n")
     .map((u) => u.trim())
     .filter(Boolean);
   if (imageUrls.length > 0 && product) {
-    await supabase.from("product_images").insert(
+    await db.from("product_images").insert(
       imageUrls.map((url, i) => ({
         product_id: product.id,
         url,
@@ -103,7 +100,8 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(id: string, formData: FormData) {
-  const supabase = await assertAdmin();
+  await assertAdmin();
+  const db = createAdminClient();
 
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
@@ -120,9 +118,9 @@ export async function updateProduct(id: string, formData: FormData) {
   const status = formData.get("status") as string;
   const extra_images = (formData.get("extra_images") as string) || "";
   const category = (formData.get("category") as string) || null;
-  const slug = await uniqueSlug(supabase, name, id);
+  const slug = await uniqueSlug(name, id);
 
-  const { error } = await supabase
+  const { error } = await db
     .from("products")
     .update({
       name,
@@ -141,14 +139,13 @@ export async function updateProduct(id: string, formData: FormData) {
 
   if (error) throw new Error(error.message);
 
-  // Replace extra images
-  await supabase.from("product_images").delete().eq("product_id", id);
+  await db.from("product_images").delete().eq("product_id", id);
   const imageUrls = extra_images
     .split("\n")
     .map((u) => u.trim())
     .filter(Boolean);
   if (imageUrls.length > 0) {
-    await supabase
+    await db
       .from("product_images")
       .insert(
         imageUrls.map((url, i) => ({ product_id: id, url, position: i })),
@@ -163,22 +160,25 @@ export async function updateProduct(id: string, formData: FormData) {
 }
 
 export async function deleteProduct(id: string) {
-  const supabase = await assertAdmin();
-  await supabase.from("products").delete().eq("id", id);
+  await assertAdmin();
+  const db = createAdminClient();
+  await db.from("products").delete().eq("id", id);
   revalidatePath("/admin/products");
   revalidatePath("/");
 }
 
 export async function toggleStatus(id: string, current: string) {
-  const supabase = await assertAdmin();
+  await assertAdmin();
+  const db = createAdminClient();
   const status = current === "active" ? "draft" : "active";
-  await supabase.from("products").update({ status }).eq("id", id);
+  await db.from("products").update({ status }).eq("id", id);
   revalidatePath("/admin/products");
   revalidatePath("/");
 }
 
 export async function createVariant(productId: string, formData: FormData) {
-  const supabase = await assertAdmin();
+  await assertAdmin();
+  const db = createAdminClient();
 
   const name = (formData.get("name") as string).trim();
   if (!name) return;
@@ -191,7 +191,7 @@ export async function createVariant(productId: string, formData: FormData) {
     : 0;
   const image_url = (formData.get("image_url") as string) || null;
 
-  const { error } = await supabase.from("product_variants").insert({
+  const { error } = await db.from("product_variants").insert({
     product_id: productId,
     name,
     sku,
@@ -212,7 +212,8 @@ export async function updateVariant(
   productId: string,
   formData: FormData,
 ) {
-  const supabase = await assertAdmin();
+  await assertAdmin();
+  const db = createAdminClient();
 
   const name = (formData.get("name") as string).trim();
   if (!name) return;
@@ -225,7 +226,7 @@ export async function updateVariant(
     : 0;
   const image_url = (formData.get("image_url") as string) || null;
 
-  const { error } = await supabase
+  const { error } = await db
     .from("product_variants")
     .update({ name, sku, price_adjustment, stock_quantity, image_url })
     .eq("id", variantId);
@@ -238,8 +239,9 @@ export async function updateVariant(
 }
 
 export async function deleteVariant(variantId: string, productId: string) {
-  const supabase = await assertAdmin();
-  await supabase.from("product_variants").delete().eq("id", variantId);
+  await assertAdmin();
+  const db = createAdminClient();
+  await db.from("product_variants").delete().eq("id", variantId);
   revalidatePath(`/admin/products/${productId}`);
   revalidatePath(`/products/${productId}`);
   revalidatePath("/");
