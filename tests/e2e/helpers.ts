@@ -7,25 +7,24 @@ export async function addFirstProductToCart(page: Page) {
   await firstProduct.click();
   await page.waitForURL(/\/products\//, { timeout: 15000 });
 
-  // Select first available variant if any exist
-  const variantButtons = page.locator(
-    'button:not([aria-label]):not([type="submit"]):not([disabled])',
-  ).filter({ hasText: /^(?!Add to Cart|Buy Now|Please wait).+/i });
-  const variantSection = page.getByText(/select variant/i);
-  if (await variantSection.isVisible({ timeout: 2000 }).catch(() => false)) {
-    const firstVariant = page
-      .locator("button")
-      .filter({ hasNotText: /add to cart|buy now|please wait/i })
-      .filter({ hasText: /./ })
+  // Select first available variant if the product has variants
+  // "Select Variant" <p> is the indicator; its parent <div> contains the buttons
+  const variantLabel = page.locator("p").filter({ hasText: "Select Variant" });
+  if ((await variantLabel.count()) > 0) {
+    const firstVariant = variantLabel
+      .locator("..")                          // up to wrapping div
+      .locator("button:not([disabled])")
       .first();
-    await firstVariant.click().catch(() => {});
+    if (await firstVariant.count() > 0) {
+      await firstVariant.click();
+      await page.waitForTimeout(300);
+    }
   }
 
-  const addBtn = page.getByRole("button", { name: /add to cart/i });
+  const addBtn = page.getByRole("button", { name: /add to cart/i }).first();
   await addBtn.waitFor({ state: "visible", timeout: 10000 });
   await addBtn.click();
-  // Give cart state time to update
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(800);
 }
 
 export async function fillCheckoutForm(
@@ -39,10 +38,10 @@ export async function fillCheckoutForm(
   }
   await page.getByLabel(/phone/i).fill("01700000000");
   await page.getByLabel(/address/i).fill("123 Test Street");
-  // City/District is a <select> — use selectOption not fill
+  // City/District is a <select>
   const citySelect = page.getByLabel(/city/i);
   if (await citySelect.isVisible()) {
-    await citySelect.selectOption({ index: 1 }); // pick first real option
+    await citySelect.selectOption({ index: 1 });
   }
 }
 
