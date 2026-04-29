@@ -98,16 +98,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const { data: products } =
     slug === "all" ? await query : await query.eq("category", slug);
 
-  const { data: fallback } =
-    !products?.length && slug !== "all"
-      ? await supabase
-          .from("products")
-          .select("id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)")
-          .eq("status", "active")
-          .order("created_at", { ascending: false })
-          .limit(50)
-      : { data: null };
-
   function mapProducts(raw: any[]): Product[] {
     return raw.map((p) => ({
       ...p,
@@ -115,9 +105,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     }));
   }
 
-  const displayProducts: Product[] = mapProducts(
-    products?.length ? products : (fallback ?? []),
-  );
+  const displayProducts: Product[] = mapProducts(products ?? []);
 
   const collectionSchema = {
     "@context": "https://schema.org",
