@@ -7,11 +7,11 @@ import ProductMasonry from "@/components/product-masonry";
 import type { Product } from "@/app/actions/products";
 
 export default function PersonalizedProducts({
-  currentId,
-  currentCategory,
+  currentId = "",
+  currentCategory = null,
 }: {
-  currentId: string;
-  currentCategory: string | null;
+  currentId?: string;
+  currentCategory?: string | null;
 }) {
   const [products, setProducts] = useState<Product[]>([]);
 
