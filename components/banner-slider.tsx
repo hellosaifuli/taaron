@@ -102,7 +102,7 @@ export default function BannerSlider({
     image: p.image_url ?? p.thumbnail_url ?? "",
     alt: p.name,
     label: p.name,
-    href: `/products/${p.id}`,
+    href: `/products/${p.slug ?? p.id}`,
   }));
 
   useEffect(() => {
