@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendOrderEmails } from "@/lib/email";
-import { notifyWhatsApp } from "@/lib/whatsapp";
+import { notifyTelegram } from "@/lib/telegram";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET user's orders (auth required)
@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Fire-and-forget notifications — use server-verified prices
-  notifyWhatsApp({
+  notifyTelegram({
     order_number,
     customer_name,
     customer_phone,
