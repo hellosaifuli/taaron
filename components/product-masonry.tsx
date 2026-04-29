@@ -81,10 +81,44 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
         </div>
       )}
 
-      {/* Hover overlay: name + price + color swatches */}
-      <div className="absolute inset-x-0 bottom-3 z-20 flex flex-col items-center gap-2 px-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+      {/* Overlay: name + price + color swatches
+          – hidden by default, shown on hover (desktop) or always (touch via CSS) */}
+      <div className="card-overlay absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2 px-3 pb-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+        {/* Color swatches — shown above the name pill */}
+        {colorVariants.length > 0 && (
+          <div className="flex items-end gap-2">
+            {colorVariants.slice(0, 6).map((v) => (
+              <div key={v.id} className="flex flex-col items-center gap-1">
+                <button
+                  type="button"
+                  onClick={(e) => e.preventDefault()}
+                  onMouseEnter={() => setActiveVariantImg(v.image_url)}
+                  onMouseLeave={() => setActiveVariantImg(null)}
+                  title={v.name}
+                  className={`relative h-10 w-10 overflow-hidden rounded-full border-2 shadow-lg transition-all duration-150 hover:scale-110 ${
+                    activeVariantImg === v.image_url
+                      ? "border-white scale-110"
+                      : "border-white/70"
+                  }`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={v.image_url}
+                    alt={v.name}
+                    className="h-full w-full object-cover"
+                  />
+                </button>
+                {/* Name label — hidden on desktop, always shown on touch */}
+                <span className="swatch-name max-w-[44px] truncate text-center text-[9px] leading-tight text-white drop-shadow">
+                  {v.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Name + price pill */}
-        <div className="flex min-w-0 max-w-full items-center gap-2.5 rounded-full bg-black/55 px-5 py-2 backdrop-blur-sm">
+        <div className="flex min-w-0 max-w-full items-center gap-2.5 rounded-full bg-black/60 px-4 py-2 backdrop-blur-sm">
           <span className="truncate text-[13px] leading-tight text-white">
             {product.name}
           </span>
@@ -99,30 +133,6 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
             </span>
           </span>
         </div>
-
-        {/* Color swatches */}
-        {colorVariants.length > 0 && (
-          <div className="flex gap-1.5">
-            {colorVariants.slice(0, 6).map((v) => (
-              <button
-                key={v.id}
-                type="button"
-                onClick={(e) => e.preventDefault()}
-                onMouseEnter={() => setActiveVariantImg(v.image_url)}
-                onMouseLeave={() => setActiveVariantImg(null)}
-                title={v.name}
-                className="relative h-7 w-7 overflow-hidden rounded-full border-2 border-white/60 transition-transform duration-150 hover:scale-110 hover:border-white"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={v.image_url}
-                  alt={v.name}
-                  className="h-full w-full object-cover"
-                />
-              </button>
-            ))}
-          </div>
-        )}
       </div>
     </Link>
   );

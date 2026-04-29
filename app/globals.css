@@ -46,6 +46,25 @@ body {
   --base-gap: 4.8px;
 }
 
+/* ── Masonry card overlay: always visible on touch devices ───────────────
+   On hover-capable devices the overlay starts hidden and fades in via
+   Tailwind group-hover. On touch-only devices it is always shown. */
+@media (hover: none) {
+  .card-overlay {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+  /* Show colour names under swatches on touch */
+  .swatch-name {
+    display: block;
+  }
+}
+@media (hover: hover) {
+  .swatch-name {
+    display: none;
+  }
+}
+
 /* ── Masonry card scroll-reveal ──────────────────────────────────────────
    Cards start hidden; JS adds .card-revealed when they enter the viewport.
    prefers-reduced-motion: cards are shown immediately (JS early-returns). */
