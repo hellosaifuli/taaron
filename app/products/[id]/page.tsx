@@ -161,6 +161,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             images={allImages}
             productName={product.name}
             product={product}
+            afterCart={
+              <FadeInSection delay={280} from="up">
+                <ProductAccordion items={sections} />
+              </FadeInSection>
+            }
           >
             {/* Static right-panel content — server rendered, passed as children */}
             <FadeInSection from="right">
@@ -218,9 +223,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </FadeInSection>
 
-            <FadeInSection delay={280} from="up">
-              <ProductAccordion items={sections} />
-            </FadeInSection>
           </ProductViewer>
         </div>
 

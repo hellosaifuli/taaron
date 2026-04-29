@@ -20,7 +20,8 @@ interface ProductViewerProps {
       image_url?: string | null;
     }[];
   };
-  children: ReactNode; // static info: name, price, accordion — server-rendered
+  children: ReactNode;   // name + price — above add to cart
+  afterCart?: ReactNode; // accordion — below add to cart
 }
 
 export default function ProductViewer({
@@ -28,6 +29,7 @@ export default function ProductViewer({
   productName,
   product,
   children,
+  afterCart,
 }: ProductViewerProps) {
   const [variantImage, setVariantImage] = useState<string | null>(null);
 
@@ -44,6 +46,7 @@ export default function ProductViewer({
       <div className="flex flex-col px-6 pb-24 pt-10 lg:flex-1 lg:overflow-y-auto lg:px-14 lg:pt-28 lg:pb-20">
         {children}
         <AddToCart product={product} onVariantSelect={setVariantImage} />
+        {afterCart}
       </div>
     </>
   );
