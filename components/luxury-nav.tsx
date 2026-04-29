@@ -17,6 +17,7 @@ const shopLinks = [
 
 export default function LuxuryNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [shopOpen, setShopOpen] = useState(false);
   const { count } = useCart();
   const [user, setUser] = useState<{ email: string; name: string } | null>(
     null,
@@ -35,6 +36,17 @@ export default function LuxuryNav() {
       }
     });
   }, [pathname]);
+
+  // Close shop dropdown on outside click
+  useEffect(() => {
+    if (!shopOpen) return;
+    const handler = () => setShopOpen(false);
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, [shopOpen]);
+
+  // Close shop dropdown on navigation
+  useEffect(() => { setShopOpen(false); }, [pathname]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -67,10 +79,13 @@ export default function LuxuryNav() {
               Home
             </Link>
             <div className="group relative">
-              <button className="flex items-center gap-1 text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]">
+              <button
+                onClick={(e) => { e.stopPropagation(); setShopOpen((o) => !o); }}
+                className="flex items-center gap-1 text-[12px] tracking-wide text-[#111111] transition-colors hover:text-[#9B6F47]"
+              >
                 Shop
                 <svg
-                  className="h-2.5 w-2.5 transition-transform duration-200 group-hover:rotate-180"
+                  className={`h-2.5 w-2.5 transition-transform duration-200 ${shopOpen ? "rotate-180" : "group-hover:rotate-180"}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -83,7 +98,7 @@ export default function LuxuryNav() {
                   />
                 </svg>
               </button>
-              <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+              <div className={`absolute left-0 top-full pt-3 transition-all duration-200 ${shopOpen ? "visible opacity-100" : "invisible opacity-0 group-hover:visible group-hover:opacity-100"}`}>
                 <div className="min-w-[170px] rounded-2xl border border-[#E5DFD6] bg-[#F2EFE8] py-2 shadow-lg">
                   {shopLinks.map((link) => (
                     <Link
