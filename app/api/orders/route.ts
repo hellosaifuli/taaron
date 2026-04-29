@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendOrderEmails } from "@/lib/email";
+import { notifyWhatsApp } from "@/lib/whatsapp";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET user's orders (auth required)
@@ -152,7 +153,24 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // Fire-and-forget email notifications — use server-verified prices
+  // Fire-and-forget notifications — use server-verified prices
+  notifyWhatsApp({
+    order_number,
+    customer_name,
+    customer_phone,
+    shipping_address,
+    shipping_city,
+    payment_method,
+    items: items.map((i: { name: string; quantity: number; product_id: string; variant_id?: string }) => ({
+      name: i.name,
+      quantity: i.quantity,
+      price: verifiedPrices.get(`${i.product_id}:${i.variant_id ?? ""}`) ?? 0,
+    })),
+    subtotal,
+    shipping_cost,
+    total,
+  });
+
   sendOrderEmails({
     order_number,
     order_id: orderId,
