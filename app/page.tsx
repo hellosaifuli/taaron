@@ -117,7 +117,7 @@ export default async function Home() {
       />
 
       <BannerSlider featuredProducts={featuredProducts} />
-      <ProductMasonry initialProducts={products} />
+      <ProductMasonry initialProducts={products} hideEndMessage />
       <PersonalizedProducts />
       <RecentlyViewed />
     </>

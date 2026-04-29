@@ -138,9 +138,11 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
 export default function ProductMasonry({
   initialProducts,
   disableInfiniteScroll = false,
+  hideEndMessage = false,
 }: {
   initialProducts: Product[];
   disableInfiniteScroll?: boolean;
+  hideEndMessage?: boolean;
 }) {
   const [products, setProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(false);
@@ -252,7 +254,7 @@ export default function ProductMasonry({
             ))}
           </div>
         )}
-        {!hasMore && !loading && products.length > 0 && (
+        {!hasMore && !loading && products.length > 0 && !hideEndMessage && (
           <p className="text-[10px] uppercase tracking-[0.35em] text-[#9E9690]">
             End of Collection
           </p>
