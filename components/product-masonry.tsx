@@ -83,7 +83,7 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
 
       {/* Color swatches — hover only (desktop) / always (touch via CSS) */}
       {colorVariants.length > 0 && (
-        <div className="card-overlay absolute inset-x-0 bottom-[52px] z-20 flex justify-center gap-2 px-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+        <div className="card-overlay absolute inset-x-0 bottom-[60px] z-20 flex justify-center gap-3 px-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
           {colorVariants.slice(0, 6).map((v) => (
             <div key={v.id} className="flex flex-col items-center gap-1">
               <button
@@ -92,10 +92,10 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
                 onMouseEnter={() => setActiveVariantImg(v.image_url)}
                 onMouseLeave={() => setActiveVariantImg(null)}
                 title={v.name}
-                className={`relative h-10 w-10 overflow-hidden rounded-full border-2 shadow-lg transition-all duration-150 hover:scale-110 ${
+                className={`relative h-16 w-16 overflow-hidden rounded-full border-[3px] shadow-xl transition-all duration-150 hover:scale-110 ${
                   activeVariantImg === v.image_url
                     ? "border-white scale-110"
-                    : "border-white/70"
+                    : "border-white/80"
                 }`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -105,7 +105,7 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
                   className="h-full w-full object-cover"
                 />
               </button>
-              <span className="swatch-name max-w-[44px] truncate text-center text-[9px] leading-tight text-white drop-shadow">
+              <span className="swatch-name max-w-[64px] truncate text-center text-[10px] font-medium leading-tight text-white drop-shadow">
                 {v.name}
               </span>
             </div>
