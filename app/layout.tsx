@@ -3,10 +3,13 @@ import { ReactNode } from "react";
 import { Toaster } from "sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import LuxuryNav from "@/components/luxury-nav";
 import SiteFooter from "@/components/site-footer";
 import { CartProvider } from "@/components/cart-provider";
 import "./globals.css";
+
+const GA_ID = "G-9EQ378LQFZ";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -107,6 +110,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Toaster closeButton position="bottom-right" />
         <SpeedInsights />
         <Analytics />
+        {/* Google Analytics */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );

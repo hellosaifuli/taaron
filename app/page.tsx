@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import BannerSlider from "@/components/banner-slider";
 import ProductMasonry from "@/components/product-masonry";
+import RecentlyViewed from "@/components/recently-viewed";
 import Script from "next/script";
 import type { Product } from "@/app/actions/products";
 
@@ -114,7 +115,8 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
 
-      <BannerSlider featuredProducts={products} />
+      <BannerSlider featuredProducts={featuredProducts} />
+      <RecentlyViewed />
       <ProductMasonry initialProducts={products} />
     </>
   );

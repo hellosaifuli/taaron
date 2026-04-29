@@ -4,6 +4,9 @@ import RelatedProducts from "@/components/related-products";
 import ProductAccordion from "@/components/product-accordion";
 import ProductGallery from "@/components/product-gallery";
 import FadeInSection from "@/components/fade-in-section";
+import ViewTracker from "@/components/view-tracker";
+import PersonalizedProducts from "@/components/personalized-products";
+import RecentlyViewed from "@/components/recently-viewed";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 
@@ -224,8 +227,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
 
+        {/* ── Personalized: based on browsing history ─────────────── */}
+        <PersonalizedProducts
+          currentId={product.id}
+          currentCategory={(product as any).category ?? null}
+        />
+
+        {/* ── Recently viewed strip ────────────────────────────────── */}
+        <RecentlyViewed currentId={product.id} />
+
         {/* ── Related products — full bleed ───────────────────────── */}
         <RelatedProducts currentId={id} />
+
+        {/* Track this view in localStorage */}
+        <ViewTracker
+          product={{
+            id: product.id,
+            slug: (product as any).slug ?? null,
+            name: product.name,
+            category: (product as any).category ?? null,
+            image_url: product.image_url ?? null,
+            price: product.price,
+          }}
+        />
       </div>
     </>
   );
