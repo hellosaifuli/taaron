@@ -238,6 +238,24 @@ export async function updateVariant(
   revalidatePath("/");
 }
 
+export async function toggleFeatured(id: string, current: boolean) {
+  await assertAdmin();
+  const db = createAdminClient();
+
+  if (!current) {
+    // Check how many are already featured
+    const { count } = await db
+      .from("products")
+      .select("id", { count: "exact", head: true })
+      .eq("featured", true);
+    if ((count ?? 0) >= 3) return { error: "Max 3 featured products allowed." };
+  }
+
+  await db.from("products").update({ featured: !current }).eq("id", id);
+  revalidatePath("/admin/products");
+  revalidatePath("/");
+}
+
 export async function deleteVariant(variantId: string, productId: string) {
   await assertAdmin();
   const db = createAdminClient();

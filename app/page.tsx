@@ -69,19 +69,37 @@ const websiteSchema = {
 
 export default async function Home() {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("products")
-    .select(
-      "id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)",
-    )
-    .eq("status", "active")
-    .order("created_at", { ascending: false })
-    .limit(50);
+  const productSelect =
+    "id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)";
 
-  const products: Product[] = ((data as any[]) ?? []).map((p) => ({
-    ...p,
-    color_variants: (p.product_variants ?? []).filter((v: any) => v.image_url),
-  }));
+  const [{ data: featuredData }, { data: gridData }] = await Promise.all([
+    // Featured products → banner (max 3, ordered by name for consistency)
+    supabase
+      .from("products")
+      .select(productSelect)
+      .eq("status", "active")
+      .eq("featured", true)
+      .order("created_at", { ascending: false })
+      .limit(3),
+    // Non-featured products → masonry grid
+    supabase
+      .from("products")
+      .select(productSelect)
+      .eq("status", "active")
+      .eq("featured", false)
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
+
+  function mapProducts(raw: any[]): Product[] {
+    return raw.map((p) => ({
+      ...p,
+      color_variants: (p.product_variants ?? []).filter((v: any) => v.image_url),
+    }));
+  }
+
+  const featuredProducts = mapProducts(featuredData ?? []);
+  const products = mapProducts(gridData ?? []);
 
   return (
     <>

@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { deleteProduct, toggleStatus } from "./actions";
+import { deleteProduct, toggleStatus, toggleFeatured } from "./actions";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@taaron.bd";
 
@@ -21,8 +21,10 @@ export default async function AdminProductsPage() {
 
   const { data: products } = await supabase
     .from("products")
-    .select("id, slug, name, price, sku, status, image_url, category, created_at")
+    .select("id, slug, name, price, sku, status, featured, image_url, category, created_at")
     .order("created_at", { ascending: false });
+
+  const featuredCount = products?.filter((p) => p.featured).length ?? 0;
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] pt-20">
@@ -58,8 +60,24 @@ export default async function AdminProductsPage() {
 
         <div className="mt-1 h-px w-16 bg-[#1969B5]" />
 
+        {/* Featured slots indicator */}
+        <div className="mt-6 flex items-center gap-2">
+          <span className="text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+            Banner slots:
+          </span>
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className={`h-2.5 w-2.5 rounded-full ${i < featuredCount ? "bg-[#9B6F47]" : "bg-[#DDE3EB]"}`}
+            />
+          ))}
+          <span className="text-[10px] text-[#7A8EA6]">
+            {featuredCount}/3 featured
+          </span>
+        </div>
+
         {/* Products Table */}
-        <section className="mt-12">
+        <section className="mt-6">
           <h2 className="text-sm font-semibold uppercase tracking-widest text-[#1E2737]">
             All Products{" "}
             <span className="font-normal text-[#7A8EA6]">
@@ -94,9 +112,16 @@ export default async function AdminProductsPage() {
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="truncate text-sm font-medium text-[#1E2737]">
-                      {p.name}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="truncate text-sm font-medium text-[#1E2737]">
+                        {p.name}
+                      </p>
+                      {p.featured && (
+                        <span className="flex-shrink-0 rounded bg-[#9B6F47]/10 px-1.5 py-0.5 text-[9px] uppercase tracking-widest text-[#9B6F47]">
+                          ★ Banner
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-[#7A8EA6]">
                       ৳{p.price.toLocaleString()}
                       {p.sku && <span className="ml-3">SKU: {p.sku}</span>}
@@ -128,6 +153,34 @@ export default async function AdminProductsPage() {
                     >
                       View
                     </Link>
+                    {/* Feature toggle */}
+                    <form
+                      action={async () => {
+                        "use server";
+                        await toggleFeatured(p.id, p.featured);
+                      }}
+                    >
+                      <button
+                        type="submit"
+                        title={
+                          p.featured
+                            ? "Remove from banner"
+                            : featuredCount >= 3
+                              ? "Banner full (max 3)"
+                              : "Add to banner"
+                        }
+                        disabled={!p.featured && featuredCount >= 3}
+                        className={`text-[11px] uppercase tracking-widest transition-colors ${
+                          p.featured
+                            ? "text-[#9B6F47] hover:text-[#7A5C38]"
+                            : featuredCount >= 3
+                              ? "cursor-not-allowed text-[#C4BDB5]"
+                              : "text-[#7A8EA6] hover:text-[#9B6F47]"
+                        }`}
+                      >
+                        {p.featured ? "★ Unfeature" : "☆ Feature"}
+                      </button>
+                    </form>
                     <form
                       action={async () => {
                         "use server";
@@ -150,7 +203,6 @@ export default async function AdminProductsPage() {
                       <button
                         type="submit"
                         className="text-[11px] uppercase tracking-widest text-red-400 hover:text-red-600"
-                        onClick={undefined}
                       >
                         Delete
                       </button>
