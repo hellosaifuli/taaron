@@ -47,5 +47,8 @@ export async function fillCheckoutForm(
 
 export async function waitForOrderConfirmation(page: Page) {
   await page.waitForURL(/\/order-confirmation\//, { timeout: 20000 });
-  await expect(page.getByText(/order confirmed/i)).toBeVisible({ timeout: 10000 });
+  // Use heading role to avoid strict mode with Next.js route announcer
+  await expect(
+    page.getByRole("heading", { name: /order confirmed/i }),
+  ).toBeVisible({ timeout: 10000 });
 }

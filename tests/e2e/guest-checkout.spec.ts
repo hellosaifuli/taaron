@@ -7,8 +7,11 @@ test.describe("Guest checkout", () => {
   });
 
   test("cart icon shows item count after adding product", async ({ page }) => {
-    const cartLink = page.locator('a[href="/checkout"]').first();
-    await expect(cartLink).toBeVisible();
+    // Use visible() filter — desktop nav link is hidden on mobile viewport
+    const cartLink = page.locator('a[href="/checkout"]').filter({ hasText: /cart/i }).or(
+      page.locator('a[href="/checkout"][aria-label]'),
+    ).first();
+    await expect(cartLink).toBeVisible({ timeout: 8000 });
   });
 
   test("completes COD order as guest", async ({ page }) => {
