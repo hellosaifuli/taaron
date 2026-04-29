@@ -148,24 +148,17 @@ export default function BannerSlider({
             fontWeight: 400,
           }}
         >
-          {/* Line 2 — slides up */}
+          {/* Inline: "Everyday Elegance, Inspired by Stars" on one line */}
           <span
-            className="banner-reveal block"
+            className="banner-reveal"
             style={{ animation: "bannerRevealUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.35s" }}
           >
-            Everyday Elegance,
-          </span>
-
-          {/* Line 3 — slides up later, then shimmer plays */}
-          <span
-            className="banner-reveal block"
-            style={{ animation: "bannerRevealUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.6s" }}
-          >
+            Everyday Elegance,{" "}
             <em
               className="shimmer-text"
               style={{
                 fontStyle: "italic",
-                animation: "textShimmer 8s ease-in-out 1.8s infinite",
+                animation: "textShimmer 10s ease-in-out 1.8s infinite",
               }}
             >
               Inspired by Stars

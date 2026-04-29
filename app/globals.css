@@ -168,11 +168,11 @@ body {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-/* Gold shimmer sweeps left→right, pauses 7s, repeats */
+/* Gold shimmer sweeps left→right over 3s, then pauses 7s, repeats */
 @keyframes textShimmer {
   0%     { background-position: -300% center; }
-  13%    { background-position: 300% center; }
-  13.01%, 100% { background-position: -300% center; }
+  30%    { background-position: 300% center; }
+  30.01%, 100% { background-position: -300% center; }
 }
 
 .banner-reveal { animation-fill-mode: both; }
