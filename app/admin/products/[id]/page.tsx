@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { updateProduct } from "../actions";
+import { updateProduct, createVariant, updateVariant, deleteVariant } from "../actions";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@taaron.bd";
 
@@ -25,18 +25,25 @@ export default async function EditProductPage({
   } = await supabase.auth.getUser();
   if (!user || user.email !== ADMIN_EMAIL) redirect("/auth");
 
-  const [{ data: product }, { data: extraImages }] = await Promise.all([
-    supabase.from("products").select("*").eq("id", id).single(),
-    supabase
-      .from("product_images")
-      .select("url, position")
-      .eq("product_id", id)
-      .order("position"),
-  ]);
+  const [{ data: product }, { data: extraImages }, { data: variants }] =
+    await Promise.all([
+      supabase.from("products").select("*").eq("id", id).single(),
+      supabase
+        .from("product_images")
+        .select("url, position")
+        .eq("product_id", id)
+        .order("position"),
+      supabase
+        .from("product_variants")
+        .select("id, name, sku, price_adjustment, stock_quantity, image_url")
+        .eq("product_id", id)
+        .order("created_at"),
+    ]);
 
   if (!product) notFound();
 
   const updateWithId = updateProduct.bind(null, id);
+  const createVariantWithId = createVariant.bind(null, id);
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] pt-20">
@@ -130,6 +137,20 @@ export default async function EditProductPage({
                 <option value="cardholder">Card Holders</option>
                 <option value="ladies">Ladies Bags</option>
               </select>
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-[#7A8EA6]">
+                Compare-at Price (৳){" "}
+                <span className="normal-case text-[#7A8EA6]">(original / sale)</span>
+              </label>
+              <input
+                name="compare_at_price"
+                type="number"
+                step="0.01"
+                defaultValue={product.compare_at_price ?? ""}
+                className="mt-2 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-3 py-2.5 text-sm outline-none focus:border-[#1E2737]"
+                placeholder="Leave blank if no sale"
+              />
             </div>
             <div>
               <label className="block text-[11px] uppercase tracking-widest text-[#7A8EA6]">
@@ -245,6 +266,204 @@ export default async function EditProductPage({
             </Link>
           </div>
         </form>
+
+        {/* ── Variants / Colors ───────────────────────────────── */}
+        <div className="mt-10">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold uppercase tracking-widest text-[#1E2737]">
+              Variants / Colors
+            </h2>
+            <p className="text-[11px] text-[#7A8EA6]">
+              Each variant with an image becomes a color swatch on the product card
+            </p>
+          </div>
+          <div className="mt-1 h-px w-10 bg-[#1969B5]" />
+
+          {/* Existing variants */}
+          <div className="mt-4 space-y-2">
+            {!variants?.length && (
+              <p className="text-sm text-[#7A8EA6]">No variants yet.</p>
+            )}
+            {(variants ?? []).map((v) => {
+              const updateVariantAction = updateVariant.bind(null, v.id, id);
+              const deleteVariantAction = deleteVariant.bind(null, v.id, id);
+              return (
+                <div
+                  key={v.id}
+                  className="border border-[#DDE3EB] bg-white p-4"
+                >
+                  <form action={updateVariantAction}>
+                    <div className="grid gap-3 sm:grid-cols-[1fr_1fr_100px_90px_1fr_auto]">
+                      <div>
+                        <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                          Name *
+                        </label>
+                        <input
+                          name="name"
+                          defaultValue={v.name}
+                          required
+                          className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                          placeholder="e.g. Brown"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                          SKU
+                        </label>
+                        <input
+                          name="sku"
+                          defaultValue={v.sku ?? ""}
+                          className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                          +Price (৳)
+                        </label>
+                        <input
+                          name="price_adjustment"
+                          type="number"
+                          step="0.01"
+                          defaultValue={v.price_adjustment ?? 0}
+                          className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                          Stock
+                        </label>
+                        <input
+                          name="stock_quantity"
+                          type="number"
+                          defaultValue={v.stock_quantity ?? 0}
+                          className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                          Image URL
+                        </label>
+                        <input
+                          name="image_url"
+                          type="url"
+                          defaultValue={v.image_url ?? ""}
+                          className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                          placeholder="https://..."
+                        />
+                      </div>
+                      <div className="flex items-end gap-2">
+                        <button
+                          type="submit"
+                          className="whitespace-nowrap bg-[#1E2737] px-3 py-2 text-[10px] uppercase tracking-widest text-white hover:bg-[#1969B5]"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  {/* Delete — separate form so it doesn't submit the edit form */}
+                  <form action={deleteVariantAction} className="mt-2 text-right">
+                    <button
+                      type="submit"
+                      className="text-[10px] uppercase tracking-widest text-red-400 hover:text-red-600"
+                    >
+                      Delete variant
+                    </button>
+                  </form>
+
+                  {/* Image preview */}
+                  {v.image_url && (
+                    <div className="mt-3 flex items-center gap-3">
+                      <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden bg-[#EEF2F7]">
+                        <Image
+                          src={v.image_url}
+                          alt={v.name}
+                          fill
+                          className="object-cover"
+                          sizes="48px"
+                        />
+                      </div>
+                      <span className="text-xs text-[#7A8EA6]">{v.name}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Add new variant */}
+          <div className="mt-4 border border-dashed border-[#DDE3EB] bg-white p-4">
+            <p className="mb-3 text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+              Add Variant
+            </p>
+            <form action={createVariantWithId}>
+              <div className="grid gap-3 sm:grid-cols-[1fr_1fr_100px_90px_1fr_auto]">
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                    Name *
+                  </label>
+                  <input
+                    name="name"
+                    required
+                    className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                    placeholder="e.g. Black"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                    SKU
+                  </label>
+                  <input
+                    name="sku"
+                    className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                    +Price (৳)
+                  </label>
+                  <input
+                    name="price_adjustment"
+                    type="number"
+                    step="0.01"
+                    defaultValue={0}
+                    className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                    Stock
+                  </label>
+                  <input
+                    name="stock_quantity"
+                    type="number"
+                    defaultValue={0}
+                    className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-[#7A8EA6]">
+                    Image URL
+                  </label>
+                  <input
+                    name="image_url"
+                    type="url"
+                    className="mt-1 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-2.5 py-2 text-sm outline-none focus:border-[#1E2737]"
+                    placeholder="https://..."
+                  />
+                </div>
+                <div className="flex items-end">
+                  <button
+                    type="submit"
+                    className="whitespace-nowrap bg-[#1969B5] px-3 py-2 text-[10px] uppercase tracking-widest text-white hover:bg-[#1E2737]"
+                  >
+                    + Add
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );

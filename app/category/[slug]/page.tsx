@@ -90,7 +90,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const query = supabase
     .from("products")
-    .select("id, name, price, image_url, thumbnail_url")
+    .select("id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)")
     .eq("status", "active")
     .order("created_at", { ascending: false })
     .limit(50);
@@ -102,15 +102,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     !products?.length && slug !== "all"
       ? await supabase
           .from("products")
-          .select("id, name, price, image_url, thumbnail_url")
+          .select("id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)")
           .eq("status", "active")
           .order("created_at", { ascending: false })
           .limit(50)
       : { data: null };
 
-  const displayProducts = (
-    products?.length ? products : (fallback ?? [])
-  ) as Product[];
+  function mapProducts(raw: any[]): Product[] {
+    return raw.map((p) => ({
+      ...p,
+      color_variants: (p.product_variants ?? []).filter((v: any) => v.image_url),
+    }));
+  }
+
+  const displayProducts: Product[] = mapProducts(
+    products?.length ? products : (fallback ?? []),
+  );
 
   const collectionSchema = {
     "@context": "https://schema.org",

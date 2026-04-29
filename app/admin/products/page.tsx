@@ -21,7 +21,7 @@ export default async function AdminProductsPage() {
 
   const { data: products } = await supabase
     .from("products")
-    .select("id, name, price, sku, status, image_url, category, created_at")
+    .select("id, slug, name, price, sku, status, image_url, category, created_at")
     .order("created_at", { ascending: false });
 
   return (
@@ -122,7 +122,7 @@ export default async function AdminProductsPage() {
                       Edit
                     </Link>
                     <Link
-                      href={`/products/${p.id}`}
+                      href={`/products/${p.slug ?? p.id}`}
                       target="_blank"
                       className="text-[11px] uppercase tracking-widest text-[#4B5C73] hover:text-[#1E2737]"
                     >

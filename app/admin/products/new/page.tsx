@@ -103,6 +103,19 @@ export default async function NewProductPage() {
             </div>
             <div>
               <label className="block text-[11px] uppercase tracking-widest text-[#7A8EA6]">
+                Compare-at Price (৳){" "}
+                <span className="normal-case text-[#7A8EA6]">(original / sale)</span>
+              </label>
+              <input
+                name="compare_at_price"
+                type="number"
+                step="0.01"
+                className="mt-2 w-full border border-[#DDE3EB] bg-[#FAFAFA] px-3 py-2.5 text-sm outline-none focus:border-[#1E2737]"
+                placeholder="e.g. 1500 (leave blank if no sale)"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-[#7A8EA6]">
                 Cost (৳)
               </label>
               <input

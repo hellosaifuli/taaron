@@ -11,13 +11,16 @@ export default async function RelatedProducts({
   const supabase = await createClient();
   const { data } = await supabase
     .from("products")
-    .select("id, name, price, image_url, thumbnail_url")
+    .select("id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)")
     .eq("status", "active")
     .neq("id", currentId)
     .order("created_at", { ascending: false })
     .limit(50);
 
-  const products = (data as Product[] | null) ?? [];
+  const products: Product[] = ((data as any[]) ?? []).map((p) => ({
+    ...p,
+    color_variants: (p.product_variants ?? []).filter((v: any) => v.image_url),
+  }));
   if (!products.length) return null;
 
   return (

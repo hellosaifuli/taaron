@@ -4,6 +4,32 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+async function uniqueSlug(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  name: string,
+  excludeId?: string,
+): Promise<string> {
+  const base = slugify(name);
+  let slug = base;
+  let n = 2;
+  while (true) {
+    let q = supabase.from("products").select("id").eq("slug", slug);
+    if (excludeId) q = q.neq("id", excludeId);
+    const { data } = await q;
+    if (!data?.length) return slug;
+    slug = `${base}-${n++}`;
+  }
+}
+
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@taaron.bd";
 
 async function assertAdmin() {
@@ -21,6 +47,9 @@ export async function createProduct(formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const price = parseFloat(formData.get("price") as string);
+  const compare_at_price = formData.get("compare_at_price")
+    ? parseFloat(formData.get("compare_at_price") as string)
+    : null;
   const cost = formData.get("cost")
     ? parseFloat(formData.get("cost") as string)
     : null;
@@ -30,6 +59,7 @@ export async function createProduct(formData: FormData) {
   const status = (formData.get("status") as string) || "active";
   const extra_images = (formData.get("extra_images") as string) || "";
   const category = (formData.get("category") as string) || null;
+  const slug = await uniqueSlug(supabase, name);
 
   const { data: product, error } = await supabase
     .from("products")
@@ -37,12 +67,14 @@ export async function createProduct(formData: FormData) {
       name,
       description,
       price,
+      compare_at_price,
       cost,
       sku,
       image_url,
       thumbnail_url,
       status,
       category,
+      slug,
     })
     .select()
     .single();
@@ -76,6 +108,9 @@ export async function updateProduct(id: string, formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const price = parseFloat(formData.get("price") as string);
+  const compare_at_price = formData.get("compare_at_price")
+    ? parseFloat(formData.get("compare_at_price") as string)
+    : null;
   const cost = formData.get("cost")
     ? parseFloat(formData.get("cost") as string)
     : null;
@@ -85,6 +120,7 @@ export async function updateProduct(id: string, formData: FormData) {
   const status = formData.get("status") as string;
   const extra_images = (formData.get("extra_images") as string) || "";
   const category = (formData.get("category") as string) || null;
+  const slug = await uniqueSlug(supabase, name, id);
 
   const { error } = await supabase
     .from("products")
@@ -92,12 +128,14 @@ export async function updateProduct(id: string, formData: FormData) {
       name,
       description,
       price,
+      compare_at_price,
       cost,
       sku,
       image_url,
       thumbnail_url,
       status,
       category,
+      slug,
     })
     .eq("id", id);
 
@@ -136,5 +174,73 @@ export async function toggleStatus(id: string, current: string) {
   const status = current === "active" ? "draft" : "active";
   await supabase.from("products").update({ status }).eq("id", id);
   revalidatePath("/admin/products");
+  revalidatePath("/");
+}
+
+export async function createVariant(productId: string, formData: FormData) {
+  const supabase = await assertAdmin();
+
+  const name = (formData.get("name") as string).trim();
+  if (!name) return;
+  const sku = (formData.get("sku") as string) || null;
+  const price_adjustment = formData.get("price_adjustment")
+    ? parseFloat(formData.get("price_adjustment") as string)
+    : 0;
+  const stock_quantity = formData.get("stock_quantity")
+    ? parseInt(formData.get("stock_quantity") as string, 10)
+    : 0;
+  const image_url = (formData.get("image_url") as string) || null;
+
+  const { error } = await supabase.from("product_variants").insert({
+    product_id: productId,
+    name,
+    sku,
+    price_adjustment,
+    stock_quantity,
+    image_url,
+  });
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/admin/products/${productId}`);
+  revalidatePath(`/products/${productId}`);
+  revalidatePath("/");
+}
+
+export async function updateVariant(
+  variantId: string,
+  productId: string,
+  formData: FormData,
+) {
+  const supabase = await assertAdmin();
+
+  const name = (formData.get("name") as string).trim();
+  if (!name) return;
+  const sku = (formData.get("sku") as string) || null;
+  const price_adjustment = formData.get("price_adjustment")
+    ? parseFloat(formData.get("price_adjustment") as string)
+    : 0;
+  const stock_quantity = formData.get("stock_quantity")
+    ? parseInt(formData.get("stock_quantity") as string, 10)
+    : 0;
+  const image_url = (formData.get("image_url") as string) || null;
+
+  const { error } = await supabase
+    .from("product_variants")
+    .update({ name, sku, price_adjustment, stock_quantity, image_url })
+    .eq("id", variantId);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/admin/products/${productId}`);
+  revalidatePath(`/products/${productId}`);
+  revalidatePath("/");
+}
+
+export async function deleteVariant(variantId: string, productId: string) {
+  const supabase = await assertAdmin();
+  await supabase.from("product_variants").delete().eq("id", variantId);
+  revalidatePath(`/admin/products/${productId}`);
+  revalidatePath(`/products/${productId}`);
   revalidatePath("/");
 }

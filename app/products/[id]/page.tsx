@@ -18,11 +18,20 @@ const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 export async function generateMetadata({ params }: ProductPageProps) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: product } = await supabase
+  let { data: product } = await supabase
     .from("products")
     .select("name, description, price, image_url")
-    .eq("id", id)
-    .single();
+    .eq("slug", id)
+    .maybeSingle();
+
+  if (!product) {
+    const { data } = await supabase
+      .from("products")
+      .select("name, description, price, image_url")
+      .eq("id", id)
+      .maybeSingle();
+    product = data;
+  }
 
   if (!product) return {};
 
@@ -66,24 +75,35 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
   const supabase = await createClient();
 
-  const [{ data: product }, { data: extraImages }] = await Promise.all([
-    supabase
+  // Support both slug-based and ID-based URLs for backward compatibility
+  const productSelect = `
+    id, slug, name, description, price, compare_at_price, sku, image_url, thumbnail_url, status,
+    product_variants (id, name, sku, price_adjustment, stock_quantity, image_url)
+  `;
+
+  // Try slug first, fall back to UUID id
+  let { data: product } = await supabase
+    .from("products")
+    .select(productSelect)
+    .eq("slug", id)
+    .eq("status", "active")
+    .maybeSingle();
+
+  if (!product) {
+    const { data } = await supabase
       .from("products")
-      .select(
-        `
-        id, name, description, price, sku, image_url, thumbnail_url, status,
-        product_variants (id, name, sku, price_adjustment, stock_quantity, image_url)
-      `,
-      )
+      .select(productSelect)
       .eq("id", id)
       .eq("status", "active")
-      .single(),
-    supabase
-      .from("product_images")
-      .select("url, alt, position")
-      .eq("product_id", id)
-      .order("position"),
-  ]);
+      .maybeSingle();
+    product = data;
+  }
+
+  const { data: extraImages } = await supabase
+    .from("product_images")
+    .select("url, alt, position")
+    .eq("product_id", product?.id ?? id)
+    .order("position");
 
   if (!product) notFound();
 
@@ -159,7 +179,25 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </FadeInSection>
 
             <FadeInSection delay={120} from="right">
-              <div className="mt-6 flex items-baseline gap-3">
+              <div className="mt-6 flex flex-wrap items-baseline gap-3">
+                {product.compare_at_price != null &&
+                  product.compare_at_price > product.price && (
+                    <>
+                      <span
+                        className="text-[#9E9690] line-through"
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "1.25rem",
+                          fontWeight: 400,
+                        }}
+                      >
+                        ৳{product.compare_at_price.toLocaleString()}
+                      </span>
+                      <span className="rounded bg-red-500 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-white">
+                        -{Math.round((1 - product.price / product.compare_at_price) * 100)}% OFF
+                      </span>
+                    </>
+                  )}
                 <p
                   className="text-[#111111]"
                   style={{

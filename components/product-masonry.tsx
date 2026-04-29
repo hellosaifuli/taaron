@@ -23,6 +23,111 @@ const PATTERN = [
   { lg: "lg:col-span-4", aspect: "lg:aspect-[3/4]", oval: false },
 ];
 
+function MasonryCard({ product, idx }: { product: Product; idx: number }) {
+  const pat = PATTERN[idx % 7]!;
+  const [activeVariantImg, setActiveVariantImg] = useState<string | null>(null);
+
+  const baseImg =
+    product.image_url ??
+    product.thumbnail_url ??
+    PLACEHOLDER_IMAGES[idx % PLACEHOLDER_IMAGES.length]!;
+
+  const colorVariants = product.color_variants ?? [];
+  const isOnSale =
+    product.compare_at_price != null &&
+    product.compare_at_price > product.price;
+  const discountPct = isOnSale
+    ? Math.round((1 - product.price / product.compare_at_price!) * 100)
+    : 0;
+
+  const href = `/products/${product.slug ?? product.id}`;
+
+  return (
+    <Link
+      href={href}
+      data-card
+      className={[
+        "masonry-card group relative block overflow-hidden bg-[#EDE9E3]",
+        "aspect-[3/4]",
+        pat.lg,
+        pat.aspect,
+        pat.oval ? "lg:rounded-full" : "",
+      ].join(" ")}
+    >
+      {/* Base image */}
+      <StitchImage
+        src={baseImg}
+        alt={product.name}
+        className="object-cover transition-transform duration-700 group-hover:scale-105"
+        sizes="(max-width: 1024px) 100vw, 40vw"
+      />
+
+      {/* Variant image overlay — fades in on swatch hover */}
+      {activeVariantImg && (
+        <div className="absolute inset-0 z-10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={activeVariantImg}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
+
+      {/* Sale badge — always visible */}
+      {isOnSale && (
+        <div className="absolute left-3 top-3 z-20 bg-red-500 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">
+          -{discountPct}%
+        </div>
+      )}
+
+      {/* Hover overlay: name + price + color swatches */}
+      <div className="absolute inset-x-0 bottom-3 z-20 flex flex-col items-center gap-2 px-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+        {/* Name + price pill */}
+        <div className="flex min-w-0 max-w-full items-center gap-2.5 rounded-full bg-black/55 px-5 py-2 backdrop-blur-sm">
+          <span className="truncate text-[13px] leading-tight text-white">
+            {product.name}
+          </span>
+          <span className="flex-shrink-0 text-[13px] leading-tight">
+            {isOnSale && (
+              <span className="mr-1.5 text-white/40 line-through">
+                ৳{product.compare_at_price!.toLocaleString()}
+              </span>
+            )}
+            <span className={isOnSale ? "text-red-300" : "text-white/70"}>
+              ৳{product.price.toLocaleString()}
+            </span>
+          </span>
+        </div>
+
+        {/* Color swatches */}
+        {colorVariants.length > 0 && (
+          <div className="flex gap-1.5">
+            {colorVariants.slice(0, 6).map((v) => (
+              <button
+                key={v.id}
+                type="button"
+                onClick={(e) => e.preventDefault()}
+                onMouseEnter={() => setActiveVariantImg(v.image_url)}
+                onMouseLeave={() => setActiveVariantImg(null)}
+                title={v.name}
+                className="relative h-7 w-7 overflow-hidden rounded-full border-2 border-white/60 transition-transform duration-150 hover:scale-110 hover:border-white"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={v.image_url}
+                  alt={v.name}
+                  className="h-full w-full object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+}
+
 export default function ProductMasonry({
   initialProducts,
 }: {
@@ -81,7 +186,6 @@ export default function ProductMasonry({
     const grid = gridRef.current;
     if (!grid) return;
 
-    // Track which cards in the current viewport batch have been seen
     let batchCounter = 0;
     let batchTimer: ReturnType<typeof setTimeout>;
 
@@ -90,7 +194,6 @@ export default function ProductMasonry({
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const el = entry.target as HTMLElement;
-          // Stagger: cap at 5 per visual batch, 70ms apart
           const delay = Math.min(batchCounter, 4) * 70;
           batchCounter++;
           clearTimeout(batchTimer);
@@ -122,45 +225,9 @@ export default function ProductMasonry({
         ref={gridRef}
         className="grid grid-cols-1 gap-2 p-2 lg:grid-cols-10 lg:items-start lg:gap-3 lg:p-3"
       >
-        {products.map((product, idx) => {
-          const pat = PATTERN[idx % 7]!;
-          const img =
-            product.image_url ??
-            product.thumbnail_url ??
-            PLACEHOLDER_IMAGES[idx % PLACEHOLDER_IMAGES.length]!;
-
-          return (
-            <Link
-              key={`${product.id}-${idx}`}
-              href={`/products/${product.id}`}
-              data-card
-              className={[
-                "masonry-card group relative block overflow-hidden bg-[#EDE9E3]",
-                "aspect-[3/4]",
-                pat.lg,
-                pat.aspect,
-                pat.oval ? "lg:rounded-full" : "",
-              ].join(" ")}
-            >
-              <StitchImage
-                src={img}
-                alt={product.name}
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 1024px) 100vw, 40vw"
-              />
-              <div className="absolute inset-x-0 bottom-3 flex justify-center px-3">
-                <div className="flex min-w-0 max-w-full items-center gap-2.5 rounded-full bg-black/50 px-5 py-2 backdrop-blur-sm">
-                  <span className="truncate text-[13px] leading-tight text-white">
-                    {product.name}
-                  </span>
-                  <span className="flex-shrink-0 text-[13px] leading-tight text-white/70">
-                    ৳{product.price.toLocaleString()}
-                  </span>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+        {products.map((product, idx) => (
+          <MasonryCard key={`${product.id}-${idx}`} product={product} idx={idx} />
+        ))}
       </div>
 
       <div ref={sentinelRef} className="flex justify-center py-12">
