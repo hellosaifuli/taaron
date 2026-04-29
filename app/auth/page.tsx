@@ -131,8 +131,9 @@ function AuthForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === "signup" && (
             <div>
-              <label className={labelClass}>Full Name <span className="text-red-500">*</span></label>
+              <label htmlFor="full_name" className={labelClass}>Full Name <span className="text-red-500">*</span></label>
               <input
+                id="full_name"
                 type="text"
                 name="full_name"
                 value={formData.full_name}
@@ -145,8 +146,9 @@ function AuthForm() {
           )}
 
           <div>
-            <label className={labelClass}>Email <span className="text-red-500">*</span></label>
+            <label htmlFor="email" className={labelClass}>Email <span className="text-red-500">*</span></label>
             <input
+              id="email"
               type="email"
               name="email"
               value={formData.email}
@@ -160,7 +162,7 @@ function AuthForm() {
           {mode !== "forgot" && (
             <div>
               <div className="mb-1.5 flex items-center justify-between">
-                <label className={labelClass} style={{ marginBottom: 0 }}>
+                <label htmlFor="password" className={labelClass} style={{ marginBottom: 0 }}>
                   Password <span className="text-red-500">*</span>
                 </label>
                 {mode === "login" && (
@@ -177,6 +179,7 @@ function AuthForm() {
                 )}
               </div>
               <input
+                id="password"
                 type="password"
                 name="password"
                 value={formData.password}

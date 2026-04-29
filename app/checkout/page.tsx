@@ -393,10 +393,11 @@ export default function CheckoutPage() {
               </p>
               <div className="grid gap-8 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
+                  <label htmlFor="customer_name" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
                     Full Name *
                   </label>
                   <input
+                    id="customer_name"
                     type="text"
                     name="customer_name"
                     value={formData.customer_name}
@@ -407,10 +408,11 @@ export default function CheckoutPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
+                  <label htmlFor="customer_email" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
                     Email
                   </label>
                   <input
+                    id="customer_email"
                     type="email"
                     name="customer_email"
                     value={formData.customer_email}
@@ -420,10 +422,11 @@ export default function CheckoutPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
+                  <label htmlFor="customer_phone" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
                     Phone *
                   </label>
                   <input
+                    id="customer_phone"
                     type="tel"
                     name="customer_phone"
                     value={formData.customer_phone}
@@ -438,10 +441,11 @@ export default function CheckoutPage() {
                   )}
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
+                  <label htmlFor="shipping_address" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
                     Address *
                   </label>
                   <textarea
+                    id="shipping_address"
                     name="shipping_address"
                     value={formData.shipping_address}
                     onChange={handleChange}
@@ -452,10 +456,11 @@ export default function CheckoutPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
+                  <label htmlFor="shipping_city" className="block text-[10px] uppercase tracking-widest text-[#5C5652]">
                     City / District *
                   </label>
                   <select
+                    id="shipping_city"
                     name="shipping_city"
                     value={formData.shipping_city}
                     onChange={handleChange}
