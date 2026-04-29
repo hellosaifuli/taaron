@@ -41,7 +41,24 @@
       "Bash(git stash *)",
       "Bash(git rebase *)",
       "Bash(git fetch *)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "Bash(pnpm add *)",
+      "mcp__plugin_vercel_vercel__list_deployments",
+      "mcp__plugin_vercel_vercel__get_deployment_build_logs",
+      "mcp__plugin_vercel_vercel__deploy_to_vercel",
+      "Bash(npm i *)",
+      "Bash(grep -v \"^#\\\\|^$\" .env.local)",
+      "Bash(claude plugin *)",
+      "Bash(pnpm exec *)",
+      "Bash(export PATH=\"/usr/local/bin:/opt/homebrew/bin:$PATH\")",
+      "Bash(cat .env.local)",
+      "Bash(command -v pnpm)",
+      "mcp__claude_ai_Supabase__execute_sql",
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Read(//usr/local/**)",
+      "Read(//opt/homebrew/**)",
+      "WebFetch(domain:www.callmebot.com)",
+      "WebFetch(domain:api.telegram.org)"
     ]
   }
 }
