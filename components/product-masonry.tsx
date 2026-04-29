@@ -108,29 +108,6 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
     </>
   );
 
-  // Oval card: pill lives BELOW the circle on desktop (not clipped by overflow-hidden)
-  if (pat.oval) {
-    return (
-      <div
-        data-card
-        className={["masonry-card group relative", "aspect-[3/4]", pat.lg, pat.aspect].join(" ")}
-      >
-        <Link href={href} className="relative block h-full w-full overflow-hidden bg-[#EDE9E3] lg:rounded-full">
-          {inner}
-          {/* Pill inside on mobile (no oval shape on mobile) */}
-          <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center px-3 lg:hidden">
-            {pill}
-          </div>
-        </Link>
-        {/* Pill below circle on desktop — full name, not clipped */}
-        <div className="mt-3 hidden justify-center px-2 lg:flex">
-          {pill}
-        </div>
-      </div>
-    );
-  }
-
-  // Regular (non-oval) card
   return (
     <Link
       href={href}
@@ -140,6 +117,7 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
         "aspect-[3/4]",
         pat.lg,
         pat.aspect,
+        pat.oval ? "lg:rounded-full" : "",
       ].join(" ")}
     >
       {inner}
