@@ -153,8 +153,8 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // Fire-and-forget notifications — use server-verified prices
-  notifyTelegram({
+  // Await Telegram first so Vercel doesn't kill the function before fetch completes
+  await notifyTelegram({
     order_number,
     customer_name,
     customer_phone,
