@@ -168,33 +168,16 @@ body {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-/* Gold shimmer sweeps left→right over 3s, then pauses 7s, repeats */
-@keyframes textShimmer {
-  0%     { background-position: -300% center; }
-  30%    { background-position: 300% center; }
-  30.01%, 100% { background-position: -300% center; }
+/* ── Sparkle / glitter for GlitterText component ─────────────────────── */
+@keyframes sparkleIn {
+  0%, 100% { opacity: 0; transform: scale(0.1) rotate(-15deg); }
+  35%, 65% { opacity: 1; transform: scale(1)   rotate(12deg);  }
 }
 
 .banner-reveal { animation-fill-mode: both; }
-.shimmer-text {
-  background: linear-gradient(
-    90deg,
-    #9B6F47 30%,
-    #C4905A 43%,
-    #F0C98A 50%,
-    #C4905A 57%,
-    #9B6F47 70%
-  );
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 
 @media (prefers-reduced-motion: reduce) {
   .banner-reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
-  .shimmer-text  { animation: none !important; background: none !important;
-                   -webkit-text-fill-color: #9B6F47 !important; }
 }
 
 @keyframes marquee {

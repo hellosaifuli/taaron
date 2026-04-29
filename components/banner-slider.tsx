@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState, useEffect, useMemo } from "react";
 import type { Product } from "@/app/actions/products";
+import GlitterText from "@/components/glitter-text";
 
 interface BannerSliderProps {
   featuredProducts?: Product[];
@@ -154,15 +155,9 @@ export default function BannerSlider({
             style={{ animation: "bannerRevealUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.35s" }}
           >
             Everyday Elegance,{" "}
-            <em
-              className="shimmer-text"
-              style={{
-                fontStyle: "italic",
-                animation: "textShimmer 10s ease-in-out 1.8s infinite",
-              }}
-            >
+            <GlitterText style={{ fontStyle: "italic", color: "#9B6F47" }}>
               Inspired by Stars
-            </em>
+            </GlitterText>
           </span>
         </h1>
 
