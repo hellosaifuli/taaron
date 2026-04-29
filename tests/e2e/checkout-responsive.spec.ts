@@ -6,11 +6,9 @@ test.describe("Checkout responsiveness", () => {
     await addFirstProductToCart(page);
     await page.goto("/checkout");
 
-    // Price elements inside the aside should be within viewport width
-    const priceEls = page.locator("aside").getByText(/৳/);
-    const count = await priceEls.count();
-    if (count > 0) {
-      const box = await priceEls.first().boundingBox();
+    const priceEls = page.locator("aside").getByText(/৳/).first();
+    if (await priceEls.isVisible({ timeout: 5000 }).catch(() => false)) {
+      const box = await priceEls.boundingBox();
       const viewportWidth = page.viewportSize()?.width ?? 375;
       expect(box?.x ?? 0).toBeLessThan(viewportWidth);
     }
@@ -30,11 +28,7 @@ test.describe("Checkout responsiveness", () => {
   test("COD and bKash payment options are selectable", async ({ page }) => {
     await addFirstProductToCart(page);
     await page.goto("/checkout");
-    const cod = page.getByLabel(/cash on delivery/i).or(
-      page.getByText(/cash on delivery/i),
-    );
-    const bkash = page.getByLabel(/bkash/i).or(page.getByText(/bkash/i));
-    await expect(cod).toBeVisible();
-    await expect(bkash).toBeVisible();
+    await expect(page.getByText(/cash on delivery/i).first()).toBeVisible();
+    await expect(page.getByText(/bkash/i).first()).toBeVisible();
   });
 });
