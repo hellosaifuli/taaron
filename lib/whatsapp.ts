@@ -15,38 +15,39 @@ export async function notifyWhatsApp(order: OrderNotification) {
   const phone = process.env.CALLMEBOT_PHONE;
   const apiKey = process.env.CALLMEBOT_API_KEY;
 
-  if (!phone || !apiKey) return; // silently skip if not configured
+  if (!phone || !apiKey) {
+    console.warn("[WhatsApp] CALLMEBOT_PHONE or CALLMEBOT_API_KEY not set — skipping notification.");
+    return;
+  }
 
   const itemLines = order.items
-    .map((i) => `  • ${i.name} x${i.quantity} — ৳${(i.price * i.quantity).toLocaleString()}`)
-    .join("%0A");
+    .map((i) => `- ${i.name} x${i.quantity} = BDT ${(i.price * i.quantity).toLocaleString()}`)
+    .join("\n");
 
-  const message = [
-    `🛍️ New Order — ${order.order_number}`,
+  const text = [
+    `New Order: ${order.order_number}`,
     ``,
-    `👤 ${order.customer_name}`,
-    `📞 ${order.customer_phone}`,
-    `📍 ${order.shipping_address}, ${order.shipping_city}`,
-    `💳 ${order.payment_method === "bkash" ? "bKash" : "Cash on Delivery"}`,
+    `Customer: ${order.customer_name}`,
+    `Phone: ${order.customer_phone}`,
+    `Address: ${order.shipping_address}, ${order.shipping_city}`,
+    `Payment: ${order.payment_method === "bkash" ? "bKash" : "Cash on Delivery"}`,
     ``,
-    `🧾 Items:`,
+    `Items:`,
     itemLines,
     ``,
-    `Subtotal: ৳${order.subtotal.toLocaleString()}`,
-    order.shipping_cost > 0 ? `Shipping: ৳${order.shipping_cost}` : `Shipping: Free`,
-    `*Total: ৳${order.total.toLocaleString()}*`,
-  ]
-    .join("%0A")
-    .replace(/ /g, "%20")
-    .replace(/—/g, "-")
-    .replace(/•/g, "*")
-    .replace(/🛍️|👤|📞|📍|💳|🧾/g, (e) => encodeURIComponent(e));
+    `Subtotal: BDT ${order.subtotal.toLocaleString()}`,
+    `Shipping: ${order.shipping_cost > 0 ? `BDT ${order.shipping_cost}` : "Free"}`,
+    `Total: BDT ${order.total.toLocaleString()}`,
+  ].join("\n");
 
-  const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${message}&apikey=${apiKey}`;
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(text)}&apikey=${apiKey}`;
 
   try {
-    await fetch(url);
-  } catch {
-    // fire-and-forget — never block order creation
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error(`[WhatsApp] CallMeBot error ${res.status}:`, await res.text());
+    }
+  } catch (err) {
+    console.error("[WhatsApp] Failed to send notification:", err);
   }
 }
