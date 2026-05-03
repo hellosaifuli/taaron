@@ -8,6 +8,7 @@ import type { Product } from "@/app/actions/products";
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ q?: string }>;
 }
 
 const categoryMeta: Record<string, { name: string; description: string }> = {
@@ -81,22 +82,25 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 
 export const dynamic = "force-dynamic";
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const { slug } = await params;
+  const { q } = await searchParams;
   const meta = categoryMeta[slug];
   if (!meta) notFound();
 
   const supabase = await createClient();
 
-  const query = supabase
+  let query = supabase
     .from("products")
-    .select("id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)")
+    .select("id, slug, name, price, compare_at_price, image_url, thumbnail_url, category, product_variants(id, name, image_url)")
     .eq("status", "active")
     .order("created_at", { ascending: false })
     .limit(50);
 
-  const { data: products } =
-    slug === "all" ? await query : await query.eq("category", slug);
+  if (slug !== "all") query = query.eq("category", slug);
+  if (q?.trim()) query = query.ilike("name", `%${q.trim()}%`);
+
+  const { data: products } = await query;
 
   function mapProducts(raw: any[]): Product[] {
     return raw.map((p) => ({

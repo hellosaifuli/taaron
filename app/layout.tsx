@@ -10,6 +10,7 @@ import { CartProvider } from "@/components/cart-provider";
 import "./globals.css";
 
 const GA_ID = "G-9EQ378LQFZ";
+const FB_PIXEL_ID = "1350892813744212";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -63,7 +64,7 @@ export const metadata = {
       "Premium leather wallets, bags, and belts. Artisanal craftsmanship meets minimalist design. COD & bKash available in Bangladesh.",
     images: [
       {
-        url: `${baseUrl}/taaron-logo.png`,
+        url: `${baseUrl}/og-image.png`,
         width: 1200,
         height: 630,
         alt: "Taaron — Premium Leather Goods",
@@ -75,7 +76,7 @@ export const metadata = {
     title: "Taaron — Premium Leather Goods",
     description:
       "Artisanal leather wallets, bags, and belts. Modern luxury without the heavy price tag.",
-    images: [`${baseUrl}/taaron-logo.png`],
+    images: [`${baseUrl}/og-image.png`],
   },
   robots: {
     index: true,
@@ -104,7 +105,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <CartProvider>
           <LuxuryNav />
-          <main>{children}</main>
+          <main className="pb-20 lg:pb-0">{children}</main>
           <SiteFooter />
         </CartProvider>
         <Toaster closeButton position="bottom-right" />
@@ -123,6 +124,24 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             gtag('config', '${GA_ID}');
           `}
         </Script>
+        {/* Meta Pixel */}
+        <Script id="fb-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '${FB_PIXEL_ID}');
+            fbq('track', 'PageView');
+          `}
+        </Script>
+        <noscript>
+          {`<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${FB_PIXEL_ID}&ev=PageView&noscript=1"/>`}
+        </noscript>
       </body>
     </html>
   );
