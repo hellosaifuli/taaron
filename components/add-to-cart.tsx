@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart-provider";
 import { toast } from "sonner";
+import { fbEvent } from "@/lib/fb-pixel";
 
 interface AddToCartProps {
   product: {
@@ -72,6 +73,13 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
         product.name +
         (selectedVariantData ? ` — ${selectedVariantData.name}` : ""),
       image_url: product.image_url,
+    });
+    fbEvent("AddToCart", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_type: "product",
+      value: finalPrice * quantity,
+      currency: "BDT",
     });
     toast.success(`${product.name} added to cart`, {
       action: { label: "View Cart", onClick: () => router.push("/checkout") },
@@ -215,7 +223,7 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
 
       {/* Sticky mobile CTA — appears when regular buttons scroll out of view */}
       <div
-        className={`fixed bottom-0 inset-x-0 z-40 border-t border-[#E5DFD6] bg-[#F7F4EF]/96 p-4 backdrop-blur-sm transition-transform duration-300 lg:hidden ${
+        className={`fixed bottom-16 inset-x-0 z-40 border-t border-[#E5DFD6] bg-[#F7F4EF]/96 p-4 backdrop-blur-sm transition-transform duration-300 lg:hidden ${
           showStickyBar ? "translate-y-0" : "translate-y-full"
         }`}
       >
