@@ -15,6 +15,7 @@ export interface Product {
   compare_at_price: number | null;
   image_url: string | null;
   thumbnail_url: string | null;
+  category: string | null;
   color_variants: ColorVariant[];
 }
 
@@ -26,7 +27,7 @@ export async function fetchProducts(
   const { data } = await supabase
     .from("products")
     .select(
-      "id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)",
+      "id, slug, name, price, compare_at_price, image_url, thumbnail_url, category, product_variants(id, name, image_url)",
     )
     .eq("status", "active")
     .order("created_at", { ascending: false })
@@ -40,6 +41,7 @@ export async function fetchProducts(
     compare_at_price: p.compare_at_price,
     image_url: p.image_url,
     thumbnail_url: p.thumbnail_url,
+    category: p.category ?? null,
     color_variants: (p.product_variants ?? []).filter(
       (v: any) => v.image_url,
     ) as ColorVariant[],

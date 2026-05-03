@@ -72,7 +72,15 @@ const websiteSchema = {
 export default async function Home() {
   const supabase = await createClient();
   const productSelect =
-    "id, slug, name, price, compare_at_price, image_url, thumbnail_url, product_variants(id, name, image_url)";
+    "id, slug, name, price, compare_at_price, image_url, thumbnail_url, category, product_variants(id, name, image_url)";
+
+  const categoryPriority: Record<string, number> = {
+    bags: 1,
+    ladies: 2,
+    wallets: 3,
+    belts: 4,
+    cardholder: 5,
+  };
 
   const [{ data: featuredData }, { data: gridData }] = await Promise.all([
     // Featured products → banner (max 3, ordered by name for consistency)
@@ -101,7 +109,11 @@ export default async function Home() {
   }
 
   const featuredProducts = mapProducts(featuredData ?? []);
-  const products = mapProducts(gridData ?? []);
+  const products = mapProducts(gridData ?? []).sort((a, b) => {
+    const pa = categoryPriority[a.category ?? ""] ?? 99;
+    const pb = categoryPriority[b.category ?? ""] ?? 99;
+    return pa !== pb ? pa - pb : 0;
+  });
 
   return (
     <>
