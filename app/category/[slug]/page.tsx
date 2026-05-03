@@ -140,7 +140,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
 
       {/* ── Banner — gradient, no image ──────────────────────── */}
       <div
-        className="relative flex flex-col justify-end overflow-hidden px-6 pb-8 pt-24 lg:px-16 lg:pb-10 lg:pt-28"
+        className="relative flex flex-col justify-end overflow-hidden px-6 pb-8 pt-8 lg:px-16 lg:pb-10 lg:pt-28"
         style={{
           background:
             "linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)",
