@@ -223,13 +223,13 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
 
       {/* Sticky mobile CTA — appears when regular buttons scroll out of view */}
       <div
-        className={`fixed bottom-16 inset-x-0 z-40 border-t border-[#E5DFD6] bg-[#F7F4EF]/96 p-4 backdrop-blur-sm transition-transform duration-300 lg:hidden ${
+        className={`fixed bottom-20 inset-x-0 z-40 px-3 transition-transform duration-300 lg:hidden ${
           showStickyBar ? "translate-y-0" : "translate-y-full"
         }`}
       >
         <button
           onClick={handleAdd}
-          className="w-full bg-[#111111] py-4 text-[11px] uppercase tracking-widest text-white active:bg-[#9B6F47]"
+          className="w-full rounded-full border border-[#E5DFD6] bg-[#111111] py-3.5 text-[10px] uppercase tracking-widest text-white shadow-sm backdrop-blur-md active:bg-[#9B6F47]"
         >
           Add to Cart — ৳{(finalPrice * quantity).toLocaleString()}
         </button>
