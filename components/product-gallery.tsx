@@ -36,7 +36,7 @@ export default function ProductGallery({
       {/* Breadcrumb — outside image div so no overlay blocks clicks */}
       <nav
         aria-label="Breadcrumb"
-        className="absolute top-24 left-6 lg:top-8 lg:left-8 z-20 flex items-center gap-2 rounded-full bg-black/40 px-4 py-2 text-[10px] uppercase tracking-widest backdrop-blur-sm"
+        className="absolute top-4 left-4 lg:top-8 lg:left-8 z-20 flex items-center gap-2 rounded-full bg-black/40 px-4 py-2 text-[10px] uppercase tracking-widest backdrop-blur-sm"
       >
         <Link href="/" className="text-white/80 transition-colors hover:text-white">
           Home
