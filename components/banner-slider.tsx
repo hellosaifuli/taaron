@@ -130,10 +130,10 @@ export default function BannerSlider({
       <StarField />
 
       {/* Headline */}
-      <div className="relative flex-shrink-0 px-4 pb-4 pt-[88px] text-center sm:pb-6 sm:pt-[92px]">
+      <div className="relative flex-shrink-0 px-6 pb-4 pt-8 text-center sm:pb-6 sm:pt-10 lg:pt-[88px]">
         {/* Line 1 — drops in from above */}
         <p
-          className="banner-reveal mb-2 text-[10px] uppercase tracking-[0.4em] text-[#9B6F47]"
+          className="banner-reveal mb-3 text-[10px] uppercase tracking-[0.45em] text-[#9B6F47]"
           style={{ animation: "bannerRevealDown 0.6s ease-out 0.1s" }}
         >
           Crafted in Leather
@@ -142,14 +142,13 @@ export default function BannerSlider({
         <h1
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(1.6rem, 3.5vw, 3.4rem)",
-            lineHeight: "1.15",
+            fontSize: "clamp(2rem, 5vw, 3.8rem)",
+            lineHeight: "1.12",
             letterSpacing: "-0.02em",
             color: "#111111",
             fontWeight: 400,
           }}
         >
-          {/* Inline: "Everyday Elegance, Inspired by Stars" on one line */}
           <span
             className="banner-reveal"
             style={{ animation: "bannerRevealUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.35s" }}
@@ -163,7 +162,7 @@ export default function BannerSlider({
 
         {/* Subtitle — fades up last */}
         <p
-          className="banner-reveal mx-auto mt-3 max-w-sm text-xs leading-relaxed text-[#5C5652]"
+          className="banner-reveal mx-auto mt-4 max-w-xs text-[13px] leading-relaxed text-[#5C5652]"
           style={{ animation: "bannerRevealUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.85s" }}
         >
           Luxurious leather goods built for modern life — confidence and style,

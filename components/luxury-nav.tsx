@@ -132,41 +132,36 @@ export default function LuxuryNav() {
       </header>
 
       {/* ── Mobile bottom nav ──────────────────────────────────────── */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-[#E5DFD6] bg-[#F2EFE8]/95 backdrop-blur-md lg:hidden" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
-        <div className="flex items-center justify-around px-2 py-2">
+      <div
+        className="fixed inset-x-0 bottom-0 z-50 px-3 lg:hidden"
+        style={{ paddingBottom: "max(env(safe-area-inset-bottom), 8px)" }}
+      >
+        <nav className="flex items-center justify-around rounded-full border border-[#E5DFD6] bg-[#F2EFE8]/95 px-2 py-2.5 shadow-sm backdrop-blur-md">
 
           {/* Search */}
           <button
             onClick={() => setSearchOpen(true)}
-            className="flex flex-col items-center gap-1 px-4 py-1.5 text-[#111111]"
+            className="flex flex-col items-center gap-1 px-5"
             aria-label="Search"
           >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <svg className="h-[18px] w-[18px] text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
-            <span className="text-[9px] tracking-wider text-[#9E9690]">Search</span>
+            <span className="text-[8px] uppercase tracking-[0.15em] text-[#9E9690]">Search</span>
           </button>
 
           {/* Home */}
-          <Link
-            href="/"
-            className="flex flex-col items-center gap-1 px-4 py-1.5 text-[#111111]"
-            aria-label="Home"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <Link href="/" className="flex flex-col items-center gap-1 px-5" aria-label="Home">
+            <svg className="h-[18px] w-[18px] text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
             </svg>
-            <span className="text-[9px] tracking-wider text-[#9E9690]">Home</span>
+            <span className="text-[8px] uppercase tracking-[0.15em] text-[#9E9690]">Home</span>
           </Link>
 
           {/* Cart */}
-          <Link
-            href="/checkout"
-            className="relative flex flex-col items-center gap-1 px-4 py-1.5 text-[#111111]"
-            aria-label="Cart"
-          >
+          <Link href="/checkout" className="relative flex flex-col items-center gap-1 px-5" aria-label="Cart">
             <div className="relative">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <svg className="h-[18px] w-[18px] text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
               </svg>
               {count > 0 && (
@@ -175,27 +170,27 @@ export default function LuxuryNav() {
                 </span>
               )}
             </div>
-            <span className="text-[9px] tracking-wider text-[#9E9690]">Cart</span>
+            <span className="text-[8px] uppercase tracking-[0.15em] text-[#9E9690]">Cart</span>
           </Link>
 
           {/* Menu */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex flex-col items-center gap-1 px-4 py-1.5 text-[#111111]"
+            className="flex flex-col items-center gap-1 px-5"
             aria-label="Menu"
           >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <svg className="h-[18px] w-[18px] text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
               {mobileOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
               )}
             </svg>
-            <span className="text-[9px] tracking-wider text-[#9E9690]">Menu</span>
+            <span className="text-[8px] uppercase tracking-[0.15em] text-[#9E9690]">Menu</span>
           </button>
 
-        </div>
-      </nav>
+        </nav>
+      </div>
 
       {/* ── Search overlay (mobile) ────────────────────────────────── */}
       {searchOpen && (

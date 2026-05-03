@@ -105,7 +105,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <CartProvider>
           <LuxuryNav />
-          <main className="pb-20 lg:pb-0">{children}</main>
+          <main className="pb-24 lg:pb-0">{children}</main>
           <SiteFooter />
         </CartProvider>
         <Toaster closeButton position="bottom-right" />
