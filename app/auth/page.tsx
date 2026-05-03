@@ -194,7 +194,7 @@ function AuthForm() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 w-full bg-[#111111] py-3.5 text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-[#9B6F47] disabled:opacity-50"
+            className="mt-2 w-full rounded-sm bg-[#111111] py-3.5 text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-[#9B6F47] disabled:opacity-50"
           >
             {loading
               ? "Please wait…"

@@ -77,7 +77,7 @@ export default function ContactPage() {
 
       {/* Banner header */}
       <div
-        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-28 lg:px-16 lg:pb-12 lg:pt-32"
+        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-12 lg:px-16 lg:pb-12 lg:pt-20"
         style={{
           background:
             "linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)",
@@ -316,7 +316,7 @@ export default function ContactPage() {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="bg-[#111111] px-12 py-4 text-[11px] uppercase tracking-[0.25em] text-white transition-colors duration-300 hover:bg-[#9B6F47]"
+                  className="rounded-sm bg-[#111111] px-12 py-4 text-[11px] uppercase tracking-[0.25em] text-white transition-colors duration-300 hover:bg-[#9B6F47]"
                 >
                   Send Message
                 </button>

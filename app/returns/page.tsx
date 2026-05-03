@@ -104,7 +104,7 @@ export default function ReturnsPage() {
 
       {/* Banner header */}
       <div
-        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-28 lg:px-16 lg:pb-12 lg:pt-32"
+        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-12 lg:px-16 lg:pb-12 lg:pt-20"
         style={{
           background:
             "linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)",
@@ -263,7 +263,7 @@ export default function ReturnsPage() {
               </div>
               <Link
                 href="/contact"
-                className="inline-block border border-white/20 px-10 py-3.5 text-[11px] uppercase tracking-[0.25em] text-white transition-all duration-300 hover:border-[#9B6F47] hover:bg-[#9B6F47] whitespace-nowrap"
+                className="inline-block rounded-sm border border-white/20 px-10 py-3.5 text-[11px] uppercase tracking-[0.25em] text-white transition-all duration-300 hover:border-[#9B6F47] hover:bg-[#9B6F47] whitespace-nowrap"
               >
                 Contact Us
               </Link>

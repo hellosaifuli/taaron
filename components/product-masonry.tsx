@@ -82,7 +82,7 @@ function MasonryCard({ product, idx }: { product: Product; idx: number }) {
         </div>
       )}
       {colorVariants.length > 0 && (
-        <div className="card-overlay absolute inset-x-0 bottom-[60px] z-20 flex justify-center gap-3 px-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+        <div className="card-overlay absolute inset-x-0 bottom-[60px] z-20 flex flex-wrap justify-center gap-3 px-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
           {colorVariants.slice(0, 6).map((v) => (
             <div key={v.id} className="flex flex-col items-center gap-1">
               <button

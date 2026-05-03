@@ -44,7 +44,7 @@ export default function BlogPage() {
     <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
       {/* ── Header ───────────────────────────────────────────────── */}
       <div
-        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-28 lg:px-16 lg:pb-14 lg:pt-32"
+        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-12 lg:px-16 lg:pb-14 lg:pt-20"
         style={{
           background:
             "linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)",

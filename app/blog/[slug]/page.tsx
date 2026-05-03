@@ -91,7 +91,7 @@ export default async function BlogPostPage({ params }: Props) {
       <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
         {/* ── Hero ─────────────────────────────────────────────── */}
         <div
-          className="relative flex flex-col justify-end overflow-hidden px-6 pb-12 pt-28 lg:px-16 lg:pb-16 lg:pt-36"
+          className="relative flex flex-col justify-end overflow-hidden px-6 pb-12 pt-12 lg:px-16 lg:pb-16 lg:pt-20"
           style={{
             background:
               "linear-gradient(135deg, #2C1F14 0%, #5C3D22 45%, #9B6F47 100%)",

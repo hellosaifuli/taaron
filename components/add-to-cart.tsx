@@ -43,12 +43,19 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
   const finalPrice =
     product.price + (selectedVariantData?.price_adjustment ?? 0);
 
-  // Show sticky CTA when regular buttons scroll out of view
+  // Show sticky CTA only after user scrolls PAST the main buttons (not on initial load)
   useEffect(() => {
     const el = ctaRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setShowStickyBar(!entry?.isIntersecting),
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          // Only show when element is above the viewport (scrolled past), not below (not reached)
+          setShowStickyBar(entry.boundingClientRect.top < 0);
+        } else {
+          setShowStickyBar(false);
+        }
+      },
       { rootMargin: "0px" },
     );
     observer.observe(el);
@@ -205,16 +212,16 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
         </div>
 
         {/* CTAs — observed to trigger sticky bar */}
-        <div ref={ctaRef} className="flex flex-col gap-3 pt-1 sm:flex-row">
+        <div ref={ctaRef} className="grid grid-cols-2 gap-3 pt-1">
           <button
             onClick={handleAdd}
-            className="flex-1 bg-[#111111] px-6 py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47] active:bg-[#9B6F47]"
+            className="w-full rounded-sm bg-[#111111] px-6 py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47] active:bg-[#9B6F47]"
           >
             Add to Cart — ৳{(finalPrice * quantity).toLocaleString()}
           </button>
           <button
             onClick={handleBuyNow}
-            className="border border-[#111111] px-6 py-4 text-[11px] uppercase tracking-widest text-[#111111] transition-colors hover:bg-[#111111] hover:text-white"
+            className="w-full rounded-sm border border-[#111111] px-6 py-4 text-[11px] uppercase tracking-widest text-[#111111] transition-colors hover:bg-[#111111] hover:text-white"
           >
             Buy Now
           </button>
@@ -223,9 +230,10 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
 
       {/* Sticky mobile CTA — appears when regular buttons scroll out of view */}
       <div
-        className={`fixed bottom-20 inset-x-0 z-40 px-3 transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-x-0 z-40 px-3 transition-transform duration-300 lg:hidden ${
           showStickyBar ? "translate-y-0" : "translate-y-full"
         }`}
+        style={{ bottom: "calc(max(env(safe-area-inset-bottom), 8px) + 60px)" }}
       >
         <button
           onClick={handleAdd}

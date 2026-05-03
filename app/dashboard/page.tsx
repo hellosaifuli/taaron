@@ -68,7 +68,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
       {/* ── Hero banner ─────────────────────────────────────── */}
       <div
-        className="relative overflow-hidden px-6 pb-12 pt-28 lg:px-16 lg:pb-16 lg:pt-32"
+        className="relative overflow-hidden px-6 pb-12 pt-12 lg:px-16 lg:pb-16 lg:pt-20"
         style={{
           background:
             "linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)",

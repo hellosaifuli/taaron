@@ -304,21 +304,21 @@ export default async function OrderConfirmationPage({
           <div className="flex gap-4">
             <Link
               href="/"
-              className="flex-1 bg-[#111111] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47]"
+              className="flex-1 rounded-sm bg-[#111111] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47]"
             >
               Continue Shopping
             </Link>
             {order.user_id ? (
               <Link
                 href="/dashboard"
-                className="flex-1 border border-[#E5DFD6] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors hover:border-[#111111] hover:text-[#111111]"
+                className="flex-1 rounded-sm border border-[#E5DFD6] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors hover:border-[#111111] hover:text-[#111111]"
               >
                 View Orders
               </Link>
             ) : (
               <Link
                 href="/auth"
-                className="flex-1 border border-[#E5DFD6] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors hover:border-[#111111] hover:text-[#111111]"
+                className="flex-1 rounded-sm border border-[#E5DFD6] px-6 py-3.5 text-center text-[11px] uppercase tracking-widest text-[#5C5652] transition-colors hover:border-[#111111] hover:text-[#111111]"
               >
                 Create Account
               </Link>

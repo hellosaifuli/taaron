@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { fbEvent } from "@/lib/fb-pixel";
 
 const BD_DISTRICTS: { name: string; postal: string }[] = [
   // Dhaka Division
@@ -127,6 +128,18 @@ export default function CheckoutPage() {
     });
   }, []);
 
+  useEffect(() => {
+    if (items.length > 0) {
+      fbEvent("InitiateCheckout", {
+        content_ids: items.map((i) => i.product_id),
+        content_type: "product",
+        num_items: items.reduce((s, i) => s + i.quantity, 0),
+        value: items.reduce((s, i) => s + i.price * i.quantity, 0),
+        currency: "BDT",
+      });
+    }
+  }, []);
+
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -213,7 +226,7 @@ export default function CheckoutPage() {
       <div className="flex min-h-screen flex-col bg-[#F7F4EF]">
         {/* Top gradient strip */}
         <div
-          className="flex-shrink-0 pt-28 pb-12 px-6 lg:px-16"
+          className="flex-shrink-0 pt-12 pb-12 px-6 lg:px-16"
           style={{
             background:
               "linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)",
@@ -281,7 +294,7 @@ export default function CheckoutPage() {
             </p>
             <Link
               href="/"
-              className="mt-8 bg-[#111111] px-10 py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47]"
+              className="mt-8 rounded-sm bg-[#111111] px-10 py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47]"
             >
               Shop the Collection
             </Link>
@@ -322,7 +335,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
       {/* Banner header */}
       <div
-        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-28 lg:px-16 lg:pb-12 lg:pt-32"
+        className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-12 lg:px-16 lg:pb-12 lg:pt-20"
         style={{
           background:
             "linear-gradient(135deg, #F0EDE7 0%, #E2D9CC 50%, #D4BFA0 100%)",
@@ -504,7 +517,7 @@ export default function CheckoutPage() {
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <label
-                  className={`flex cursor-pointer items-center gap-4 px-5 py-4 transition-all duration-200 ${paymentMethod === "cod" ? "bg-[#111111] text-white" : "bg-white text-[#111111] hover:bg-[#EDE9E3]"}`}
+                  className={`flex cursor-pointer items-center gap-4 rounded-sm px-5 py-4 transition-all duration-200 ${paymentMethod === "cod" ? "bg-[#111111] text-white" : "bg-white text-[#111111] hover:bg-[#EDE9E3]"}`}
                 >
                   <input
                     type="radio"
@@ -525,7 +538,7 @@ export default function CheckoutPage() {
                   </div>
                 </label>
                 <label
-                  className={`flex cursor-pointer items-center gap-4 px-5 py-4 transition-all duration-200 ${paymentMethod === "bkash" ? "bg-[#111111] text-white" : "bg-white text-[#111111] hover:bg-[#EDE9E3]"}`}
+                  className={`flex cursor-pointer items-center gap-4 rounded-sm px-5 py-4 transition-all duration-200 ${paymentMethod === "bkash" ? "bg-[#111111] text-white" : "bg-white text-[#111111] hover:bg-[#EDE9E3]"}`}
                 >
                   <input
                     type="radio"
@@ -579,7 +592,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#111111] py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47] disabled:opacity-60"
+              className="w-full rounded-sm bg-[#111111] py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47] disabled:opacity-60"
             >
               {loading
                 ? "Placing Order…"
