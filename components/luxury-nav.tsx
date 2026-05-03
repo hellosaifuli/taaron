@@ -20,8 +20,6 @@ export default function LuxuryNav() {
   const [shopOpen, setShopOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [topHidden, setTopHidden] = useState(false);
-  const lastScrollY = useRef(0);
   const { count } = useCart();
   const [user, setUser] = useState<{ email: string; name: string } | null>(null);
   const pathname = usePathname();
@@ -63,21 +61,6 @@ export default function LuxuryNav() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Hide top bar on scroll down, show on scroll up (mobile only)
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      if (currentY > lastScrollY.current && currentY > 80) {
-        setTopHidden(true);
-      } else {
-        setTopHidden(false);
-      }
-      lastScrollY.current = currentY;
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   // Focus search input when overlay opens
   useEffect(() => {
     if (searchOpen) {
@@ -96,12 +79,8 @@ export default function LuxuryNav() {
 
   return (
     <>
-      {/* ── Top header ─────────────────────────────────────────────── */}
-      <header
-        className={`fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 transition-transform duration-300 ${
-          topHidden ? "-translate-y-full lg:translate-y-0" : "translate-y-0"
-        }`}
-      >
+      {/* ── Top header (desktop only on mobile) ────────────────────── */}
+      <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4">
         {/* Desktop pill */}
         <nav className="hidden lg:flex items-center gap-7 rounded-full border border-[#E5DFD6] bg-[#F2EFE8]/95 px-8 py-2.5 shadow-sm backdrop-blur-md">
           <div className="flex items-center gap-6">
@@ -150,16 +129,6 @@ export default function LuxuryNav() {
           </div>
         </nav>
 
-        {/* Mobile top pill — logo centered only */}
-        <div className="flex w-full items-center justify-center rounded-full border border-[#E5DFD6] bg-[#F2EFE8]/95 px-5 py-3 shadow-sm backdrop-blur-md lg:hidden">
-          <Link
-            href="/"
-            className="text-[13px] font-medium uppercase text-[#111111]"
-            style={{ fontFamily: "var(--font-display)", letterSpacing: "0.14em" }}
-          >
-            Taaron
-          </Link>
-        </div>
       </header>
 
       {/* ── Mobile bottom nav ──────────────────────────────────────── */}
@@ -274,7 +243,7 @@ export default function LuxuryNav() {
 
       {/* ── Mobile drawer ─────────────────────────────────────────── */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 flex flex-col bg-[#F7F4EF] pt-[72px] lg:hidden" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 60px)" }}>
+        <div className="fixed inset-0 z-40 flex flex-col bg-[#F7F4EF] pt-4 lg:hidden" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 60px)" }}>
           {user && (
             <div className="mx-6 mt-4 rounded-2xl border border-[#E5DFD6] bg-white px-5 py-4">
               <p className="truncate text-sm font-medium text-[#111111]">{user.name}</p>
