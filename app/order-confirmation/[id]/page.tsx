@@ -2,6 +2,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import FadeInSection from "@/components/fade-in-section";
+import FbPurchaseEvent from "@/components/fb-purchase-event";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -53,8 +54,17 @@ export default async function OrderConfirmationPage({
   const fmt = (d: Date) =>
     d.toLocaleDateString("en-BD", { day: "numeric", month: "short" });
 
+  const productIds = (order.order_items ?? []).map((i: any) => i.products?.id).filter(Boolean);
+  const totalItems = (order.order_items ?? []).reduce((s: number, i: any) => s + i.quantity, 0);
+
   return (
-    <div className="min-h-screen bg-[#F7F4EF] pt-24 pb-20">
+    <div className="min-h-screen bg-[#F7F4EF] pt-8 pb-28 lg:pt-24">
+      <FbPurchaseEvent
+        orderId={order.id}
+        total={order.total ?? 0}
+        contentIds={productIds}
+        numItems={totalItems}
+      />
       <div className="mx-auto max-w-2xl px-6 lg:px-8">
         {/* Confirmation header */}
         <FadeInSection from="up" className="mb-10">

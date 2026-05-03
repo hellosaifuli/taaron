@@ -87,7 +87,7 @@ function AuthForm() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F4EF] px-4 pt-20">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F4EF] px-4 pt-8 lg:pt-20">
       <div className="w-full max-w-sm">
         {/* Eyebrow + heading */}
         <div className="mb-10 text-center">

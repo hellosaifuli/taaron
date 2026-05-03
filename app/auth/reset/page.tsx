@@ -51,7 +51,7 @@ function ResetForm() {
     "mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-[#9E9690]";
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F4EF] px-4 pt-20">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F4EF] px-4 pt-8 lg:pt-20">
       <div className="w-full max-w-sm">
         <div className="mb-10 text-center">
           <p className="text-[10px] uppercase tracking-[0.4em]" style={{ color: "#9B6F47" }}>
