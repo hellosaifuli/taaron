@@ -49,7 +49,7 @@ export async function fetchProducts(
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
-  return ((data as any[]) ?? []).map((p) => ({
+  const mapped = ((data as any[]) ?? []).map((p) => ({
     id: p.id,
     slug: p.slug,
     name: p.name,
@@ -62,4 +62,5 @@ export async function fetchProducts(
       (v: any) => v.image_url,
     ) as ColorVariant[],
   }));
+  return sortByCategory(mapped);
 }
