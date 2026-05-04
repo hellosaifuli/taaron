@@ -43,7 +43,7 @@ const localBusinessSchema = {
   description:
     "Premium leather wallets, bags, and belts crafted in Bangladesh.",
   url: "https://taaron.store",
-  telephone: "+8801920585212",
+  telephone: "+8801648817191",
   email: "taaron.store@gmail.com",
   address: {
     "@type": "PostalAddress",
@@ -53,7 +53,7 @@ const localBusinessSchema = {
   openingHours: "Mo-Fr 10:00-19:00",
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+8801920585212",
+    telephone: "+8801648817191",
     contactType: "customer service",
     areaServed: "BD",
     availableLanguage: ["English", "Bengali"],
@@ -121,7 +121,7 @@ export default function ContactPage() {
           <FadeInSection>
             <div className="divide-y divide-[#E5DFD6]">
               <a
-                href="https://wa.me/8801920585212"
+                href="https://wa.me/8801648817191"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group block py-7 transition-colors first:pt-0"
@@ -133,7 +133,7 @@ export default function ContactPage() {
                   className="mt-2 text-xl font-medium text-[#111111] transition-colors group-hover:text-[#9B6F47]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  +880 1920-585212
+                  +880 1648-817191
                 </p>
                 <p className="mt-1 text-xs text-[#9E9690]">
                   Sun – Thu, 10am – 7pm BST

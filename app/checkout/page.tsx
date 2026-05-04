@@ -601,7 +601,7 @@ export default function CheckoutPage() {
                         ৳{total.toLocaleString()}
                       </strong>{" "}
                       to bKash number{" "}
-                      <strong className="text-[#111111]">01920-585212</strong>{" "}
+                      <strong className="text-[#111111]">01648-817191</strong>{" "}
                       (Send Money).
                     </li>
                     <li>Use your order number as the reference.</li>

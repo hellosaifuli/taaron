@@ -284,8 +284,8 @@ export default function LuxuryNav() {
           <div className="flex-shrink-0 space-y-2 px-4 pb-4 pt-2">
             <div className="rounded-full border border-[#E5DFD6] bg-white px-6 py-4">
               <p className="text-[10px] uppercase tracking-[0.25em] text-[#9E9690]">WhatsApp / Phone</p>
-              <a href="https://wa.me/8801920585212" target="_blank" rel="noopener noreferrer" className="mt-1 block text-[17px] font-medium text-[#111111]">
-                +880 1920-585212
+              <a href="https://wa.me/8801648817191" target="_blank" rel="noopener noreferrer" className="mt-1 block text-[17px] font-medium text-[#111111]">
+                +880 1648-817191
               </a>
               <p className="mt-0.5 text-[11px] text-[#9B6F47]">Sun – Thu, 10am – 7pm BST</p>
             </div>

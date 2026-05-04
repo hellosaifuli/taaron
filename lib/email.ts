@@ -125,7 +125,7 @@ function customerEmailHtml(o: OrderEmailData): string {
     }
   </p>
 
-  <p style="font-size:13px;color:#9E9690;margin:0">Questions? WhatsApp us: <a href="https://wa.me/8801920585212" style="color:#9B6F47">+880 1920-585212</a></p>
+  <p style="font-size:13px;color:#9E9690;margin:0">Questions? WhatsApp us: <a href="https://wa.me/8801648817191" style="color:#9B6F47">+880 1648-817191</a></p>
 </div>
 </body></html>`;
 }

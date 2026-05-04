@@ -214,12 +214,12 @@ export default function ReturnsPage() {
                   taaron.store@gmail.com
                 </a>
                 <a
-                  href="https://wa.me/8801920585212"
+                  href="https://wa.me/8801648817191"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-1 block text-xs text-[#5C5652] transition-colors hover:text-[#9B6F47]"
                 >
-                  WhatsApp: +880 1920-585212
+                  WhatsApp: +880 1648-817191
                 </a>
               </div>
             </div>
