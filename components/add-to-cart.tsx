@@ -223,6 +223,13 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
           );
         })()}
 
+        {/* Low stock warning */}
+        {selectedVariantData && selectedVariantData.stock_quantity > 0 && selectedVariantData.stock_quantity < 5 && (
+          <p className="text-[11px] uppercase tracking-[0.15em] text-[#9B6F47]">
+            Only {selectedVariantData.stock_quantity} left — order soon
+          </p>
+        )}
+
         {/* Quantity stepper */}
         <div>
           <p className="mb-3 text-[11px] uppercase tracking-[0.15em] text-[#9E9690]">
