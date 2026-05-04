@@ -248,7 +248,7 @@ export default function LuxuryNav() {
 
       {/* ── Mobile drawer ─────────────────────────────────────────── */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 flex flex-col bg-[#F7F4EF] pt-4 lg:hidden" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 60px)" }}>
+        <div className="fixed inset-0 z-[45] flex flex-col bg-[#F7F4EF] pt-4 lg:hidden" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 60px)" }}>
           {user && (
             <div className="mx-6 mt-4 rounded-2xl border border-[#E5DFD6] bg-white px-5 py-4">
               <p className="truncate text-sm font-medium text-[#111111]">{user.name}</p>
