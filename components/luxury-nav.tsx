@@ -194,43 +194,53 @@ export default function LuxuryNav() {
 
       {/* ── Search overlay (mobile) ────────────────────────────────── */}
       {searchOpen && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-[#F7F4EF] lg:hidden">
-          <div className="flex items-center gap-3 border-b border-[#E5DFD6] px-4 py-4">
-            <svg className="h-5 w-5 flex-shrink-0 text-[#9E9690]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-            <form onSubmit={handleSearch} className="flex-1">
-              <input
-                ref={searchInputRef}
-                type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products…"
-                className="w-full bg-transparent text-[15px] text-[#111111] placeholder-[#9E9690] outline-none"
-              />
-            </form>
-            <button
-              onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
-              className="text-[13px] tracking-wide text-[#9B6F47]"
-            >
-              Cancel
-            </button>
-          </div>
+        <div className="fixed inset-0 z-[60] flex flex-col justify-end lg:hidden">
+          {/* Tap backdrop to dismiss */}
+          <div
+            className="flex-1"
+            onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+          />
 
-          {/* Quick links */}
-          <div className="px-5 py-6">
-            <p className="mb-4 text-[10px] uppercase tracking-[0.3em] text-[#9E9690]">Browse</p>
-            <div className="flex flex-wrap gap-2">
-              {shopLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setSearchOpen(false)}
-                  className="rounded-full border border-[#E5DFD6] bg-white px-4 py-2 text-[12px] tracking-wide text-[#111111] active:bg-[#E5DFD6]"
-                >
-                  {link.label}
-                </Link>
-              ))}
+          {/* Bottom sheet */}
+          <div className="bg-[#F7F4EF]" style={{ paddingBottom: "calc(max(env(safe-area-inset-bottom), 8px) + 60px)" }}>
+            {/* Search row */}
+            <div className="flex items-center gap-3 border-b border-[#E5DFD6] px-4 py-4">
+              <svg className="h-5 w-5 flex-shrink-0 text-[#9E9690]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+              <form onSubmit={handleSearch} className="flex-1">
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search products…"
+                  className="w-full bg-transparent text-[15px] text-[#111111] placeholder-[#9E9690] outline-none"
+                />
+              </form>
+              <button
+                onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+                className="text-[13px] tracking-wide text-[#9B6F47]"
+              >
+                Cancel
+              </button>
+            </div>
+
+            {/* Browse pills */}
+            <div className="px-5 py-5">
+              <p className="mb-4 text-[10px] uppercase tracking-[0.3em] text-[#9E9690]">Browse</p>
+              <div className="flex flex-wrap gap-2">
+                {shopLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setSearchOpen(false)}
+                    className="rounded-full border border-[#E5DFD6] bg-white px-4 py-2 text-[12px] tracking-wide text-[#111111] active:bg-[#E5DFD6]"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

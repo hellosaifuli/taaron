@@ -34,12 +34,6 @@ export default function SiteFooter() {
             <span>© {new Date().getFullYear()} Taaron তারুণ</span>
             <div className="flex items-center gap-5">
               <Link
-                href="/category/all"
-                className="transition-colors hover:text-[#111111]"
-              >
-                Shop
-              </Link>
-              <Link
                 href="/blog"
                 className="transition-colors hover:text-[#111111]"
               >
@@ -56,12 +50,6 @@ export default function SiteFooter() {
                 className="transition-colors hover:text-[#111111]"
               >
                 Returns
-              </Link>
-              <Link
-                href="/auth"
-                className="transition-colors hover:text-[#111111]"
-              >
-                Account
               </Link>
             </div>
             <span className="text-[#9E9690]">COD & bKash · Bangladesh</span>

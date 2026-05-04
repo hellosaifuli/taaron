@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart-provider";
 import { toast } from "sonner";
 import { fbEvent } from "@/lib/fb-pixel";
+import StitchImage from "@/components/stitch-image";
 
 interface AddToCartProps {
   product: {
@@ -121,47 +122,106 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
     <>
       <div className="space-y-5">
         {/* Variant selector */}
-        {variants.length > 0 && (
-          <div>
-            <p className="mb-3 text-[11px] uppercase tracking-[0.15em] text-[#9E9690]">
-              Select Variant
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {variants.map((v) => {
-                const outOfStock = v.stock_quantity === 0;
-                const isSelected = selectedVariant === v.id;
-                return (
-                  <button
-                    key={v.id}
-                    onClick={() => !outOfStock && selectVariant(v.id)}
-                    disabled={outOfStock}
-                    className={`relative border px-4 py-2.5 text-xs tracking-wide transition-all duration-150 ${
-                      outOfStock
-                        ? "cursor-not-allowed border-[#E5DFD6] text-[#C4BDB5] line-through"
-                        : isSelected
-                          ? "border-[#111111] bg-[#111111] text-white"
-                          : "border-[#E5DFD6] text-[#5C5652] hover:border-[#111111]"
-                    }`}
-                  >
-                    {v.name}
-                    {v.price_adjustment > 0 && !outOfStock && (
-                      <span
-                        className={`ml-1 ${isSelected ? "text-white/70" : "text-[#9B6F47]"}`}
+        {variants.length > 0 && (() => {
+          const useSwatches = variants.some((v) => v.image_url);
+          const selectedVariantData2 = variants.find((v) => v.id === selectedVariant);
+
+          if (useSwatches) {
+            return (
+              <div>
+                <div className="mb-3 flex items-baseline gap-2">
+                  <p className="text-[11px] uppercase tracking-[0.15em] text-[#9E9690]">Color</p>
+                  {selectedVariantData2 && (
+                    <span className="text-[11px] text-[#111111]">
+                      {selectedVariantData2.name}
+                      {selectedVariantData2.price_adjustment > 0 && (
+                        <span className="ml-1 text-[#9B6F47]">+৳{selectedVariantData2.price_adjustment}</span>
+                      )}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {variants.map((v) => {
+                    const outOfStock = v.stock_quantity === 0;
+                    const isSelected = selectedVariant === v.id;
+                    return (
+                      <button
+                        key={v.id}
+                        onClick={() => !outOfStock && selectVariant(v.id)}
+                        disabled={outOfStock}
+                        title={v.name}
+                        aria-label={`${v.name}${outOfStock ? " — sold out" : ""}`}
+                        className={`relative h-16 w-16 flex-shrink-0 overflow-hidden transition-all duration-150 ${
+                          outOfStock ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                        } ${isSelected ? "ring-2 ring-[#9B6F47] ring-offset-2" : "ring-1 ring-[#E5DFD6] hover:ring-[#9E9690]"}`}
                       >
-                        +৳{v.price_adjustment}
-                      </span>
-                    )}
-                    {outOfStock && (
-                      <span className="ml-1 text-[10px] not-italic normal-case no-underline">
-                        sold out
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+                        {v.image_url ? (
+                          <StitchImage
+                            src={v.image_url}
+                            alt={v.name}
+                            className="object-cover"
+                            sizes="64px"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-[#EDE9E3] text-[9px] uppercase tracking-wide text-[#5C5652]">
+                            {v.name.slice(0, 3)}
+                          </div>
+                        )}
+                        {outOfStock && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-white/40">
+                            <svg className="h-full w-full text-[#C4BDB5]" viewBox="0 0 64 64" preserveAspectRatio="none">
+                              <line x1="0" y1="0" x2="64" y2="64" stroke="currentColor" strokeWidth="1.5" />
+                            </svg>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.15em] text-[#9E9690]">
+                Select Variant
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {variants.map((v) => {
+                  const outOfStock = v.stock_quantity === 0;
+                  const isSelected = selectedVariant === v.id;
+                  return (
+                    <button
+                      key={v.id}
+                      onClick={() => !outOfStock && selectVariant(v.id)}
+                      disabled={outOfStock}
+                      className={`relative border px-4 py-2.5 text-xs tracking-wide transition-all duration-150 ${
+                        outOfStock
+                          ? "cursor-not-allowed border-[#E5DFD6] text-[#C4BDB5] line-through"
+                          : isSelected
+                            ? "border-[#111111] bg-[#111111] text-white"
+                            : "border-[#E5DFD6] text-[#5C5652] hover:border-[#111111]"
+                      }`}
+                    >
+                      {v.name}
+                      {v.price_adjustment > 0 && !outOfStock && (
+                        <span className={`ml-1 ${isSelected ? "text-white/70" : "text-[#9B6F47]"}`}>
+                          +৳{v.price_adjustment}
+                        </span>
+                      )}
+                      {outOfStock && (
+                        <span className="ml-1 text-[10px] not-italic normal-case no-underline">
+                          sold out
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Quantity stepper */}
         <div>
@@ -214,7 +274,7 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
         </div>
 
         {/* CTAs — observed to trigger sticky bar */}
-        <div ref={ctaRef} className="grid grid-cols-2 gap-3 pt-1">
+        <div ref={ctaRef} className="grid grid-cols-1 gap-3 pt-1 min-[500px]:grid-cols-2">
           <button
             onClick={handleAdd}
             className="w-full rounded-sm bg-[#111111] px-6 py-4 text-[11px] uppercase tracking-widest text-white transition-colors hover:bg-[#9B6F47] active:bg-[#9B6F47]"
