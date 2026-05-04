@@ -27,7 +27,7 @@ const categoryPriority: Record<string, number> = {
   cardholder: 5,
 };
 
-export function sortByCategory(products: Product[]): Product[] {
+function sortByCategory(products: Product[]): Product[] {
   return [...products].sort((a, b) => {
     const pa = categoryPriority[a.category ?? ""] ?? 99;
     const pb = categoryPriority[b.category ?? ""] ?? 99;
