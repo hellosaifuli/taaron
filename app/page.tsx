@@ -1,11 +1,9 @@
-import { createClient } from "@/lib/supabase/server";
 import BannerSlider from "@/components/banner-slider";
 import ProductMasonry from "@/components/product-masonry";
 import RecentlyViewed from "@/components/recently-viewed";
 import PersonalizedProducts from "@/components/personalized-products";
 import Script from "next/script";
-import type { Product } from "@/app/actions/products";
-import { sortByCategory } from "@/app/actions/products";
+import { getFeaturedProducts, getGridProducts } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -71,38 +69,10 @@ const websiteSchema = {
 };
 
 export default async function Home() {
-  const supabase = await createClient();
-  const productSelect =
-    "id, slug, name, price, compare_at_price, image_url, thumbnail_url, category, product_variants(id, name, image_url)";
-
-  const [{ data: featuredData }, { data: gridData }] = await Promise.all([
-    // Featured products → banner (max 3, ordered by name for consistency)
-    supabase
-      .from("products")
-      .select(productSelect)
-      .eq("status", "active")
-      .eq("featured", true)
-      .order("created_at", { ascending: false })
-      .limit(3),
-    // Non-featured products → masonry grid
-    supabase
-      .from("products")
-      .select(productSelect)
-      .eq("status", "active")
-      .eq("featured", false)
-      .order("created_at", { ascending: false })
-      .limit(50),
+  const [featuredProducts, products] = await Promise.all([
+    getFeaturedProducts(),
+    getGridProducts(),
   ]);
-
-  function mapProducts(raw: any[]): Product[] {
-    return raw.map((p) => ({
-      ...p,
-      color_variants: (p.product_variants ?? []).filter((v: any) => v.image_url),
-    }));
-  }
-
-  const featuredProducts = mapProducts(featuredData ?? []);
-  const products = sortByCategory(mapProducts(gridData ?? []));
 
   return (
     <>

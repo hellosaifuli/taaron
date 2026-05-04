@@ -1,11 +1,10 @@
-import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import ProductMasonry from "@/components/product-masonry";
 import FadeInSection from "@/components/fade-in-section";
 import type { Product } from "@/app/actions/products";
-import { sortByCategory } from "@/app/actions/products";
+import { getCategoryProducts } from "@/lib/data";
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
@@ -89,30 +88,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const meta = categoryMeta[slug];
   if (!meta) notFound();
 
-  const supabase = await createClient();
-
-  let query = supabase
-    .from("products")
-    .select("id, slug, name, price, compare_at_price, image_url, thumbnail_url, category, product_variants(id, name, image_url)")
-    .eq("status", "active")
-    .order("created_at", { ascending: false })
-    .limit(50);
-
-  if (slug !== "all") query = query.eq("category", slug);
-  if (q?.trim()) query = query.ilike("name", `%${q.trim()}%`);
-
-  const { data: products } = await query;
-
-  function mapProducts(raw: any[]): Product[] {
-    return raw.map((p) => ({
-      ...p,
-      color_variants: (p.product_variants ?? []).filter((v: any) => v.image_url),
-    }));
-  }
-
-  const displayProducts: Product[] = slug === "all"
-    ? sortByCategory(mapProducts(products ?? []))
-    : mapProducts(products ?? []);
+  const displayProducts: Product[] = await getCategoryProducts(slug, q);
 
   const collectionSchema = {
     "@context": "https://schema.org",

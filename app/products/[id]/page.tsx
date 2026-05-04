@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { getProduct, getProductImages } from "@/lib/data";
 import ProductViewer from "@/components/product-viewer";
 import RelatedProducts from "@/components/related-products";
 import ProductAccordion from "@/components/product-accordion";
@@ -19,21 +19,7 @@ const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 export async function generateMetadata({ params }: ProductPageProps) {
   const { id } = await params;
-  const supabase = await createClient();
-  let { data: product } = await supabase
-    .from("products")
-    .select("name, description, price, image_url")
-    .eq("slug", id)
-    .maybeSingle();
-
-  if (!product) {
-    const { data } = await supabase
-      .from("products")
-      .select("name, description, price, image_url")
-      .eq("id", id)
-      .maybeSingle();
-    product = data;
-  }
+  const product = await getProduct(id);
 
   if (!product) return {};
 
@@ -75,39 +61,11 @@ const accordionSections = (description: string | null) => [
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
-  const supabase = await createClient();
 
-  // Support both slug-based and ID-based URLs for backward compatibility
-  const productSelect = `
-    id, slug, name, description, price, compare_at_price, sku, image_url, thumbnail_url, status,
-    product_variants (id, name, sku, price_adjustment, stock_quantity, image_url)
-  `;
-
-  // Try slug first, fall back to UUID id
-  let { data: product } = await supabase
-    .from("products")
-    .select(productSelect)
-    .eq("slug", id)
-    .eq("status", "active")
-    .maybeSingle();
-
-  if (!product) {
-    const { data } = await supabase
-      .from("products")
-      .select(productSelect)
-      .eq("id", id)
-      .eq("status", "active")
-      .maybeSingle();
-    product = data;
-  }
-
-  const { data: extraImages } = await supabase
-    .from("product_images")
-    .select("url, alt, position")
-    .eq("product_id", product?.id ?? id)
-    .order("position");
-
+  const product = await getProduct(id);
   if (!product) notFound();
+
+  const extraImages = await getProductImages(product.id);
 
   const allImages = [
     ...(product.image_url
