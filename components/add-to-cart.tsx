@@ -48,7 +48,9 @@ export default function AddToCart({ product, onVariantSelect }: AddToCartProps) 
     const el = ctaRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
         if (!entry.isIntersecting) {
           // Only show when element is above the viewport (scrolled past), not below (not reached)
           setShowStickyBar(entry.boundingClientRect.top < 0);
