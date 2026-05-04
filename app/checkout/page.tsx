@@ -6,8 +6,27 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 import { createClient } from "@/lib/supabase/client";
 import { fbEvent } from "@/lib/fb-pixel";
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "";
+
+async function getRecaptchaToken(): Promise<string | null> {
+  if (!RECAPTCHA_SITE_KEY) return null;
+  return new Promise((resolve) => {
+    if (typeof window === "undefined" || !(window as any).grecaptcha) {
+      resolve(null);
+      return;
+    }
+    (window as any).grecaptcha.ready(() => {
+      (window as any).grecaptcha
+        .execute(RECAPTCHA_SITE_KEY, { action: "checkout" })
+        .then(resolve)
+        .catch(() => resolve(null));
+    });
+  });
+}
 
 const BD_DISTRICTS: { name: string; postal: string }[] = [
   // Dhaka Division
@@ -192,6 +211,7 @@ export default function CheckoutPage() {
     setLoading(true);
     setError("");
     try {
+      const recaptcha_token = await getRecaptchaToken();
       const response = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -199,6 +219,7 @@ export default function CheckoutPage() {
           items,
           payment_method: paymentMethod,
           ...formData,
+          recaptcha_token,
         }),
       });
       let data: { id?: string; error?: string } = {};
@@ -333,6 +354,9 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-[#F7F4EF] text-[#111111]">
+      {RECAPTCHA_SITE_KEY && (
+        <Script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} />
+      )}
       {/* Banner header */}
       <div
         className="relative flex flex-col justify-end overflow-hidden px-6 pb-10 pt-12 lg:px-16 lg:pb-12 lg:pt-20"

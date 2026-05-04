@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
     shipping_address,
     shipping_city,
     shipping_postal_code,
+    recaptcha_token,
   } = await request.json();
 
   if (
@@ -71,6 +72,38 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 },
+    );
+  }
+
+  // reCAPTCHA v3 verification (skip if key not configured)
+  if (process.env.RECAPTCHA_SECRET_KEY) {
+    if (!recaptcha_token) {
+      return NextResponse.json({ error: "Security check failed. Please refresh and try again." }, { status: 400 });
+    }
+    const recaptchaRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptcha_token}`,
+    });
+    const recaptchaData = await recaptchaRes.json();
+    if (!recaptchaData.success || recaptchaData.score < 0.5) {
+      return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
+    }
+  }
+
+  // Rate limit: same phone cannot place more than 1 order per 2 hours
+  const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+  const { data: recentOrder } = await supabase
+    .from("orders")
+    .select("id")
+    .eq("customer_phone", customer_phone)
+    .gte("created_at", twoHoursAgo)
+    .limit(1)
+    .maybeSingle();
+  if (recentOrder) {
+    return NextResponse.json(
+      { error: "An order was recently placed with this phone number. Please wait 2 hours before placing another order, or contact us on WhatsApp." },
+      { status: 429 },
     );
   }
 

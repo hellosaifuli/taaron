@@ -19,6 +19,22 @@ export interface Product {
   color_variants: ColorVariant[];
 }
 
+const categoryPriority: Record<string, number> = {
+  bags: 1,
+  ladies: 2,
+  wallets: 3,
+  belts: 4,
+  cardholder: 5,
+};
+
+export function sortByCategory(products: Product[]): Product[] {
+  return [...products].sort((a, b) => {
+    const pa = categoryPriority[a.category ?? ""] ?? 99;
+    const pb = categoryPriority[b.category ?? ""] ?? 99;
+    return pa !== pb ? pa - pb : 0;
+  });
+}
+
 export async function fetchProducts(
   offset: number,
   limit = 50,

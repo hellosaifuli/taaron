@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import ProductMasonry from "@/components/product-masonry";
 import FadeInSection from "@/components/fade-in-section";
 import type { Product } from "@/app/actions/products";
+import { sortByCategory } from "@/app/actions/products";
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
@@ -109,7 +110,9 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     }));
   }
 
-  const displayProducts: Product[] = mapProducts(products ?? []);
+  const displayProducts: Product[] = slug === "all"
+    ? sortByCategory(mapProducts(products ?? []))
+    : mapProducts(products ?? []);
 
   const collectionSchema = {
     "@context": "https://schema.org",
